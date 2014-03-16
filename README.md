@@ -1,5 +1,5 @@
-Leffakanta -tietokantasovelluksen esittelysivu
-==============================================
+Leffakanta -tietokantasovellus
+==============================
 
 Tämän työn tarkoituksena on luoda elokuvatietokanta johon käyttäjä voi syöttää oman elokuvakokoelmansa tiedot.
 
