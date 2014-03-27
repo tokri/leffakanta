@@ -17,14 +17,15 @@ public class MainController {
         @Autowired
         private DatabaseService db;
 
-        //just dummy login at the moment, will just do a redirect
+        // just dummy login for post at the moment, will just do a redirect
         @RequestMapping(value = "login", method = RequestMethod.POST)
-        public String Login() {
+        public String RedirectLogin() {
             return "redirect:/movies";
         }
 
+        // show login screen
         @RequestMapping(value={"/", "login"}, method = RequestMethod.GET)
-        public String RedirectLogin(Model model) { 
+        public String ShowLogin(Model model) { 
             return "Login";
         }
         
@@ -36,7 +37,6 @@ public class MainController {
             return "MovieList";
         }           
         
-
         // show movie details
         @RequestMapping(value="movie", method=RequestMethod.GET)
         public String ShowMovieInfo(@RequestParam(value = "id") int id, Model model) {

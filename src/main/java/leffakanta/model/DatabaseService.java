@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DatabaseService {   
-    private DataSource dataSource;
+    private static DataSource dataSource;
+    
+    //use jdbcTemplate to handle db connections
     private JdbcTemplate jdbcTemplate; 
     
     @Autowired
@@ -21,7 +23,6 @@ public class DatabaseService {
         String sql = "SELECT movie_id, movie_title, year, rating FROM movies";
         jdbcTemplate = new JdbcTemplate(dataSource);
 
-        // jdbcTemplate handles sql injection attempts, no separate sql injection checks necessary
         List<Movie> movies = jdbcTemplate.query(sql,
                             new BeanPropertyRowMapper(Movie.class));
         return movies;
@@ -31,6 +32,7 @@ public class DatabaseService {
         String sql = "SELECT * FROM movies WHERE movie_id = ?";
         jdbcTemplate = new JdbcTemplate(dataSource);
 
+        // jdbcTemplate used for handling sql injection attempts
         Movie movie = (Movie) jdbcTemplate.queryForObject(sql, new Object[] { movie_id },
                         new BeanPropertyRowMapper(Movie.class));
         return movie;
