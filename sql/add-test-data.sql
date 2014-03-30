@@ -1,6 +1,6 @@
 INSERT INTO users VALUES 
-  (DEFAULT, 'mikkelinmies', '123456789012345678901234', '123456789012345678901234', true),
-  (DEFAULT, 'ohdake', '123456789012345678901234', '123456789012345678901234', false);
+  (DEFAULT, 'mikkelinmies', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', true),
+  (DEFAULT, 'ohdake', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false);
 
 INSERT INTO movies VALUES 
   (DEFAULT, 'The Matrix', 1999, 136, 7.4, 'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo, who finds himself targeted by the police when he is contacted by Morpheus, a legendary computer hacker, who reveals the shocking truth about our reality',
@@ -32,5 +32,6 @@ INSERT INTO crew VALUES
   (DEFAULT, 2, 2, 'Director');
 
 INSERT INTO collections VALUES 
+  (DEFAULT, 2, 1, 'DVD', 'Available'),
   (DEFAULT, 2, 2, 'Blu-ray', 'Available');
   

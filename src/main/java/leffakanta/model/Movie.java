@@ -12,12 +12,11 @@ public class Movie {
     private String posterUrl;
     private String backgroundUrl;
     private String trailerUrl;
-    public List<Role> actors;
     public List<String> directors;
     public List<String> writers;
     public List<String> producers;
     
-    //getters & setters needed for autowiring
+    //getters & setters
     public int getMovie_id(){ return this.id; }
     public String getMovie_title(){ return this.title; }
     public int getYear(){ return this.year; }

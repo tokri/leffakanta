@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class DatabaseService {   
     private static DataSource dataSource;
     
-    //use jdbcTemplate to handle db connections
+    //use jdbcTemplate to handle db connection and sql injection attempts
     private JdbcTemplate jdbcTemplate; 
     
     @Autowired
@@ -19,20 +19,32 @@ public class DatabaseService {
 	this.dataSource = dataSource;
     }    
 
-    public List<Movie> GetMovieList(){
-        String sql = "SELECT movie_id, movie_title, year, rating FROM movies";
+    // get user's details
+    public User GetUser(String username){
         jdbcTemplate = new JdbcTemplate(dataSource);
+        String sql = "SELECT * FROM users WHERE username = ?";
+        List<User> users = jdbcTemplate.query(sql, new Object[] { username  },                
+                            new BeanPropertyRowMapper(User.class));
+        if (users.isEmpty()){
+            return null;
+        }
+        User user = users.get(0);
+        return user;
+    }
 
-        List<Movie> movies = jdbcTemplate.query(sql,
+    // get users movie collection
+    public List<Movie> GetMovieList(int owner_id){
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        String sql = "SELECT DISTINCT movies.movie_id, movie_title, year, rating, owner_id FROM movies, collections WHERE owner_id = ?";
+        List<Movie> movies = jdbcTemplate.query(sql, new Object[] { owner_id },
                             new BeanPropertyRowMapper(Movie.class));
         return movies;
     }
 
+    // get movies details
     public Movie GetMovie(int movie_id){
-        String sql = "SELECT * FROM movies WHERE movie_id = ?";
         jdbcTemplate = new JdbcTemplate(dataSource);
-
-        // jdbcTemplate used for handling sql injection attempts
+        String sql = "SELECT * FROM movies WHERE movie_id = ?";
         Movie movie = (Movie) jdbcTemplate.queryForObject(sql, new Object[] { movie_id },
                         new BeanPropertyRowMapper(Movie.class));
         return movie;

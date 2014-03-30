@@ -5,8 +5,7 @@ CREATE TYPE AVAILIBILITY AS ENUM ('Available', 'Loaned', 'Missing');
 CREATE TABLE users (
 	user_id			SERIAL PRIMARY KEY,
 	username		VARCHAR(48) NOT NULL,
-	password_hash	CHAR(24) NOT NULL,
-	password_salt	CHAR(24) NOT NULL,
+	password_hash	VARCHAR(128) NOT NULL,
 	is_admin		BOOL NOT NULL
 );
 

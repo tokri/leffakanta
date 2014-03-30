@@ -43,7 +43,13 @@
                         <version>3.1.0.RELEASE</version>
                         <type>jar</type>
                 </dependency>
-        </dependencies>
+                <dependency>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                        <version>2.4</version>
+                        <type>jar</type>
+                </dependency>
+	</dependencies>
 
 	<build>
 		<finalName>leffakanta</finalName>
