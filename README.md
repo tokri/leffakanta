@@ -6,6 +6,10 @@ Työn tarkoituksena on luoda elokuvatietokanta helpottamaan elokuvaharrastajien 
 Työn viimeisin demo löytyy osoitteesta:
 http://t-kristiat.users.cs.helsinki.fi/leffakanta/
 
+HUOM! Sovellusta voi testata tunnuksilla:
+ohdake - test
+tai mikkelinmies - test
+
 Tietokantoja voi tarkastella osoitteesta:
 http://kristiat.users.cs.helsinki.fi/ConnectionTest/
 
