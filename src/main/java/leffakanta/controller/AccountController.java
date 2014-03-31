@@ -15,7 +15,6 @@ public class AccountController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
-            model.addAttribute("showMenu", true);
             return "EditAccount";
         }                       
 }

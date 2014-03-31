@@ -28,7 +28,6 @@ public class MovieController {
             }            
             List<Movie> movies = db.GetMovieList(user.getUser_id());
             model.addAttribute("movieList", movies);
-            model.addAttribute("showMenu", true);
             return "MovieList";
         }           
         
@@ -39,7 +38,6 @@ public class MovieController {
                 return "redirect:/nosession";
             }
             model.addAttribute("movie", db.GetMovie(id));
-            model.addAttribute("showMenu", true);
             return "MovieInfo";
         }           
         
@@ -49,7 +47,6 @@ public class MovieController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
-            model.addAttribute("showMenu", true);
             return "AddMovie";
         }           
 }

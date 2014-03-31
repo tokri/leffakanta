@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="includeHeader.jsp" />
+<jsp:include page="includeMenu.jsp" />
 
 <h2>Movies</h2>
 

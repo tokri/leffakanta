@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="includeHeader.jsp" />
+<jsp:include page="includeMenu.jsp" />
 
 <h2>Edit Account</h2>
 <div id="login" class="loginData">

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="includeHeader.jsp" />
+<jsp:include page="includeMenu.jsp" />
 
     <img src="http://${movie.poster_url}" alt="movieposter"> 
     <h1>${movie.movie_title} (${movie.year})</h1>
