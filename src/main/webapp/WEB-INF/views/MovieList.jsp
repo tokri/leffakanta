@@ -1,7 +1,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="PageHeader.jsp" />
+<jsp:include page="includeHeader.jsp" />
+
 <h2>Movies</h2>
+
 <c:if test="${not empty movieList}">
 <table>
     <tr>
@@ -18,7 +20,9 @@
     </c:forEach>
 </table> 
 </c:if>
+
 <c:if test="${empty movieList}">
     <p><b>No movies in the collection :(</b></p>
 </c:if>
-<jsp:include page="PageFooter.jsp" />
+    
+<jsp:include page="includeFooter.jsp" />

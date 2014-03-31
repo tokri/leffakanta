@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="PageHeader.jsp" />
+<jsp:include page="includeHeader.jsp" />
 
 <h2>Add Movie</h2>
 <div id="add" class="MovieData">
@@ -15,4 +15,4 @@
     </form>
 </div>
         
-<jsp:include page="PageFooter.jsp" />
+<jsp:include page="includeFooter.jsp" />
