@@ -1,10 +1,9 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="includeHeader.jsp" />
-<jsp:include page="includeMenu.jsp" />
+<%@include file="includeHeader.jsp" %>
+<%@include file="includeMenu.jsp" %>
 
 <h2>Movies</h2>
-
 <c:if test="${not empty movieList}">
 <table>
     <tr>
@@ -13,11 +12,11 @@
         <th>Rating</th>
     </tr>    
     <c:forEach items="${movieList}" var="movie">
-        <tr>
-            <td><a href="movie?id=${movie.movie_id}">${movie.movie_title}</a></td>
-            <td>${movie.year}</td>
-            <td>${movie.rating}</td>
-        </tr>
+    <tr>
+        <td><a href="movie?id=${movie.movie_id}">${movie.movie_title}</a></td>
+        <td>${movie.year}</td>
+        <td>${movie.rating}</td>
+    </tr>
     </c:forEach>
 </table> 
 </c:if>

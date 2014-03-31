@@ -1,20 +1,20 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="includeHeader.jsp" />
+<%@include file="includeHeader.jsp" %>
 
+<c:if test="${logout==true}">
+    <div id="logout"><p />User has been logged out!</div>
+</c:if>
+<c:if test="${sessionExpired==true}">
+    <div id="logout"><p />You session has been expired, please login!</div>
+</c:if> 
 <h2>Login</h2>
 
 <div id="login" class="loginData">
+    <c:if test="${loginFail==true}">
+        <div id="loginFailed">Invalid username and/or password, please try again!<p /></div>
+    </c:if>
     <form name="form" id="form" method="POST" action="login">
-        <c:if test="${loginFail==true}">
-            <div id="loginFailed">Invalid username and/or password, please try again!</div><p>
-        </c:if>
-        <c:if test="${logout==true}">
-            <div id="logout">User has been logged out!</div><p>
-        </c:if>
-        <c:if test="${sessionExpired==true}">
-            <div id="logout">You session has been expired, please login!</div><p>
-        </c:if>                
         Username: <input type="text" name="username"><br>
         Password: <input type="password" name="password"><br>        
         <input name='Login' class='submit' type='submit' value='Login'/> <br>        
@@ -26,5 +26,4 @@
     admin -oikeuksilla:<br>
     tunnus: <b>mikkelinmies</b><br> salasana: <b>test</b>
 </div>
-
 <jsp:include page="includeFooter.jsp" />

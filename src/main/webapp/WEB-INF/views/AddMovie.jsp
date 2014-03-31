@@ -1,6 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="includeHeader.jsp" />
-<jsp:include page="includeMenu.jsp" />
+<%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="includeHeader.jsp" %>
+<%@include file="includeMenu.jsp" %>
 
 <h2>Add Movie</h2>
 <div id="add" class="MovieData">
@@ -10,10 +11,8 @@
         Rating:  <input type="text" name="year"><br>
         Plot:  <input type="text" name="year"><br>
         Poster URL: <input type="text" name="poster_url"><br>
-        Background URL: <input type="text" name="background_url"><br>
-        
+        Background URL: <input type="text" name="background_url"><br>        
         <input name='AddMovie' class='submit' type='submit' value='AddMovie'/> <br>
     </form>
-</div>
-        
+</div>        
 <jsp:include page="includeFooter.jsp" />

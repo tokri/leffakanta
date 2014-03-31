@@ -15,17 +15,21 @@
         <init-param>
             <param-name>forceEncoding</param-name>
             <param-value>true</param-value>
-        </init-param>
+        </init-param>        
     </filter>
+    
+    <filter>
+        <filter-name>deviceResolverRequestFilter</filter-name>
+        <filter-class>org.springframework.mobile.device.DeviceResolverRequestFilter</filter-class>
+    </filter>
+    
     <filter-mapping>
         <filter-name>encoding-filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
     <session-config>
-        <session-timeout>
-            10
-        </session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
 
     <servlet>

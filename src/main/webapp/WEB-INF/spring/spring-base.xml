@@ -14,6 +14,9 @@
         <context:property-placeholder location="classpath:jdbc.properties" />
         
         <mvc:annotation-driven />
+        <mvc:interceptors>
+            <bean class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor" />
+        </mvc:interceptors>        
         <mvc:default-servlet-handler />
         <mvc:resources mapping="/resources/**" location="/resources/" />
         

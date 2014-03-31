@@ -1,8 +1,11 @@
 package leffakanta.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import leffakanta.model.User;
 import leffakanta.model.Validate;
+import org.springframework.mobile.device.Device;
+import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,16 @@ public class LoginController {
 
         // check if login is correct
         @RequestMapping(value = "login", method = RequestMethod.POST)
-        public String ValidateLogin(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) { 
+        public String ValidateLogin(@RequestParam String username, @RequestParam String password, 
+                            Model model, HttpServletRequest request, HttpSession session) {
+            // add session info for device type
+            Device device = DeviceUtils.getCurrentDevice(request);
+            if (device.isMobile()){
+                session.setAttribute("desktop", false);
+            } else {          
+                session.setAttribute("desktop", true);
+            }
+            
             Validate validation = new Validate();
             User user = validation.CheckLogin(username, password);
             
@@ -38,6 +50,7 @@ public class LoginController {
         @RequestMapping(value="logout", method=RequestMethod.GET)
         public String ShowLogout(HttpSession session, Model model) {
             session.removeAttribute("logged");
+            session.removeAttribute("desktop");
             model.addAttribute("logout", true);
             return "Login";
         }
@@ -47,6 +60,5 @@ public class LoginController {
         public String ShowNoSession(Model model) {
             model.addAttribute("sessionExpired", true);
             return "Login";
-        }
-    
+        }    
 }
