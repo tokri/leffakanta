@@ -3,7 +3,7 @@ package leffakanta.controller;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import leffakanta.model.Movie;
-import leffakanta.model.DatabaseService;
+import leffakanta.model.Movies;
 import leffakanta.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +17,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MovieController {
 
         @Autowired
-        private DatabaseService db;
+        private Movie movie;
+
+        @Autowired
+        private Movies movies;
                
         // list all movies
         @RequestMapping(value="movies", method=RequestMethod.GET)
-        public String ShowMovieList(HttpSession session, Model model) {            
+        public String showMovieList(HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
             }            
-            List<Movie> movies = db.GetMovieList(user.getUser_id());
-            model.addAttribute("movieList", movies);
+            int userId = user.getUser_id();
+            List<Movie> movieList = movies.getMovieList(userId);
+            int movieCount = movies.getMovieCount(userId);
+            model.addAttribute("movieList", movieList);
+            model.addAttribute("movieCount", movieCount);
             return "MovieList";
         }           
         
@@ -37,7 +43,7 @@ public class MovieController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
-            model.addAttribute("movie", db.GetMovie(id));
+            model.addAttribute("movie", movie.getMovie(id));
             return "MovieInfo";
         }           
         

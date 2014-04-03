@@ -3,19 +3,15 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<div class="movie_poster">
-    <img src="http://${movie.poster_url}" alt="movieposter"> 
-</div>    
+<img id="movie_poster" src="http://${movie.poster_url}">
+
 <div class="movie_title">
-    <h1>${movie.movie_title} (${movie.year})</h1>
+<h1>${movie.movie_title} (${movie.year})</h1>
 </div>
 <div class="movie_rating">
     Rating: ${movie.rating}
 </div><p />
 <div class="movie_plot">
-    <table width = 50%><tr><td>Plot:<br>${movie.plot_text}</td></tr></table>
+    Plot:<br>${movie.plot_text}
 </div><p />
-<div class="movie_bg_image">
-    <img src="http://${movie.background_url}" alt="background image"> 
-</div>        
-<jsp:include page="includeFooter.jsp" />
+<img id="movie_bg" src="http://${movie.background_url}"><jsp:include page="includeFooter.jsp" />

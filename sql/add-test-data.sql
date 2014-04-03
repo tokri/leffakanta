@@ -14,22 +14,22 @@ INSERT INTO genres VALUES
   (DEFAULT, 'Sci-fi');
 
 INSERT INTO movie_genres VALUES 
-  (DEFAULT, 1, 1),
-  (DEFAULT, 1, 3),
-  (DEFAULT, 2, 2);
+  (1, 1),
+  (1, 3),
+  (2, 2);
 	
 INSERT INTO people VALUES 
-  (DEFAULT, 'Paige O''Hara', 'image.tmdb.org/t/p/w185/udSmgh3YGPPWpyW31MXj7bG6fuj.jpg'),
-  (DEFAULT, 'Gary Trousdale', 'image.tmdb.org/t/p/w185/naRhdLVuw6a8KtDPM2aJWPhPjsp.jpg');
+  (DEFAULT, 'Paige O''Hara', NULL, 'image.tmdb.org/t/p/w185/udSmgh3YGPPWpyW31MXj7bG6fuj.jpg'),
+  (DEFAULT, 'Gary Trousdale', NULL, 'image.tmdb.org/t/p/w185/naRhdLVuw6a8KtDPM2aJWPhPjsp.jpg');
 
 INSERT INTO characters VALUES 
   (DEFAULT, 'Belle');
 
 INSERT INTO "cast" VALUES 
-  (DEFAULT, 2, 1, 1);
+  (2, 1, 1);
 
 INSERT INTO crew VALUES 
-  (DEFAULT, 2, 2, 'Director');
+  (2, 2, 'Director');
 
 INSERT INTO collections VALUES 
   (DEFAULT, 2, 1, 'DVD', 'Available'),

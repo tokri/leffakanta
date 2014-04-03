@@ -4,7 +4,7 @@ CREATE TYPE AVAILIBILITY AS ENUM ('Available', 'Loaned', 'Missing');
 
 CREATE TABLE users (
 	user_id			SERIAL PRIMARY KEY,
-	username		VARCHAR(48) NOT NULL,
+	username		VARCHAR(48) UNIQUE NOT NULL,
 	password_hash	VARCHAR(128) NOT NULL,
 	is_admin		BOOL NOT NULL
 );
@@ -27,14 +27,15 @@ CREATE TABLE genres (
 );
 
 CREATE TABLE movie_genres (
-	movie_genres_id	SERIAL PRIMARY KEY,
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	genre_id		INTEGER REFERENCES genres (genre_id) ON DELETE CASCADE ON UPDATE CASCADE
+	genre_id		INTEGER REFERENCES genres (genre_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY(movie_id, genre_id)
 );
 
 CREATE TABLE people (
 	people_id		SERIAL PRIMARY KEY,
 	person_name		VARCHAR(48) NOT NULL,
+	date_of_birth	DATE,
 	image_url		VARCHAR(256)
 );
 
@@ -44,17 +45,17 @@ CREATE TABLE characters (
 );
 
 CREATE TABLE "cast" (
-	cast_id			SERIAL PRIMARY KEY,
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	person_id		INTEGER REFERENCES people (people_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	character_id	INTEGER REFERENCES characters (character_id) ON DELETE CASCADE ON UPDATE CASCADE
+	character_id	INTEGER REFERENCES characters (character_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY(movie_id, person_id, character_id)
 );
 
 CREATE TABLE crew (
-	crew_id			SERIAL PRIMARY KEY,
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	people_id		INTEGER REFERENCES people (people_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	position		POSITION_GROUP NOT NULL
+	position		POSITION_GROUP NOT NULL,
+	PRIMARY KEY(movie_id, people_id, position)
 );
 
 CREATE TABLE collections (
