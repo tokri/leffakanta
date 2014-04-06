@@ -50,10 +50,9 @@ public class Movie {
     public void addMovie(Movie movie, int owner_id){
         String sql = "INSERT INTO movies VALUES (DEFAULT, "+ filter(movie.getMovie_title())+", "+
                 movie.getYear()+","+movie.getRuntime()+","+movie.getRating()+","+filter(movie.getPlot_text())+","+
-                filter(movie.getPoster_url())+","+filter(movie.getBackground_url())+")";               
-        if (DbService.update(sql, null)!=-1){
-            sql = "SELECT COUNT(*) FROM movies";
-            int movie_id = DbService.queryForInt(sql, null);
+                filter(movie.getPoster_url())+","+filter(movie.getBackground_url())+") RETURNING movie_id";
+        int movie_id = DbService.queryForInt(sql, null); 
+        if (movie_id!=-1){
             sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'Blu-ray','Available')";
             DbService.update(sql, null);
         }
