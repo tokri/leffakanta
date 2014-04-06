@@ -86,11 +86,11 @@ public class Movie {
 
         // get movie cast
         sql = "SELECT person_name, date_of_birth, image_url, character_name FROM people, \"cast\", characters " + 
-                     "WHERE people.people_id = \"cast\".person_id AND \"cast\".character_id = characters.character_id AND movie_id = ?";
+                     "WHERE people.person_id = \"cast\".person_id AND \"cast\".character_id = characters.character_id AND movie_id = ?";
         movie.cast = DbService.queryForList(sql, movie_id, CastMember.class);
         
         // get rest of the movie crew and sort directors and writers to own lists
-        sql = "SELECT person_name, date_of_birth, image_url, position FROM people, crew WHERE people.people_id = crew.people_id " +
+        sql = "SELECT person_name, date_of_birth, image_url, position FROM people, crew WHERE people.person_id = crew.person_id " +
                 "AND movie_id = ?";
         List<CrewMember> crew = DbService.queryForList(sql, movie_id, CrewMember.class);    
         movie.directors = new ArrayList<CrewMember>();

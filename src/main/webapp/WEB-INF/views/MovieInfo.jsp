@@ -36,9 +36,6 @@
         ${writer.person_name} <c:if test="${!loop.last}">, </c:if>
     </c:forEach></td></tr></table>
 </div><p />
-<div class="movie_cast">
-    <table id="cast_table"><tr><td><b>Cast:</b></td></tr></table>
-</div>
     <c:forEach items="${movie.cast}" var="cast">
         <table id="cast_table"><tr><td><img id="actor_img" src="http://${cast.image_url}"></td>
             <td><b>${cast.person_name}</b><br> as ${cast.character_name}</td></tr></table>
