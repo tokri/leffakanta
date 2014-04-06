@@ -12,7 +12,7 @@
         </c:if>
         Title: <input type="text" name="movie_title"  size="50" value="${movie.movie_title}" required>
         Year:  <input type="number" name="year"  size="5" value="${movie.year}" required><br>
-        Rating:  <input type="number" name="rating"  size="5" value="${movie.rating}"><br>
+        Rating:  <input type="number" name="rating"  size="5" value="${movie.rating}" required><br>
         Plot:  <textarea name="plot_text" rows="5" cols="60">${movie.plot_text}</textarea><br>
         Poster URL: <input type="text" name="poster_url"  size="70" value="${movie.poster_url}"><br>
         Background URL: <input type="text" name="background_url" size="70" value="${movie.background_url}"><br>        
