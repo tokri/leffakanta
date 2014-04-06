@@ -68,7 +68,7 @@ public class MovieController {
             }
             User user = (User)session.getAttribute("logged");
             movie.addMovie(movieToAdd, user.getUser_id());
-            return "MovieList";
+            return "redirect:/movies";
         }
 
         
@@ -90,9 +90,9 @@ public class MovieController {
                 return "redirect:/nosession";
             }
             User user = (User)session.getAttribute("logged");
-            movie.update(movieToUpdate, user.getUser_id());
+            movie.updateMovie(movieToUpdate, user.getUser_id());
             
-            return "redirect:/MovieList";
+            return "redirect:/movies";
         }        
         
         // show delete movies screen
@@ -105,14 +105,14 @@ public class MovieController {
             return "DeleteMovie";
         }
 
-        @RequestMapping(value="confirmdeletemovie", method=RequestMethod.POST)
-        public String submitConfirmDeleteMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
+        @RequestMapping(value="confirmdeletemovie", method=RequestMethod.GET)
+        public String submitConfirmDeleteMovie(@RequestParam(value = "id") int movie_id, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             User user = (User)session.getAttribute("logged");
-            movie.deleteMovie(id, user.getUser_id());
-            return "redirect:/MovieList";
+            movie.deleteMovie(movie_id, user.getUser_id());
+            return "redirect:/movies";
         }        
 
 }

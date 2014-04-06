@@ -70,7 +70,7 @@ public class Movie {
     
     // delete movie from selected users collection
     public void deleteMovie(int movie_id, int owner_id){
-        String sql = "DELETE FROM collection WHERE movie_id = ? AND owner_id = ? ";               
+        String sql = "DELETE FROM collections WHERE movie_id = ? AND owner_id = ? ";               
         DbService.update(sql, new Object[] {movie_id, owner_id});
     }
     
@@ -123,7 +123,6 @@ public class Movie {
     public List<CrewMember> getWriters(){ return this.writers; }
     
     public void setMovie_id(int value){ this.id = value; }
-    public void setMovie_id(String value) { this.id = Integer.parseInt(value); }
     public void setMovie_title(String value){ this.movieTitle = value; }
     public void setYear(int value){ this.year = value; }
     public void setYear(String value) { this.year = Integer.parseInt(value); }
