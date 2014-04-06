@@ -20,16 +20,29 @@ INSERT INTO movie_genres VALUES
 	
 INSERT INTO people VALUES 
   (DEFAULT, 'Paige O''Hara', NULL, 'image.tmdb.org/t/p/w185/udSmgh3YGPPWpyW31MXj7bG6fuj.jpg'),
-  (DEFAULT, 'Gary Trousdale', NULL, 'image.tmdb.org/t/p/w185/naRhdLVuw6a8KtDPM2aJWPhPjsp.jpg');
-
+  (DEFAULT, 'Gary Trousdale', NULL, 'image.tmdb.org/t/p/w185/naRhdLVuw6a8KtDPM2aJWPhPjsp.jpg'),
+  (DEFAULT, 'Keanu Reeves', NULL, 'image.tmdb.org/t/p/w185/cEIZlUQvnlXfoxF0mPJsvDPh2Po.jpg'),
+  (DEFAULT, 'Laurence Fishburne', NULL, 'image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg'),
+  (DEFAULT, 'Carrie-Anne Moss', NULL, 'image.tmdb.org/t/p/w185/8iATAc5z5XOKFFARLsvaawa8MTY.jpg'),
+  (DEFAULT, 'Hugo Weaving', NULL, 'image.tmdb.org/t/p/w185/ysED1kp94bpnweNVaDoVQQ6iy8X.jpg');								
+  
 INSERT INTO characters VALUES 
-  (DEFAULT, 'Belle');
+  (DEFAULT, 'Belle'),
+  (DEFAULT, 'Neo'),
+  (DEFAULT, 'Morpheus'),
+  (DEFAULT, 'Trinity'),
+  (DEFAULT, 'Agent Smith');
 
 INSERT INTO "cast" VALUES 
-  (2, 1, 1);
+  (2, 1, 1, 1),
+  (1, 1, 3, 2),
+  (1, 2, 4, 3),
+  (1, 3, 5, 4),
+  (1, 4, 6, 5);
+  
 
 INSERT INTO crew VALUES 
-  (2, 2, 'Director');
+  (2, 1, 2, 'Director');
 
 INSERT INTO collections VALUES 
   (DEFAULT, 2, 1, 'DVD', 'Available'),

@@ -33,7 +33,7 @@ CREATE TABLE movie_genres (
 );
 
 CREATE TABLE people (
-	people_id		SERIAL PRIMARY KEY,
+	person_id		SERIAL PRIMARY KEY,
 	person_name		VARCHAR(48) NOT NULL,
 	date_of_birth	DATE,
 	image_url		VARCHAR(256)
@@ -46,16 +46,18 @@ CREATE TABLE characters (
 
 CREATE TABLE "cast" (
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	person_id		INTEGER REFERENCES people (people_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	list_order		INTEGER,
+	person_id		INTEGER REFERENCES people (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	character_id	INTEGER REFERENCES characters (character_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(movie_id, person_id, character_id)
 );
 
 CREATE TABLE crew (
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	people_id		INTEGER REFERENCES people (people_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	list_order		INTEGER,
+	person_id		INTEGER REFERENCES people (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	position		POSITION_GROUP NOT NULL,
-	PRIMARY KEY(movie_id, people_id, position)
+	PRIMARY KEY(movie_id, person_id, position)
 );
 
 CREATE TABLE collections (

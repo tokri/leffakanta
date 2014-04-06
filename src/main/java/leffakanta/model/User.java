@@ -1,10 +1,6 @@
 package leffakanta.model;
 
 import java.util.List;
-import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,28 +10,10 @@ public class User {
     private String password_hash;
     private boolean is_admin;
     
-    private static DataSource dataSource;
-    
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-	this.dataSource = dataSource;
-    }    
-
-    // get jdbcTemplate for handling db connection and sql injection attempts
-    private JdbcTemplate getJdbcTemplate(){
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        return jdbcTemplate;
-    }
-    
     // get user's details
     public User getUser(String username){
         String sql = "SELECT * FROM users WHERE username = ?";
-        List<User> users = getJdbcTemplate().query(sql, new Object[] { username  },                
-                            new BeanPropertyRowMapper(User.class));
-        if (users.isEmpty()){
-            return null;
-        }
-        User user = users.get(0);
+        User user = DbService.queryForObject(sql, username, User.class);
         return user;
     }
     
@@ -62,7 +40,6 @@ public class User {
         // return null if username and password not ok or exception is thrown
         return null;        
     }
-
     
     //getters & setters
     public int getUser_id(){ return this.user_id; }

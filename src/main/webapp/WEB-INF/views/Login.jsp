@@ -21,9 +21,9 @@
     </form>
     
     <br><br>HUOM! testitunnukset ovat<br><br>
-    k&#228;ytt&#228;j&#228; -oikeuksilla:<br>
+    k&#228;ytt&#228;j&#228;n oikeuksilla:<br>
     tunnus: <b>ohdake</b><br> salasana: <b>test</b><br><br>
-    admin -oikeuksilla:<br>
+    järjestelmänvalvojan oikeuksilla:<br>
     tunnus: <b>mikkelinmies</b><br> salasana: <b>test</b>
 </div>
 <jsp:include page="includeFooter.jsp" />

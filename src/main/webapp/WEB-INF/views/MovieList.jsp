@@ -12,14 +12,18 @@
         <th>Rating</th>
         <th>Format</th>
         <th>Availability</th>
+        <th>Edit</th>
+        <th>Remove</th>
     </tr>    
     <c:forEach items="${movieList}" var="movie">
     <tr>
         <td><a href="movie?id=${movie.movie_id}">${movie.movie_title}</a></td>
         <td>${movie.year}</td>
         <td>${movie.rating}</td>
-        <td>${movie.formatType}</td>
+        <td>${movie.format_type}</td>
         <td>${movie.availability}</td>        
+        <td><a href="editmovie?id=${movie.movie_id}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>        
+        <td><a href="deletemovie?id=${movie.movie_id}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></td>        
     </tr>
     </c:forEach>
 </table>
