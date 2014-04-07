@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<% pageContext.setAttribute("newLine", "\r\n"); %>
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
@@ -19,7 +20,7 @@
     Rating: ${movie.rating}
 </div><p />
 <div class="movie_plot">
-    Plot:<br>${movie.plot_text}
+    Plot:<br>${fn:replace(movie.plot_text, newLine, "<br />")}
 </div><p />
 </td></tr></table>
 <p />
