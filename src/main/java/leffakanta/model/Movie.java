@@ -24,8 +24,7 @@ public class Movie {
     @Min(1) @Max(999)
     private int runtime;
     
-    @Min(0) @Max(10)
-    private float rating;
+    private String rating;
     
     @Size(min=10, max=300)
     private String plotText;
@@ -39,19 +38,21 @@ public class Movie {
     private List<CrewMember> writers;
     private List<CastMember> cast;
 
-    // basic escape handling (replace with better one later)
-    private String filter(String text){
-        if (text == null)
-            return null;
-        return "'"+text.replace("'","''").replace("\"", "\\\"")+"'";
+    // method to parse & fix forms float values
+    private float parseFloat(String value){
+        float retVal = 0;
+        try {
+            retVal = Float.parseFloat(value.replace(",", "."));
+        } catch (Exception e){}
+        return retVal;        
     }
     
     // add movie into users collection
     public void addMovie(Movie movie, int owner_id){
-        String sql = "INSERT INTO movies VALUES (DEFAULT, "+ filter(movie.getMovie_title())+", "+
-                movie.getYear()+","+movie.getRuntime()+","+movie.getRating()+","+filter(movie.getPlot_text())+","+
-                filter(movie.getPoster_url())+","+filter(movie.getBackground_url())+") RETURNING movie_id";
-        int movie_id = DbService.queryForInt(sql, null); 
+        String sql = "INSERT INTO movies VALUES (DEFAULT,?,?,?,?,?,?,?) RETURNING movie_id";
+        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), 
+            movie.getYear(), movie.getRuntime(), parseFloat(movie.getRating()), movie.getPlot_text(),
+            movie.getPoster_url(), movie.getBackground_url()}); 
         if (movie_id!=-1){
             sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'Blu-ray','Available')";
             DbService.update(sql, null);
@@ -60,17 +61,26 @@ public class Movie {
     
     // update movie details
     public void updateMovie(Movie movie, int owner_id){
-        String sql = "UPDATE movies SET movie_title="+ filter(movie.getMovie_title())+", year="+
-                movie.getYear()+",runtime="+movie.getRuntime()+",rating="+movie.getRating()+",plot_text="+filter(movie.getPlot_text())+
-                ",poster_url="+filter(movie.getPoster_url())+",background_url="+filter(movie.getBackground_url())+" WHERE movie_id="+movie.getMovie_id();
-        DbService.update(sql, null);
+        String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
+                " WHERE movie_id=?";
+        DbService.update(sql, new Object[]{ movie.getMovie_title(), 
+            movie.getYear(), movie.getRuntime(), parseFloat(movie.getRating()), movie.getPlot_text(),
+            movie.getPoster_url(), movie.getBackground_url(), movie.getMovie_id()}); 
     }
     
     
     // delete movie from selected users collection
     public void deleteMovie(int movie_id, int owner_id){
-        String sql = "DELETE FROM collections WHERE movie_id = ? AND owner_id = ? ";               
+        String sql = "DELETE FROM collections WHERE movie_id = ? AND owner_id = ?";
         DbService.update(sql, new Object[] {movie_id, owner_id});
+        
+        // if last user with the same movie, delete movie records too
+        sql = "SELECT COUNT(*) FROM collections WHERE movie_id = ?";
+        int count = DbService.queryForInt(sql, movie_id);
+        if (count == 0){
+            sql = "DELETE FROM movies WHERE movie_id = ?";
+            DbService.update(sql, movie_id);
+        }
     }
     
     // get movies details
@@ -109,7 +119,7 @@ public class Movie {
     public String getMovie_title(){ return this.movieTitle; }
     public int getYear(){ return this.year; }
     public int getRuntime(){ return this.runtime; }
-    public float getRating(){ return this.rating; }
+    public String getRating(){ return this.rating; }
     public String getPlot_text(){ return this.plotText; }
     public String getPoster_url(){ return this.posterUrl; }
     public String getBackground_url(){ return this.backgroundUrl; }
@@ -127,8 +137,7 @@ public class Movie {
     public void setYear(String value) { this.year = Integer.parseInt(value); }
     public void setRuntime(int value){ this.runtime = value; }
     public void setRuntime(String value) { this.runtime = Integer.parseInt(value); }
-    public void setRating(float value){ this.rating = value; }
-    public void setRating(String value) { this.rating = Float.parseFloat(value); }
+    public void setRating(String value){ this.rating = value; }
     public void setPlot_text(String value){ this.plotText = value; }
     public void setPoster_url(String value){ this.posterUrl = value; }
     public void setBackground_url(String value){ this.backgroundUrl = value; }
