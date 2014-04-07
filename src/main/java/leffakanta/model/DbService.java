@@ -1,6 +1,5 @@
 package leffakanta.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +44,7 @@ public class DbService {
     
     // overload queryForList to accept only one arg-value
     public static <T> List<T> queryForList(String sql, Object arg, Class mappedClass){
-        List<T> list = null;
-        try {
-            list = queryForList(sql, new Object[] { arg }, mappedClass);
-        } catch (Exception e){}        
-        return list;
+        return queryForList(sql, new Object[] { arg }, mappedClass);
     }
 
     // query for listed classes
