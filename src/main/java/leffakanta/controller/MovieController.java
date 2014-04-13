@@ -1,6 +1,6 @@
 package leffakanta.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import leffakanta.model.Movie;
@@ -8,8 +8,6 @@ import leffakanta.model.Movies;
 import leffakanta.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mobile.device.Device;
-import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,7 +47,7 @@ public class MovieController {
             model.addAttribute("movie", movie.getMovie(id));
             return "MovieInfo";
         }           
-        
+
         // show add movie screen
         @RequestMapping(value="addmovie", method=RequestMethod.GET)
         public String showAddMovie(HttpSession session, Model model) {
@@ -57,22 +55,30 @@ public class MovieController {
                 return "redirect:/nosession";
             }
             model.addAttribute("head", "Add");
+            Movie newMovie = new Movie();
+            newMovie.setYear(Calendar.getInstance().get(Calendar.YEAR));
+            model.addAttribute("movie", newMovie);
             return "AddOrEditMovie";
         }           
-        
+
         // handle movie adding after post
         @RequestMapping(value = "addmovie", method = RequestMethod.POST)
-        public String submitAddMovie(@ModelAttribute("movie") Movie movieToAdd, HttpSession session, Model model) {
+        public String submitAddMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             User user = (User)session.getAttribute("logged");
-            movie.addMovie(movieToAdd, user.getUser_id());
+            
+	    if(result.hasErrors()) {
+                model.addAttribute("head", "Add");
+                return "AddOrEditMovie";
+	    }
+
+            this.movie.addMovie(movie, user.getUser_id());
             return "redirect:/movies";
         }
 
-        
-        // add a movie to the collection
+        // edit movie
         @RequestMapping(value="editmovie", method=RequestMethod.GET)
         public String showEditMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
@@ -83,15 +89,21 @@ public class MovieController {
             return "AddOrEditMovie";
         }
         
-        
+        // handle movie editing after post
         @RequestMapping(value="editmovie", method=RequestMethod.POST)
-        public String submitEditMovie(@ModelAttribute("movie") Movie movieToUpdate, HttpSession session, Model model) {
+        public String submitEditMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             User user = (User)session.getAttribute("logged");
-            movie.updateMovie(movieToUpdate, user.getUser_id());
             
+	    if(result.hasErrors()) {
+                model.addAttribute("head", "Edit");
+//                model.addAttribute("movie", movie.getMovie(movieToUpdate.getMovie_id()));
+                return "AddOrEditMovie";
+	    }
+
+            this.movie.updateMovie(movie, user.getUser_id());            
             return "redirect:/movies";
         }        
         
@@ -105,13 +117,16 @@ public class MovieController {
             return "DeleteMovie";
         }
 
-        @RequestMapping(value="confirmdeletemovie", method=RequestMethod.GET)
-        public String submitConfirmDeleteMovie(@RequestParam(value = "id") int movie_id, HttpSession session, Model model) {
+        // handle delete after post
+        @RequestMapping(value="confirmdeletemovie", method=RequestMethod.POST)
+        public String submitConfirmDeleteMovie(@RequestParam int movie_id, @RequestParam String action, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             User user = (User)session.getAttribute("logged");
-            movie.deleteMovie(movie_id, user.getUser_id());
+            if (action.equals("Yes")){
+                movie.deleteMovie(movie_id, user.getUser_id());
+            }
             return "redirect:/movies";
         }        
 

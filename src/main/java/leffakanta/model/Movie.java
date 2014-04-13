@@ -2,38 +2,38 @@ package leffakanta.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
+import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 @Service
 public class Movie {
     private int id;
     
-    @Size(min=2, max=30) 
+    @Size(min=1, max=30)
     @NotNull
-    private String movieTitle;
+    private String movie_title;
     
-    @DateTimeFormat(pattern="yyyy")
+    @Range(min=1900, max=2050)
     @NotNull
     private int year;
     
-    @Min(1) @Max(999)
+    @Range(min=0, max=999)
     private int runtime;
     
+    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)")
     private String rating;
     
-    @Size(min=10, max=300)
-    private String plotText;
-    private String posterUrl;
-    private String backgroundUrl;
-    private String trailerUrl;
-    private String formatType;
+    @Size(min=0, max=300)
+    private String plot_text;
+    private String poster_url;
+    private String background_url;
+    private String trailer_url;
+    private String format_type;
     private String availability;
     private List<Genre> genres;
     private List<CrewMember> directors;
@@ -118,15 +118,15 @@ public class Movie {
     
     //getters & setters
     public int getMovie_id(){ return this.id; }
-    public String getMovie_title(){ return htmlEscape(this.movieTitle); }
+    public String getMovie_title(){ return htmlEscape(this.movie_title); }
     public int getYear(){ return this.year; }
     public int getRuntime(){ return this.runtime; }
-    public String getRating(){ return htmlEscape(this.rating); }
-    public String getPlot_text(){ return htmlEscape(this.plotText); }
-    public String getPoster_url(){ return htmlEscape(this.posterUrl); }
-    public String getBackground_url(){ return htmlEscape(this.backgroundUrl); }
-    public String getTrailer_url(){ return htmlEscape(this.trailerUrl); }
-    public String getFormat_type(){ return this.formatType; }
+    public String getRating(){ return this.rating; }
+    public String getPlot_text(){ return htmlEscape(this.plot_text); }
+    public String getPoster_url(){ return htmlEscape(this.poster_url); }
+    public String getBackground_url(){ return htmlEscape(this.background_url); }
+    public String getTrailer_url(){ return htmlEscape(this.trailer_url); }
+    public String getFormat_type(){ return this.format_type; }
     public String getAvailability(){ return this.availability; }
     public List<Genre> getGenres(){ return this.genres; }
     public List<CastMember> getCast(){ return this.cast; }
@@ -134,31 +134,29 @@ public class Movie {
     public List<CrewMember> getWriters(){ return this.writers; }
     
     public void setMovie_id(int value){ this.id = value; }
-    public void setMovie_title(String value){ this.movieTitle = unescapeHtml4(value); }
+    public void setMovie_title(String value){ this.movie_title = unescapeHtml4(value); }
     public void setYear(int value){ this.year = value; }
-    public void setYear(String value) { this.year = Integer.parseInt(value); }
     public void setRuntime(int value){ this.runtime = value; }
-    public void setRuntime(String value) { this.runtime = Integer.parseInt(value); }
-    public void setRating(String value){ this.rating = unescapeHtml4(value); }
-    public void setPlot_text(String value){ this.plotText = unescapeHtml4(value); }
-    public void setFormatType(String value){ this.formatType = value; }
+    public void setRating(String value){ this.rating = value; }
+    public void setPlot_text(String value){ this.plot_text = unescapeHtml4(value); }
+    public void setFormatType(String value){ this.format_type = value; }
     public void setAvailability(String value){ this.availability = value; }
     public void setPoster_url(String value){ 
         if (value!=null){
             value = value.replace("HTTP://", "").replace("http://", "");
         }
-        this.posterUrl = unescapeHtml4(value); 
+        this.poster_url = unescapeHtml4(value); 
     }
     public void setBackground_url(String value){ 
         if (value!=null){
             value = value.replace("HTTP://", "").replace("http://", "");
         }
-        this.backgroundUrl = unescapeHtml4(value); 
+        this.background_url = unescapeHtml4(value); 
     }
     public void setTrailer_url(String value){ 
         if (value!=null){
             value = value.replace("HTTP://", "").replace("http://", "");
         }
-        this.trailerUrl = unescapeHtml4(value); 
+        this.trailer_url = unescapeHtml4(value); 
     }
 }
