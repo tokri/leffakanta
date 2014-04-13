@@ -8,13 +8,14 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
 import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
+import org.hibernate.validator.constraints.URL;
 import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 @Service
 public class Movie {
     private int id;
     
-    @Size(min=1, max=30)
+    @Size(min=1, max=50)
     @NotNull
     private String movie_title;
     
@@ -28,11 +29,18 @@ public class Movie {
     @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)")
     private String rating;
     
-    @Size(min=0, max=300)
+    @Size(min=0, max=500)
     private String plot_text;
+    
+    @URL
     private String poster_url;
+
+    @URL
     private String background_url;
+
+    @URL
     private String trailer_url;
+    
     private String format_type;
     private String availability;
     private List<Genre> genres;
@@ -141,22 +149,7 @@ public class Movie {
     public void setPlot_text(String value){ this.plot_text = unescapeHtml4(value); }
     public void setFormatType(String value){ this.format_type = value; }
     public void setAvailability(String value){ this.availability = value; }
-    public void setPoster_url(String value){ 
-        if (value!=null){
-            value = value.replace("HTTP://", "").replace("http://", "");
-        }
-        this.poster_url = unescapeHtml4(value); 
-    }
-    public void setBackground_url(String value){ 
-        if (value!=null){
-            value = value.replace("HTTP://", "").replace("http://", "");
-        }
-        this.background_url = unescapeHtml4(value); 
-    }
-    public void setTrailer_url(String value){ 
-        if (value!=null){
-            value = value.replace("HTTP://", "").replace("http://", "");
-        }
-        this.trailer_url = unescapeHtml4(value); 
-    }
+    public void setPoster_url(String value){ this.poster_url = unescapeHtml4(value); }
+    public void setBackground_url(String value){ this.background_url = unescapeHtml4(value); }
+    public void setTrailer_url(String value){ this.trailer_url = unescapeHtml4(value); }
 }

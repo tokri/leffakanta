@@ -5,7 +5,7 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<img id="movie_poster" src="http://${movie.poster_url}">
+<img id="movie_poster" src="${movie.poster_url}">
 
 <table id="text_bg"><tr><td>
 <div class="movie_title">
@@ -38,9 +38,9 @@
     </c:forEach></td></tr></table>
 </div><p />
     <c:forEach items="${movie.cast}" var="cast">
-        <table id="cast_table"><tr><td><img id="actor_img" src="http://${cast.image_url}"></td>
+        <table id="cast_table"><tr><td><img id="actor_img" src="${cast.image_url}"></td>
             <td><b>${cast.person_name}</b><br> as ${cast.character_name}</td></tr></table>
     </c:forEach>
 
-<img id="movie_bg" src="http://${movie.background_url}">
+<img id="movie_bg" src="${movie.background_url}">
 <jsp:include page="includeFooter.jsp" />
