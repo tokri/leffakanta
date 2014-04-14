@@ -1,6 +1,5 @@
 package leffakanta.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import leffakanta.model.User;
 import leffakanta.model.Users;
 import javax.servlet.http.HttpSession;
@@ -29,14 +28,19 @@ public class AccountController {
 
         // handle account registration
         @RequestMapping(value = "register", method = RequestMethod.POST)
-        public String submitRegisterAccount(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session, HttpServletRequest request, Model model) {
+        public String submitRegisterAccount(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session) {            
+            String newUsername = user.getUsername();
+            // give error message if user already exists with the same username
+            if (user.getUser(newUsername)!=null){
+                result.rejectValue("username","error.user",newUsername+" already exists! Please choose another username");
+            }            
 	    if(result.hasErrors()) {                
                 return "RegisterAccount";
 	    }
             if (user.newUser(user)==false){
                 return "RegisterAccount";
             }
-            session.setAttribute("logged", user);
+            session.setAttribute("logged", user.getUser(newUsername));
             return "ConfirmNewAccount";
         }
         

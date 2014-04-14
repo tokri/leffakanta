@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="includeHeader.jsp" %>
 <div class="menu_divider"><p />
-    <a class="menu" href="register">Register New Account</a>
+    <a class="menu" href="register">Register a New Account</a>
 </div><p />
 
 <c:if test="${logout==true}">
