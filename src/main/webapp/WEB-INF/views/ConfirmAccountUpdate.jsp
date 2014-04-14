@@ -13,6 +13,9 @@
 <c:if test="${newUsername!=null}">
     Username changed to <b><i>${newUsername}</i></b>!<br /><br />
 </c:if> 
+<c:if test="${newType!=null}">
+    User's account type changed to: <b><i>${newType}</i></b><br /><br />
+</c:if> 
 <c:if test="${newPassword==true}">
     Password changed successfully!
 </c:if> 

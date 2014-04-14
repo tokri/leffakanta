@@ -10,8 +10,7 @@
             <form:input type="hidden" path="user_id"/>
             Username: <form:input path="username" size="20"/>
                 <font color="red"> <form:errors path="username"></form:errors></font><br/>
-                Admin: <c:if test="${disable_admin == true}"> True
-                    <form:input type="hidden" path="is_admin"/>
+                Admin: <c:if test="${disable_admin == true}"> True<form:input type="hidden" path="is_admin"/>
                 </c:if>
                 <c:if test="${disable_admin == null}">
                     <form:checkbox path="is_admin" />
