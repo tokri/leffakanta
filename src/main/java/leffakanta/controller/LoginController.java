@@ -22,6 +22,7 @@ public class LoginController {
         @RequestMapping(value = "login", method = RequestMethod.POST)
         public String CheckLogin(@RequestParam String username, @RequestParam String password, 
                             Model model, HttpServletRequest request, HttpSession session) {
+            session.removeAttribute("admin");            
             // add session info for device type
             Device device = DeviceUtils.getCurrentDevice(request);
             if (device.isMobile()){
@@ -36,7 +37,7 @@ public class LoginController {
             if (loginUser != null){
                 if (loginUser.getIs_admin()){
                     session.setAttribute("admin", true);
-                }
+                } 
                 session.setAttribute("logged", loginUser);
                 return "redirect:/movies";
             }
@@ -56,8 +57,7 @@ public class LoginController {
         public String showLogout(HttpSession session, Model model) {
             session.removeAttribute("logged");
             session.removeAttribute("desktop");
-            session.removeAttribute("password");
-            session.removeAttribute("admin");
+            session.removeAttribute("admin");            
             model.addAttribute("logout", true);
             return "Login";
         }
@@ -68,4 +68,5 @@ public class LoginController {
             model.addAttribute("sessionExpired", true);
             return "Login";
         }    
+        
 }
