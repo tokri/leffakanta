@@ -116,15 +116,14 @@ public class MovieController {
         }
 
         // handle delete after post
-        @RequestMapping(value="confirmdeletemovie", method=RequestMethod.POST)
+        @RequestMapping(value="deletemovie", method=RequestMethod.POST)
         public String submitConfirmDeleteMovie(@RequestParam int movie_id, @RequestParam String action, HttpSession session, Model model) {
-            if (session.getAttribute("logged") == null) {
+            User loggedUser = (User)session.getAttribute("logged");
+            if (loggedUser == null) {
                 return "redirect:/nosession";
             }
-            User user = (User)session.getAttribute("logged");
             if (action.equals("Yes")){
-                Movie movie = new Movie();
-                movie.deleteMovie(movie_id, user.getUser_id());
+                new Movie().deleteMovie(movie_id, loggedUser.getUser_id());
             }
             return "redirect:/movies";
         }        

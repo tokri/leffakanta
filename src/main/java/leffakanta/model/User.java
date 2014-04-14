@@ -79,6 +79,12 @@ public class User {
         return true;
     }
     
+    // delete user
+    public void deleteUser(int user_id){
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        DbService.update(sql, user_id);        
+    }
+
     //getters & setters
     public int getUser_id(){ return this.user_id; }
     public String getUsername(){ return this.username; }

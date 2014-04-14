@@ -141,4 +141,25 @@ public class AccountController {
             return "UserList";
         }           
         
+        // show delete movies screen
+        @RequestMapping(value="deleteaccount", method=RequestMethod.GET)
+        public String showDeleteUser(@RequestParam(value = "id") int id, HttpSession session, Model model) {
+            if (session.getAttribute("logged") == null) {
+                return "redirect:/nosession";
+            }
+            model.addAttribute("user", new User().getUser(id));
+            return "DeleteAccount";
+        }
+
+        // handle delete after post
+        @RequestMapping(value="deleteaccount", method=RequestMethod.POST)
+        public String submitConfirmDeleteUser(@RequestParam int user_id, @RequestParam String action, HttpSession session, Model model) {
+            if (session.getAttribute("logged") == null) {
+                return "redirect:/nosession";
+            }
+            if (action.equals("Yes")){                
+                new User().deleteUser(user_id);
+            }
+            return "redirect:/accounts";
+        }        
 }

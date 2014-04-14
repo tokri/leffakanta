@@ -3,11 +3,11 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<h2>Delete Movie</h2>
+<h2>Delete Account</h2>
 
-Are you sure you want to delete movie: <b>${movie.movie_title} (${movie.year})</b>?<p />
-<form action="deletemovie" method="post">
-    <input type="hidden" name="movie_id" value="${movie.movie_id}"/>
+Are you sure you want to delete account: <b>${user.username}</b>?<p />
+<form action="deleteaccount" method="post">
+    <input type="hidden" name="user_id" value="${user.user_id}"/>
     <input type="submit" name="action" value="Yes" />
     <input type="submit" name="action" value="No" />
 </form>
