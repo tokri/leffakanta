@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MovieController {
 
         @Autowired
-        private Movie movie;
-
-        @Autowired
         private Movies movies;
                
         // list all movies
@@ -44,6 +41,7 @@ public class MovieController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
+            Movie movie = new Movie();
             model.addAttribute("movie", movie.getMovie(id));
             return "MovieInfo";
         }           
@@ -73,8 +71,7 @@ public class MovieController {
                 model.addAttribute("head", "Add");
                 return "AddOrEditMovie";
 	    }
-
-            this.movie.addMovie(movie, user.getUser_id());
+            movie.addMovie(movie, user.getUser_id());
             return "redirect:/movies";
         }
 
@@ -84,6 +81,7 @@ public class MovieController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
+            Movie movie = new Movie();
             model.addAttribute("head", "Edit");
             model.addAttribute("movie", movie.getMovie(id));
             return "AddOrEditMovie";
@@ -102,8 +100,7 @@ public class MovieController {
 //                model.addAttribute("movie", movie.getMovie(movieToUpdate.getMovie_id()));
                 return "AddOrEditMovie";
 	    }
-
-            this.movie.updateMovie(movie, user.getUser_id());            
+            movie.updateMovie(movie, user.getUser_id());            
             return "redirect:/movies";
         }        
         
@@ -113,6 +110,7 @@ public class MovieController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
+            Movie movie = new Movie();
             model.addAttribute("movie", movie.getMovie(id));
             return "DeleteMovie";
         }
@@ -125,9 +123,9 @@ public class MovieController {
             }
             User user = (User)session.getAttribute("logged");
             if (action.equals("Yes")){
+                Movie movie = new Movie();
                 movie.deleteMovie(movie_id, user.getUser_id());
             }
             return "redirect:/movies";
         }        
-
 }

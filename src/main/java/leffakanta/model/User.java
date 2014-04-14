@@ -17,6 +17,13 @@ public class User {
         return user;
     }
     
+    // get user by id
+    public User getUser(int user_id){
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        User user = DbService.queryForObject(sql, user_id, User.class);
+        return user;
+    }
+    
     // verify user's login details and return user object if login ok
     public User checkLogin(String username, String password){
         PasswordHash hash = new PasswordHash();
@@ -51,4 +58,8 @@ public class User {
     public void setUsername(String value){ this.username = value; };
     public void setPassword_hash(String value){ this.password_hash = value; };
     public void setIs_admin(boolean value){ this.is_admin = value; };
+    
+    //give empty gets for account edit
+    public String getPassword(){ return ""; }
+    public String getPassword_confirm(){ return ""; }
 }

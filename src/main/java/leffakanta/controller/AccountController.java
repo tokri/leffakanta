@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AccountController {
@@ -15,12 +16,25 @@ public class AccountController {
         @Autowired
         private Users users;
 
-        // show account editor
+        // show user's own account
         @RequestMapping(value="account", method=RequestMethod.GET)
-        public String ShowAccountEdit(HttpSession session, Model model) {
+        public String ShowMyAccount(HttpSession session, Model model) {
+            User user = (User) session.getAttribute("logged");
+            if (user == null) {
+                return "redirect:/nosession";
+            }                        
+            model.addAttribute("user", user);
+            return "MyAccount";
+        }   
+        
+        // show account edit screen (admin)
+        @RequestMapping(value="editaccount", method=RequestMethod.GET)
+        public String ShowAccountEdit(@RequestParam(value = "id") int user_id, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
+            User user = new User();
+            model.addAttribute("user", user.getUser(user_id));
             return "EditAccount";
         }                       
         
@@ -28,8 +42,11 @@ public class AccountController {
         @RequestMapping(value="accounts", method=RequestMethod.GET)
         public String showMovieList(HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
-            if (user == null || user.getIs_admin()==false) {
+            if (user == null) {
                 return "redirect:/nosession";
+            }                        
+            if (user.getIs_admin()==false) {
+                return "redirect:/movies";
             }                        
             model.addAttribute("userList", users.getUserList());
             model.addAttribute("userCount", users.getUserCount());
