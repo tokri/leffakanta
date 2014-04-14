@@ -56,6 +56,8 @@ public class LoginController {
         public String showLogout(HttpSession session, Model model) {
             session.removeAttribute("logged");
             session.removeAttribute("desktop");
+            session.removeAttribute("password");
+            session.removeAttribute("admin");
             model.addAttribute("logout", true);
             return "Login";
         }
