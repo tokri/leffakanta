@@ -58,6 +58,23 @@ public class User {
         return null;        
     }
     
+    // add a new user
+    public boolean newUser(User user){
+        try{
+            PasswordHash hash = new PasswordHash();
+            user.setIs_admin(false);
+            user.setPassword_hash(hash.createHash(user.password_new));
+            String sql = "INSERT INTO users VALUES (DEFAULT,?,?,false)";
+            DbService.update(sql, new Object[]{ user.getUsername(), user.getPassword_hash()});         
+            user.setPassword_new("");
+            user.setPassword_new_confirm("");
+        } catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+
     // update user's account details
     public boolean updateUser(User user){
         String sql;

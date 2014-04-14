@@ -20,17 +20,10 @@ public class LoginController {
         
         // check if login is correct
         @RequestMapping(value = "login", method = RequestMethod.POST)
-        public String CheckLogin(@RequestParam String username, @RequestParam String password, 
+        public String checkLogin(@RequestParam String username, @RequestParam String password, 
                             Model model, HttpServletRequest request, HttpSession session) {
             session.removeAttribute("admin");            
-            // add session info for device type
-            Device device = DeviceUtils.getCurrentDevice(request);
-            if (device.isMobile()){
-                session.setAttribute("desktop", false);
-            } else {          
-                session.setAttribute("desktop", true);
-            }
-            
+            detectMobile(session, request);
             User loginUser = user.checkLogin(username, password);
             
             // if login correct, set session parameters and goto users movies
@@ -39,11 +32,24 @@ public class LoginController {
                     session.setAttribute("admin", true);
                 } 
                 session.setAttribute("logged", loginUser);
-                return "redirect:/movies";
+                return "redirect:/getdevice";
             }
             // if login incorrect, show error message and display login again
             model.addAttribute("loginFail", true);
             return "Login";
+        }
+        
+        // detect if user is using a mobile device
+        @RequestMapping(value = "getdevice", method = RequestMethod.GET)
+        public String detectMobile(HttpSession session, HttpServletRequest request){
+            Device device = DeviceUtils.getCurrentDevice(request);
+            // add session attrib for device type
+            if (device.isMobile()){
+                session.setAttribute("mobile", true);
+            } else {          
+                session.setAttribute("mobile", false);
+            }            
+            return "redirect:/movies";
         }
         
         // show login screen
@@ -56,7 +62,7 @@ public class LoginController {
         @RequestMapping(value="logout", method=RequestMethod.GET)
         public String showLogout(HttpSession session, Model model) {
             session.removeAttribute("logged");
-            session.removeAttribute("desktop");
+            session.removeAttribute("mobile");
             session.removeAttribute("admin");            
             model.addAttribute("logout", true);
             return "Login";

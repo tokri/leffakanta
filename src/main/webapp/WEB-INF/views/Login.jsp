@@ -1,6 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="includeHeader.jsp" %>
+<div class="menu_divider"><p />
+    <a class="menu" href="register">Register New Account</a>
+</div><p />
 
 <c:if test="${logout==true}">
     <div id="logout"><p />User has been logged out!</div>

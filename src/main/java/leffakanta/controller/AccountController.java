@@ -1,5 +1,6 @@
 package leffakanta.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import leffakanta.model.User;
 import leffakanta.model.Users;
 import javax.servlet.http.HttpSession;
@@ -7,9 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +19,33 @@ public class AccountController {
 
         @Autowired
         private Users users;
+
+        // show account registration
+        @RequestMapping(value="register", method=RequestMethod.GET)
+        public String showRegisterAccount(Model model) {
+            model.addAttribute("user", new User());
+            return "RegisterAccount";
+        }   
+
+        // handle account registration
+        @RequestMapping(value = "register", method = RequestMethod.POST)
+        public String submitRegisterAccount(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session, HttpServletRequest request, Model model) {
+	    if(result.hasErrors()) {                
+                return "RegisterAccount";
+	    }
+            if (user.newUser(user)==false){
+                return "RegisterAccount";
+            }
+            session.setAttribute("logged", user);
+            return "ConfirmNewAccount";
+        }
+        
+        // after confirming new account, detect the device type
+        @RequestMapping(value = "newAccountConfirmed", method = RequestMethod.POST)
+        public String newAccountConfirmed(){
+            return "redirect:/getdevice";
+        }
+        
 
         // show user's own account
         @RequestMapping(value="account", method=RequestMethod.GET)
