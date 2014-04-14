@@ -56,7 +56,7 @@ public class MovieController {
             }
             model.addAttribute("head", "Add");
             Movie newMovie = new Movie();
-            newMovie.setYear(Calendar.getInstance().get(Calendar.YEAR));
+            newMovie.setYear(Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
             model.addAttribute("movie", newMovie);
             return "AddOrEditMovie";
         }           

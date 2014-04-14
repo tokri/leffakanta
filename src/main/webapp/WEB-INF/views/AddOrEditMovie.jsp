@@ -11,7 +11,7 @@
         <c:if test = "${head == 'Edit'}">
             <form:input type="hidden" path="movie_id"/>
         </c:if>
-            Title: <form:input  path="movie_title" size="50"/>
+            Title: <form:input path="movie_title" size="50"/>
                 <font color="red"> <form:errors path="movie_title"></form:errors></font><br/>
             Year: <form:input path="year" size="5"/>
                 <font color="red"><form:errors path="year"></form:errors></font><br/>

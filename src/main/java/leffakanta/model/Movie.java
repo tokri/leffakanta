@@ -19,13 +19,16 @@ public class Movie {
     @NotNull
     private String movie_title;
     
-    @Range(min=1900, max=2050)
+    //regexp number between 1900 and 2099
+    @Pattern(regexp = "^(19|20)\\d{2}$")
     @NotNull
-    private int year;
+    private String year;
     
-    @Range(min=0, max=999)
-    private int runtime;
+    //regexp null or 0>= and <1000
+    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$")
+    private String runtime;
     
+    //regexp null or number between 0 and 10 with optional 1 digit
     @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)")
     private String rating;
     
@@ -127,8 +130,8 @@ public class Movie {
     //getters & setters
     public int getMovie_id(){ return this.id; }
     public String getMovie_title(){ return htmlEscape(this.movie_title); }
-    public int getYear(){ return this.year; }
-    public int getRuntime(){ return this.runtime; }
+    public String getYear(){ return this.year; }
+    public String getRuntime(){ return this.runtime; }
     public String getRating(){ return this.rating; }
     public String getPlot_text(){ return htmlEscape(this.plot_text); }
     public String getPoster_url(){ return htmlEscape(this.poster_url); }
@@ -143,13 +146,13 @@ public class Movie {
     
     public void setMovie_id(int value){ this.id = value; }
     public void setMovie_title(String value){ this.movie_title = unescapeHtml4(value); }
-    public void setYear(int value){ this.year = value; }
-    public void setRuntime(int value){ this.runtime = value; }
+    public void setYear(String value){ this.year = value; }
+    public void setRuntime(String value){ this.runtime = value; }
     public void setRating(String value){ this.rating = value; }
     public void setPlot_text(String value){ this.plot_text = unescapeHtml4(value); }
     public void setFormatType(String value){ this.format_type = value; }
     public void setAvailability(String value){ this.availability = value; }
-    public void setPoster_url(String value){ this.poster_url = unescapeHtml4(value); }
-    public void setBackground_url(String value){ this.background_url = unescapeHtml4(value); }
-    public void setTrailer_url(String value){ this.trailer_url = unescapeHtml4(value); }
+    public void setPoster_url(String value){ this.poster_url = value; }
+    public void setBackground_url(String value){ this.background_url = value; }
+    public void setTrailer_url(String value){ this.trailer_url = value; }
 }
