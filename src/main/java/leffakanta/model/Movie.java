@@ -59,13 +59,20 @@ public class Movie {
         } catch (Exception e){}
         return retVal;        
     }
+    // method to parse int values
+    private int parseInt(String value){
+        int retVal = 0;
+        try {
+            retVal = Integer.parseInt(value);
+        } catch (Exception e){}
+        return retVal;
+    }
     
     // add movie into users collection
     public void addMovie(Movie movie, int owner_id){
         String sql = "INSERT INTO movies VALUES (DEFAULT,?,?,?,?,?,?,?) RETURNING movie_id";
-        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), 
-            movie.getYear(), movie.getRuntime(), parseFloat(movie.getRating()), movie.getPlot_text(),
-            movie.getPoster_url(), movie.getBackground_url()}); 
+        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntime()), 
+            parseFloat(movie.getRating()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url()}); 
         if (movie_id!=-1){
             sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'Blu-ray','Available')";
             DbService.update(sql, null);
@@ -76,9 +83,8 @@ public class Movie {
     public void updateMovie(Movie movie, int owner_id){
         String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
                 " WHERE movie_id=?";
-        DbService.update(sql, new Object[]{ movie.getMovie_title(), 
-            movie.getYear(), movie.getRuntime(), parseFloat(movie.getRating()), movie.getPlot_text(),
-            movie.getPoster_url(), movie.getBackground_url(), movie.getMovie_id()}); 
+        DbService.update(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntime()), 
+            parseFloat(movie.getRating()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url(), movie.getMovie_id()}); 
     }
     
     

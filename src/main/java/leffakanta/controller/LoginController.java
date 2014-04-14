@@ -32,8 +32,11 @@ public class LoginController {
             
             User loginUser = user.checkLogin(username, password);
             
-            // if login correct, go to users movies
+            // if login correct, set session parameters and goto users movies
             if (loginUser != null){
+                if (loginUser.getIs_admin()){
+                    session.setAttribute("admin", true);
+                }
                 session.setAttribute("logged", loginUser);
                 return "redirect:/movies";
             }
