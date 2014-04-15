@@ -56,7 +56,7 @@ public class MovieController {
             Movie newMovie = new Movie();
             newMovie.setYear(Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
             model.addAttribute("movie", newMovie);
-            return "AddOrEditMovie";
+            return "EditMovie";
         }           
 
         // handle movie adding after post
@@ -69,7 +69,7 @@ public class MovieController {
             
 	    if(result.hasErrors()) {
                 model.addAttribute("head", "Add");
-                return "AddOrEditMovie";
+                return "EditMovie";
 	    }
             movie.addMovie(movie, user.getUser_id());
             return "redirect:/movies";
@@ -84,7 +84,7 @@ public class MovieController {
             Movie movie = new Movie();
             model.addAttribute("head", "Edit");
             model.addAttribute("movie", movie.getMovie(id));
-            return "AddOrEditMovie";
+            return "EditMovie";
         }
         
         // handle movie editing after post
@@ -97,8 +97,7 @@ public class MovieController {
             
 	    if(result.hasErrors()) {
                 model.addAttribute("head", "Edit");
-//                model.addAttribute("movie", movie.getMovie(movieToUpdate.getMovie_id()));
-                return "AddOrEditMovie";
+                return "EditMovie";
 	    }
             movie.updateMovie(movie, user.getUser_id());            
             return "redirect:/movies";

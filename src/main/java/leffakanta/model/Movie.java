@@ -5,45 +5,29 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
-import static org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4;
 import org.hibernate.validator.constraints.URL;
 import static org.springframework.web.util.HtmlUtils.htmlEscape;
+import static org.springframework.web.util.HtmlUtils.htmlUnescape;
 
 @Service
 public class Movie {
-    private int id;
-    
-    @Size(min=1, max=50)
-    @NotNull
-    private String movie_title;
-    
+    private int id;   
+    @Size(min=1, max=50) @NotNull private String movie_title;
+
     //regexp number between 1900 and 2099
-    @Pattern(regexp = "^(19|20)\\d{2}$")
-    @NotNull
-    private String year;
+    @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull private String year;
     
     //regexp null or 0>= and <1000
-    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$")
-    private String runtime;
+    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$") private String runtime;
     
     //regexp null or number between 0 and 10 with optional 1 digit
-    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)")
-    private String rating;
+    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)") private String rating;
     
-    @Size(min=0, max=500)
-    private String plot_text;
-    
-    @URL
-    private String poster_url;
-
-    @URL
-    private String background_url;
-
-    @URL
-    private String trailer_url;
-    
+    @Size(min=0, max=500) private String plot_text;
+    @URL private String poster_url;
+    @URL private String background_url;
+    @URL private String trailer_url;
     private String format_type;
     private String availability;
     private List<Genre> genres;
@@ -59,6 +43,7 @@ public class Movie {
         } catch (Exception e){}
         return retVal;        
     }
+    
     // method to parse int values
     private int parseInt(String value){
         int retVal = 0;
@@ -151,11 +136,11 @@ public class Movie {
     public List<CrewMember> getWriters(){ return this.writers; }
     
     public void setMovie_id(int value){ this.id = value; }
-    public void setMovie_title(String value){ this.movie_title = unescapeHtml4(value); }
+    public void setMovie_title(String value){ this.movie_title = htmlUnescape(value); }
     public void setYear(String value){ this.year = value; }
     public void setRuntime(String value){ this.runtime = value; }
     public void setRating(String value){ this.rating = value; }
-    public void setPlot_text(String value){ this.plot_text = unescapeHtml4(value); }
+    public void setPlot_text(String value){ this.plot_text = htmlUnescape(value); }
     public void setFormatType(String value){ this.format_type = value; }
     public void setAvailability(String value){ this.availability = value; }
     public void setPoster_url(String value){ this.poster_url = value; }
