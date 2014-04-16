@@ -4,7 +4,7 @@
 <%@include file="includeMenu.jsp" %>
 
 <h2>Manage Accounts</h2>
-<table>
+<table id="accounts_table">
     <tr>
         <th>Name</th>
         <th>Type</th>

@@ -14,16 +14,12 @@ import static org.springframework.web.util.HtmlUtils.htmlUnescape;
 public class Movie {
     private int id;   
     @Size(min=1, max=50) @NotNull private String movie_title;
-
     //regexp number between 1900 and 2099
-    @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull private String year;
-    
+    @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull private String year;    
     //regexp null or 0>= and <1000
-    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$") private String runtime;
-    
+    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$") private String runtime;    
     //regexp null or number between 0 and 10 with optional 1 digit
-    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)") private String rating;
-    
+    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)") private String rating;    
     @Size(min=0, max=500) private String plot_text;
     @URL private String poster_url;
     @URL private String background_url;
@@ -31,33 +27,13 @@ public class Movie {
     private String format_type;
     private String availability;
     private List<Genre> genres;
-    private List<CrewMember> directors;
-    private List<CrewMember> writers;
-    private List<CastMember> cast;
+    private List<Role> roles;
 
-    // method to parse & fix forms float values
-    private float parseFloat(String value){
-        float retVal = 0;
-        try {
-            retVal = Float.parseFloat(value.replace(",", "."));
-        } catch (Exception e){}
-        return retVal;        
-    }
-    
-    // method to parse int values
-    private int parseInt(String value){
-        int retVal = 0;
-        try {
-            retVal = Integer.parseInt(value);
-        } catch (Exception e){}
-        return retVal;
-    }
-    
     // add movie into users collection
     public void addMovie(Movie movie, int owner_id){
         String sql = "INSERT INTO movies VALUES (DEFAULT,?,?,?,?,?,?,?) RETURNING movie_id";
-        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntime()), 
-            parseFloat(movie.getRating()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url()}); 
+        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
+            parseFloat(movie.getRatingForSql()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url()}); 
         if (movie_id!=-1){
             sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'Blu-ray','Available')";
             DbService.update(sql, null);
@@ -68,8 +44,8 @@ public class Movie {
     public void updateMovie(Movie movie, int owner_id){
         String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
                 " WHERE movie_id=?";
-        DbService.update(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntime()), 
-            parseFloat(movie.getRating()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url(), movie.getMovie_id()}); 
+        DbService.update(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
+            parseFloat(movie.getRatingForSql()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url(), movie.getMovie_id()}); 
     }
     
     
@@ -87,43 +63,80 @@ public class Movie {
         }
     }
     
-    // get movies details
+    // get movie's details
     public Movie getMovie(int movie_id){        
         // get basic movie details
         String sql = "SELECT * FROM movies WHERE movie_id = ?";
         Movie movie = DbService.queryForObject(sql, movie_id, Movie.class);
 
-        // get movie genres
+        // get movie's genres
         sql = "SELECT genre_name FROM movie_genres, genres WHERE movie_genres.genre_id=genres.genre_id AND movie_id = ?";
         movie.genres = DbService.queryForList(sql, movie_id, Genre.class);
 
-        // get movie cast
-        sql = "SELECT person_name, date_of_birth, image_url, character_name FROM people, \"cast\", characters " + 
-                     "WHERE people.person_id = \"cast\".person_id AND \"cast\".character_id = characters.character_id AND movie_id = ?";
-        movie.cast = DbService.queryForList(sql, movie_id, CastMember.class);
-        
-        // get rest of the movie crew and sort directors and writers to own lists
-        sql = "SELECT person_name, date_of_birth, image_url, position FROM people, crew WHERE people.person_id = crew.person_id " +
-                "AND movie_id = ?";
-        List<CrewMember> crew = DbService.queryForList(sql, movie_id, CrewMember.class);    
-        movie.directors = new ArrayList<CrewMember>();
-        movie.writers = new ArrayList<CrewMember>();
-        for (CrewMember member : crew){
-            if (member.getPosition().equals("Director")){
-                movie.directors.add(member);
-            } else if (member.getPosition().equals("Writer")){
-                movie.writers.add(member);
-            }
-        }        
+        sql = "SELECT role_id, people.person_id, production_role, person_name, image_url, null as character_name FROM " +
+                "people, roles WHERE production_role != 'Actor' AND roles.person_id = people.person_id AND movie_id = ? " +
+                "UNION SELECT role_id, people.person_id, production_role, person_name, image_url, character_name FROM " +
+                "people, roles, characters WHERE production_role = 'Actor' AND roles.character_id = characters.character_id " +
+                "AND roles.person_id = people.person_id AND movie_id = ? ORDER BY role_id ASC;";
+        movie.roles = DbService.queryForList(sql, new Object[]{ movie_id, movie_id }, Role.class);        
         return movie;
+    }
+    
+    // method to parse & fix forms float values
+    private float parseFloat(String value){
+        float retVal = 0;
+        try {
+            retVal = Float.parseFloat(value.replace(",", "."));
+        } catch (NumberFormatException e){}
+        return retVal;        
+    }
+    
+    // method to parse int values
+    private int parseInt(String value){
+        int retVal = 0;
+        try {
+            retVal = Integer.parseInt(value);
+        } catch (NumberFormatException e){}
+        return retVal;
+    }
+    
+    //change empty value to -1 so it will not default as 0 on database
+    private String changeEmptyValue(String value){
+        if (value == null || value.isEmpty()){
+            return "-1";
+        }
+        return value;
+    }
+
+    //change -1 to empty so it will look normal when editing or showing the value
+    private String changeMinusValue(String value){
+        if (value == null || value.contains("-1")){
+            return "";
+        }
+        return value;
+    }
+    
+    private List<Role> getRole(String name){
+        List<Role> roleList = new ArrayList<Role>();
+        if (this.roles == null){
+            return roleList;
+        }
+        for (Role role : this.roles){
+            if (role.getProduction_role().equals(name)){
+                roleList.add(role);
+            }
+        }
+        return roleList;
     }
     
     //getters & setters
     public int getMovie_id(){ return this.id; }
     public String getMovie_title(){ return htmlEscape(this.movie_title); }
     public String getYear(){ return this.year; }
-    public String getRuntime(){ return this.runtime; }
-    public String getRating(){ return this.rating; }
+    public String getRuntime(){ return changeMinusValue(this.runtime); }
+    public String getRuntimeForSql(){ return changeEmptyValue(this.runtime); }
+    public String getRating(){ return changeMinusValue(this.rating); }
+    public String getRatingForSql(){ return changeEmptyValue(this.rating); }
     public String getPlot_text(){ return htmlEscape(this.plot_text); }
     public String getPoster_url(){ return htmlEscape(this.poster_url); }
     public String getBackground_url(){ return htmlEscape(this.background_url); }
@@ -131,9 +144,9 @@ public class Movie {
     public String getFormat_type(){ return this.format_type; }
     public String getAvailability(){ return this.availability; }
     public List<Genre> getGenres(){ return this.genres; }
-    public List<CastMember> getCast(){ return this.cast; }
-    public List<CrewMember> getDirectors(){ return this.directors; }
-    public List<CrewMember> getWriters(){ return this.writers; }
+    public List<Role> getCast(){ return this.getRole("Actor"); }
+    public List<Role> getDirectors(){ return this.getRole("Director"); }
+    public List<Role> getWriters(){ return this.getRole("Writer"); }
     
     public void setMovie_id(int value){ this.id = value; }
     public void setMovie_title(String value){ this.movie_title = htmlUnescape(value); }

@@ -32,18 +32,18 @@ public class MovieController {
             int userId = user.getUser_id();
             model.addAttribute("movieList", movies.getMovieList(userId));
             model.addAttribute("movieCount", movies.getMovieCount(userId));
-            return "MovieList";
+            return "ShowMovieList";
         }           
         
         // show movie details
         @RequestMapping(value="movie", method=RequestMethod.GET)
-        public String showMovieInfo(@RequestParam(value = "id") int id, HttpSession session, Model model) {
+        public String showMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             Movie movie = new Movie();
             model.addAttribute("movie", movie.getMovie(id));
-            return "MovieInfo";
+            return "ShowMovie";
         }           
 
         // show add movie screen

@@ -1,24 +1,46 @@
+a {
+    color: #503232;
+}
+
+a:hover {
+    color: black;
+}
+
+#cast_table a, #crew_table a {
+    color: white;
+}
+
+#cast_table a:hover, #crew_table a:hover {
+    color: #cccccc;
+}
+
 .movie_title,.movie_rating,.movie_genres,.movie_plot {
     margin-left: 30px;
     margin-right: 20px;
     color: white;
 }
 
-#movie_bg {
+#movie_bg, #person_bg  {
     position: absolute; 
     left: 0px;
     top: 150px;
     width: 1200px;
     height: auto;
+    opacity: 0.70;
+    filter: alpha(opacity=70); /* For IE8 and earlier */        
     z-index: -2;
 }
 
-#text_bg td {
+#text_bg, #person_bg {
     position: fixed;
     display: block;
     left: 250px;
     width: 925px;
     padding-bottom: 20px;
+}
+
+#roles_table {
+    left: 250px;
 }
 
 #actor_img {
@@ -30,8 +52,30 @@
 .movie_cast {
     width: 1000px;
 }
+
 .movie_crew {
     width: 1000px;
+}
+
+#logout, #expired {
+    color: #503232;
+    background-color: #d6c9b2;
+    border-style: dotted;
+    border-color: #503232;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.error {
+    color: #dd0000;
+    background-color: #ffeaff;
+    border-style: dotted;
+    border-color: #dd0000;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 #crew_table{
@@ -39,9 +83,26 @@
     color: white;
     top: 290px;
     left: 240px;
-    padding: 20px;
+    padding: 10px;
 }
 
+#movies_table th, #accounts_table th {
+    padding-right: 10px;    
+    text-align: left;
+}
+
+#movies_table td, #accounts_table td {
+    padding-right: 10px;    
+}
+
+#crew_table td {
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
+#roles_table td {
+    padding-right: 20px;
+}
 .movie_cast {
     position: relative;
     color: white;
@@ -49,6 +110,7 @@
     top: 0px;
     padding-left: 10px;
 }
+
 #cast_table {
     position: relative;
     color: white;
@@ -58,10 +120,10 @@
 }
 
 #text_bg td, #crew_table, #cast_table{
-    background-color: rgba(0, 0, 0, .7);    
+    background-color: rgba(0, 0, 0, .8);    
 }
 
-#movie_poster {
+#movie_poster, #person_img {
     position: fixed;
     display: block;
     left: 20px;

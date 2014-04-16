@@ -1,4 +1,4 @@
-CREATE TYPE POSITION_GROUP AS ENUM ('Director', 'Writer', 'Producer');
+CREATE TYPE PRODUCTION_ROLE AS ENUM ('Actor', 'Director', 'Writer');
 CREATE TYPE FORMAT_TYPE AS ENUM ('Blu-ray', 'DVD', 'TV', 'Download');
 CREATE TYPE AVAILIBILITY AS ENUM ('Available', 'Loaned', 'Missing');
 
@@ -32,6 +32,11 @@ CREATE TABLE movie_genres (
 	PRIMARY KEY(movie_id, genre_id)
 );
 
+CREATE TABLE characters (
+	character_id	SERIAL PRIMARY KEY,
+	character_name	VARCHAR(48)
+);
+
 CREATE TABLE people (
 	person_id		SERIAL PRIMARY KEY,
 	person_name		VARCHAR(48) NOT NULL,
@@ -39,25 +44,12 @@ CREATE TABLE people (
 	image_url		VARCHAR(256)
 );
 
-CREATE TABLE characters (
-	character_id	SERIAL PRIMARY KEY,
-	character_name	VARCHAR(48) NOT NULL
-);
-
-CREATE TABLE "cast" (
+CREATE TABLE roles (
+	role_id			SERIAL PRIMARY KEY,
+	production_role	PRODUCTION_ROLE NOT NULL,
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	list_order		INTEGER,
 	person_id		INTEGER REFERENCES people (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	character_id	INTEGER REFERENCES characters (character_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	PRIMARY KEY(movie_id, person_id, character_id)
-);
-
-CREATE TABLE crew (
-	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	list_order		INTEGER,
-	person_id		INTEGER REFERENCES people (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	position		POSITION_GROUP NOT NULL,
-	PRIMARY KEY(movie_id, person_id, position)
+	character_id	INTEGER REFERENCES characters (character_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE collections (

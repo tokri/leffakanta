@@ -5,7 +5,7 @@
 
 <h2>Movies</h2>
 <c:if test="${not empty movieList}">
-<table>
+<table id="movies_table">
     <tr>
         <th>Title</th>
         <th>Year</th>

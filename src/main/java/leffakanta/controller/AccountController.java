@@ -168,7 +168,7 @@ public class AccountController {
             model.addAttribute("userList", users.getUserList());
             model.addAttribute("userCount", users.getUserCount());
             model.addAttribute("ownId", user.getUser_id());
-            return "UserList";
+            return "ShowUserList";
         }           
         
         // show delete movies screen

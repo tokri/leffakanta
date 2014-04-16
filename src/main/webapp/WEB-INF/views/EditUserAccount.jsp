@@ -8,18 +8,18 @@
 <div id="add" class="AccountData">
     <form:form action="editaccount" method="POST" commandName='user'>
             <form:input type="hidden" path="user_id"/>
-            Username: <form:input path="username" size="20"/>
-                <font color="red"> <form:errors path="username"></form:errors></font><br/>
-                Admin: <c:if test="${disable_admin == true}"> True<form:input type="hidden" path="is_admin"/>
-                </c:if>
-                <c:if test="${disable_admin == null}">
-                    <form:checkbox path="is_admin" />
-                </c:if><br/><br/>
-            New password <form:input type="password" path="password_new" size="20"/>
-                <font color="red"><form:errors path="password_new"></form:errors></font><br/>
-            Confirm new password <form:input type="password" path="password_new_confirm" size="20"/>
-                <font color="red"><form:errors path="password_change_valid"></form:errors></font><br/>
-            <input type="submit" value='Send'>
+            <table id="edit_account_table">
+                <tr><td>Username:</td><td><form:input path="username" size="20"/>&nbsp;&nbsp;
+                <form:errors path="username" cssClass="error" /></td></tr>
+                <tr><td>Admin:</td><td><c:if test="${disable_admin == true}">True<form:input type="hidden" path="is_admin"/></c:if>
+                <c:if test="${disable_admin == null}"><form:checkbox path="is_admin" /></c:if></td></tr>
+                <tr><td>&nbsp;<br/></td><td></td></tr>
+                <tr><td>New password:</td><td><form:input type="password" path="password_new" size="20"/>&nbsp;&nbsp;
+                <form:errors path="password_new" cssClass="error" /></td></tr>
+                <tr><td>Confirm new password:</td><td><form:input type="password" path="password_new_confirm" size="20"/>&nbsp;&nbsp;
+                <form:errors path="password_change_valid" cssClass="error" /></td></tr>
+            </table><br />
+            <input type="submit" value='Update'>
     </form:form>  
 </div>        
 <jsp:include page="includeFooter.jsp" />
