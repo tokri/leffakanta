@@ -5,12 +5,11 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<h2>${head} Movie</h2>
+<h2>${head}</h2>
 <div id="add" class="MovieData">
-    <form:form action="${fn:toLowerCase(head)}movie" method="POST" commandName='movie'>
-        <c:if test = "${head == 'Edit'}">
-            <form:input type="hidden" path="movie_id"/>
-        </c:if>
+    <form:form action="editmovie" method="POST" commandName='movie'>
+        <form:input type="hidden" path="movie_id"/>
+        <form:input type="hidden" path="new_movie"/>
         <table id="edit_movie_table">
             <tr><td>Title:</td><td><form:input path="movie_title" size="70" htmlEscape="false"/>&nbsp;&nbsp;
             <form:errors path="movie_title" cssClass="error" /></td></tr>
@@ -28,8 +27,20 @@
             <form:errors path="background_url" cssClass="error" /></td></tr>
             <tr><td>Trailer URL:</td><td><form:input path="trailer_url" size="70"/>&nbsp;&nbsp;
             <form:errors path="trailer_url" cssClass="error" /></td></tr>
-        </table>        
-        <input type="submit" value='<c:if test = "${head == 'Edit'}">Update</c:if><c:if test = "${head == 'Add'}">Add</c:if> Movie'><br />
+        </table>
+        <h3>Directing</h3>
+        <table id="edit_movie_table">
+            <tr><td><input id="director" size="20" htmlEscape="false"/></td><td><button type="button">Add Director</button></td></tr>
+        </table>
+        <h3>Writing</h3>
+        <table id="edit_movie_table">
+            <tr><td><input id="writer" size="20" htmlEscape="false"/></td><td><button type="button">Add Writer</button></td></tr>
+        </table>
+        <h3>Cast</h3>
+        <table id="edit_movie_table">
+            <tr><td><input id="actor" size="20" htmlEscape="false"/></td><td><button type="button">Add Actor</button></td></tr>
+        </table><br />
+        <input type="submit" value='Update'>
     </form:form>  
 </div>        
 <jsp:include page="includeFooter.jsp" />

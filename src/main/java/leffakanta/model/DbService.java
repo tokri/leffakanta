@@ -1,10 +1,15 @@
 package leffakanta.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 // DbService handles all database requests for the rest of the models
@@ -57,6 +62,14 @@ public class DbService {
         return list;
     }
 
+    // query for one row comma separated string list
+    public static List<String> queryForCommaSeparatedList(String sql){
+        List<String> retVal = getJdbcTemplate().queryForList(sql, String.class);
+        String str = retVal.get(0).replace("{", "").replace("}","").trim();
+        retVal = new ArrayList<String>(Arrays.asList(str.split(",")));
+        return retVal;
+    }
+
     // overload queryForInt to accept only one arg-value
     public static int queryForInt(String sql, Object arg){
         return queryForInt(sql, new Object[] { arg });
@@ -70,7 +83,7 @@ public class DbService {
         } catch (Exception e){}
         return retVal;
     }
-    
+        
     // overload update to accept only one arg-value
     public static int update(String sql, Object arg){
         return update(sql, new Object[] { arg });

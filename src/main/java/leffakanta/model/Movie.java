@@ -27,18 +27,29 @@ public class Movie {
     private String format_type;
     private String availability;
     private int owner_count;
+    private boolean new_movie;
     private List<Genre> genres;
     private List<Role> roles;
 
     // add movie into users collection
-    public void addMovie(Movie movie, int owner_id){
-        String sql = "INSERT INTO movies VALUES (DEFAULT,?,?,?,?,?,?,?) RETURNING movie_id";
-        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
-            parseFloat(movie.getRatingForSql()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url()}); 
-        if (movie_id!=-1){
-            sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'Blu-ray','Available')";
-            DbService.update(sql, null);
+    // return -1 if unsuccessful, 0 if existing movie added into collection and return movie_id if new movie added
+    public int addMovie(Movie movie, int owner_id){
+        int retVal = -1;
+        String sql = "SELECT movie_id FROM movies WHERE movie_title = ? AND year = ?";
+        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear())}); 
+        if (movie_id==-1){
+            sql = "INSERT INTO movies VALUES (DEFAULT,?,?,null,null,null,null,null) RETURNING movie_id";           
+            movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear())});
+            retVal = movie_id;
         }
+        if (movie_id!=-1){
+            sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'"+movie.getFormat_type()+"','Available')";
+            DbService.update(sql, null);
+            if (retVal == -1){
+                retVal = 0;
+            }
+        }
+        return retVal;
     }
     
     // update movie details
@@ -117,6 +128,14 @@ public class Movie {
         return value;
     }
     
+    // retrieve a list of names for enumeration
+    public List<String> getEnumValues(String enumName)
+    {        
+        String sql = "SELECT enum_range(null::" + enumName + ")";
+        List<String> enums = DbService.queryForCommaSeparatedList(sql);
+        return enums;
+    }    
+    
     private List<Role> getRole(String name){
         List<Role> roleList = new ArrayList<Role>();
         if (this.roles == null){
@@ -145,6 +164,7 @@ public class Movie {
     public String getFormat_type(){ return this.format_type; }
     public String getAvailability(){ return this.availability; }
     public int getOwner_count(){ return this.owner_count; }
+    public boolean getNew_movie(){ return this.new_movie; }
     public List<Genre> getGenres(){ return this.genres; }
     public List<Role> getCast(){ return this.getRole("Actor"); }
     public List<Role> getDirectors(){ return this.getRole("Director"); }
@@ -162,4 +182,5 @@ public class Movie {
     public void setBackground_url(String value){ this.background_url = value; }
     public void setTrailer_url(String value){ this.trailer_url = value; }
     public void setOwner_count(int value){ this.owner_count = value; }
+    public void setNew_movie(boolean value){ this.new_movie = value; };
 }

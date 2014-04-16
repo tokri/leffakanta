@@ -10,7 +10,9 @@
 
 <table id="text_bg"><tr><td>
 <div class="movie_title">
-<h1>${movie.movie_title} (${movie.year})</h1>
+<h1>${movie.movie_title} (${movie.year})&nbsp;&nbsp;
+<a href="editmovie?id=${movie.movie_id}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon-white.png" alt="edit" width="20" height="20"></a>
+</h1>
 </div>
 <div class="movie_genres">
     <c:forEach items="${movie.genres}" var="genre" varStatus="loop">

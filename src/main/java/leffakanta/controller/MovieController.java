@@ -4,10 +4,8 @@ import java.util.Calendar;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import leffakanta.model.Movie;
-import leffakanta.model.Movies;
 import leffakanta.model.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,36 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MovieController {
-
-        @Autowired
-        private Movies movies;
                
-        // list movies from collection
-        @RequestMapping(value="collection", method=RequestMethod.GET)
-        public String showCollection(HttpSession session, Model model) {            
-            User user = (User) session.getAttribute("logged");
-            if (user == null) {
-                return "redirect:/nosession";
-            }            
-            int userId = user.getUser_id();
-            model.addAttribute("movieList", movies.getMovieList(userId));
-            model.addAttribute("movieCount", movies.getMovieCount(userId));
-            return "ShowCollection";
-        }           
-        
-        // list all movies
-        @RequestMapping(value="movies", method=RequestMethod.GET)
-        public String showAllMovies(HttpSession session, Model model) {            
-            User user = (User) session.getAttribute("logged");
-            if (user == null) {
-                return "redirect:/nosession";
-            }            
-            int userId = user.getUser_id();
-            model.addAttribute("movieList", movies.getMovieList());
-            model.addAttribute("movieCount", movies.getMovieCount());
-            return "ShowAllMovies";
-        }           
-        
         // show movie details
         @RequestMapping(value="movie", method=RequestMethod.GET)
         public String showMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
@@ -65,27 +34,33 @@ public class MovieController {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
-            model.addAttribute("head", "Add");
             Movie newMovie = new Movie();
-            newMovie.setYear(Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+            newMovie.setYear(Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));            
+            model.addAttribute("formatTypeList", newMovie.getEnumValues("FORMAT_TYPE"));
             model.addAttribute("movie", newMovie);
-            return "EditMovie";
+            return "AddMovie";
         }           
 
         // handle movie adding after post
         @RequestMapping(value = "addmovie", method = RequestMethod.POST)
-        public String submitAddMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, HttpSession session, Model model) {
-            if (session.getAttribute("logged") == null) {
+        public String submitAddMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, @RequestParam String format_type, HttpSession session, Model model) {
+            User user = (User)session.getAttribute("logged");
+            if (user == null) {
                 return "redirect:/nosession";
             }
-            User user = (User)session.getAttribute("logged");
-            
 	    if(result.hasErrors()) {
-                model.addAttribute("head", "Add");
-                return "EditMovie";
+                return "AddMovie";
 	    }
-            movie.addMovie(movie, user.getUser_id());
-            return "redirect:/collection";
+            movie.setFormatType(format_type);
+            int id = movie.addMovie(movie, user.getUser_id());
+            if (id>0){
+                movie = movie.getMovie(id);
+                movie.setNew_movie(true);
+                model.addAttribute("head", "Additional Movie Details");
+                model.addAttribute("movie", movie);
+                return "EditMovie";
+            }
+            return "redirect:/collection";                
         }
 
         // edit movie
@@ -95,7 +70,7 @@ public class MovieController {
                 return "redirect:/nosession";
             }
             Movie movie = new Movie();
-            model.addAttribute("head", "Edit");
+            model.addAttribute("head", "Edit Movie");
             model.addAttribute("movie", movie.getMovie(id));
             return "EditMovie";
         }
@@ -103,16 +78,19 @@ public class MovieController {
         // handle movie editing after post
         @RequestMapping(value="editmovie", method=RequestMethod.POST)
         public String submitEditMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, HttpSession session, Model model) {
-            if (session.getAttribute("logged") == null) {
+            User user = (User)session.getAttribute("logged");            
+            if (user == null) {
                 return "redirect:/nosession";
             }
-            User user = (User)session.getAttribute("logged");
-            
 	    if(result.hasErrors()) {
-                model.addAttribute("head", "Edit");
+                if (movie.getNew_movie()){
+                    model.addAttribute("head", "Additional Movie Details");
+                } else {
+                    model.addAttribute("head", "Edit Movie");
+                }
                 return "EditMovie";
 	    }
-            movie.updateMovie(movie, user.getUser_id());            
+            movie.updateMovie(movie, user.getUser_id());
             return "redirect:/collection";
         }        
         
