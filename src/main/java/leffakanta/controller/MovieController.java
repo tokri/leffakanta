@@ -22,9 +22,9 @@ public class MovieController {
         @Autowired
         private Movies movies;
                
-        // list all movies
-        @RequestMapping(value="movies", method=RequestMethod.GET)
-        public String showMovieList(HttpSession session, Model model) {            
+        // list movies from collection
+        @RequestMapping(value="collection", method=RequestMethod.GET)
+        public String showCollection(HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
@@ -32,7 +32,20 @@ public class MovieController {
             int userId = user.getUser_id();
             model.addAttribute("movieList", movies.getMovieList(userId));
             model.addAttribute("movieCount", movies.getMovieCount(userId));
-            return "ShowMovieList";
+            return "ShowCollection";
+        }           
+        
+        // list all movies
+        @RequestMapping(value="movies", method=RequestMethod.GET)
+        public String showAllMovies(HttpSession session, Model model) {            
+            User user = (User) session.getAttribute("logged");
+            if (user == null) {
+                return "redirect:/nosession";
+            }            
+            int userId = user.getUser_id();
+            model.addAttribute("movieList", movies.getMovieList());
+            model.addAttribute("movieCount", movies.getMovieCount());
+            return "ShowAllMovies";
         }           
         
         // show movie details
@@ -72,7 +85,7 @@ public class MovieController {
                 return "EditMovie";
 	    }
             movie.addMovie(movie, user.getUser_id());
-            return "redirect:/movies";
+            return "redirect:/collection";
         }
 
         // edit movie
@@ -100,7 +113,7 @@ public class MovieController {
                 return "EditMovie";
 	    }
             movie.updateMovie(movie, user.getUser_id());            
-            return "redirect:/movies";
+            return "redirect:/collection";
         }        
         
         // show delete movies screen
@@ -124,6 +137,6 @@ public class MovieController {
             if (action.equals("Yes")){
                 new Movie().deleteMovie(movie_id, loggedUser.getUser_id());
             }
-            return "redirect:/movies";
+            return "redirect:/collection";
         }        
 }

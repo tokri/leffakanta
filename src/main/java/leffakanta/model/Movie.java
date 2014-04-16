@@ -26,6 +26,7 @@ public class Movie {
     @URL private String trailer_url;
     private String format_type;
     private String availability;
+    private int owner_count;
     private List<Genre> genres;
     private List<Role> roles;
 
@@ -143,6 +144,7 @@ public class Movie {
     public String getTrailer_url(){ return htmlEscape(this.trailer_url); }
     public String getFormat_type(){ return this.format_type; }
     public String getAvailability(){ return this.availability; }
+    public int getOwner_count(){ return this.owner_count; }
     public List<Genre> getGenres(){ return this.genres; }
     public List<Role> getCast(){ return this.getRole("Actor"); }
     public List<Role> getDirectors(){ return this.getRole("Director"); }
@@ -159,4 +161,5 @@ public class Movie {
     public void setPoster_url(String value){ this.poster_url = value; }
     public void setBackground_url(String value){ this.background_url = value; }
     public void setTrailer_url(String value){ this.trailer_url = value; }
+    public void setOwner_count(int value){ this.owner_count = value; }
 }

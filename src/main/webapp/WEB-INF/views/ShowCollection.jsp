@@ -3,7 +3,7 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<h2>Movies</h2>
+<h2>My Collection</h2>
 <c:if test="${not empty movieList}">
 <table id="movies_table">
     <tr>
