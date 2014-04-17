@@ -1,5 +1,6 @@
 package leffakanta.model;
 
+import leffakanta.service.DbService;
 import java.util.ArrayList;
 import java.util.List;
 

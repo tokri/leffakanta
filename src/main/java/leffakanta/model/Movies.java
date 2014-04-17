@@ -1,5 +1,6 @@
 package leffakanta.model;
 
+import leffakanta.service.DbService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,7 @@
 package leffakanta.model;
 
+import leffakanta.service.DbService;
+
 public class Person {
     private int person_id;
     private String person_name;

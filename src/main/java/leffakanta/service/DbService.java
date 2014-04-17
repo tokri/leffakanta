@@ -1,4 +1,4 @@
-package leffakanta.model;
+package leffakanta.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

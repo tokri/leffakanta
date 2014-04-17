@@ -1,6 +1,7 @@
 package leffakanta.model;
 
-import java.util.List;
+import leffakanta.service.DbService;
+import leffakanta.service.PasswordHash;
 import javax.validation.constraints.AssertTrue;
 import org.springframework.stereotype.Service;
 
