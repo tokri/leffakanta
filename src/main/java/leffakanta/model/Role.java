@@ -1,13 +1,13 @@
 package leffakanta.model;
 
 public class Role extends Person {
-    private String production_role;    
-    private String character_name;
+    private String productionRole;    
+    private String characterName;
 
     //getters & setters
-    public String getProduction_role(){ return this.production_role; }
-    public String getCharacter_name(){ return this.character_name; }
+    public String getProductionRole(){ return this.productionRole; }
+    public String getCharacterName(){ return this.characterName; }
 
-    public void setProduction_role(String value){ this.production_role = value; }    
-    public void setCharacter_name(String value){ this.character_name = value; }
+    public void setProductionRole(String value){ this.productionRole = value; }    
+    public void setCharacterName(String value){ this.characterName = value; }
 }

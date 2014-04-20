@@ -7,7 +7,7 @@
 
 Are you sure you want to delete account: <b>${user.username}</b>?<p />
 <form action="deleteaccount" method="post">
-    <input type="hidden" name="user_id" value="${user.user_id}"/>
+    <input type="hidden" name="userId" value="${user.userId}"/>
     <input type="submit" name="action" value="Yes" />
     <input type="submit" name="action" value="No" />
 </form>

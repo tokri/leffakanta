@@ -6,21 +6,21 @@ a:hover {
     color: black;
 }
 
-#cast_table a, #crew_table a {
+#cast-table a, #crew-table a {
     color: white;
 }
 
-#cast_table a:hover, #crew_table a:hover {
+#cast-table a:hover, #crew-table a:hover {
     color: #cccccc;
 }
 
-.movie_title,.movie_rating,.movie_genres,.movie_plot {
+.movie-title,.movie-rating,.movie-genres,.movie-plot {
     margin-left: 30px;
     margin-right: 20px;
     color: white;
 }
 
-#movie_bg, #person_bg  {
+#movie-bg, #person-bg  {
     position: absolute; 
     left: 0px;
     top: 150px;
@@ -31,7 +31,7 @@ a:hover {
     z-index: -2;
 }
 
-#text_bg, #person_bg {
+#text-bg, #person-bg {
     position: fixed;
     display: block;
     left: 250px;
@@ -39,21 +39,21 @@ a:hover {
     padding-bottom: 20px;
 }
 
-#roles_table {
+#roles-table {
     left: 250px;
 }
 
-#actor_img {
+#actor-img {
     width: 90px;
     height: auto;
     margin: 15px;
 }
 
-.movie_cast {
+.movie-cast {
     width: 1000px;
 }
 
-.movie_crew {
+.movie-crew {
     width: 1000px;
 }
 
@@ -78,7 +78,7 @@ a:hover {
     padding-bottom: 2px;
 }
 
-#crew_table{
+#crew-table{
     position: relative;
     color: white;
     top: 290px;
@@ -86,24 +86,24 @@ a:hover {
     padding: 10px;
 }
 
-#movies_table th, #accounts_table th {
+#movies-table th, #accounts-table th {
     padding-right: 10px;    
     text-align: left;
 }
 
-#movies_table td, #accounts_table td {
+#movies-table td, #accounts-table td {
     padding-right: 10px;    
 }
 
-#crew_table td {
+#crew-table td {
     padding-left: 10px;
     padding-right: 20px;
 }
 
-#roles_table td {
+#roles-table td {
     padding-right: 20px;
 }
-.movie_cast {
+.movie-cast {
     position: relative;
     color: white;
     float: left;
@@ -111,7 +111,7 @@ a:hover {
     padding-left: 10px;
 }
 
-#cast_table {
+#cast-table {
     position: relative;
     color: white;
     float: left;
@@ -119,11 +119,11 @@ a:hover {
     top: 320px;
 }
 
-#text_bg td, #crew_table, #cast_table{
+#text-bg td, #crew-table, #cast-table{
     background-color: rgba(0, 0, 0, .8);    
 }
 
-#movie_poster, #person_img {
+#movie-poster, #person-img {
     position: fixed;
     display: block;
     left: 20px;

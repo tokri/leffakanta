@@ -8,14 +8,14 @@ public class Roles {
     private List<RoleAndMovie> roles;
     
     // get person's details
-    public void updatePersonRoles(int person_id, int owner_id){        
+    public void updatePersonRoles(int personId, int userId){        
         // get basic movie details
         String sql = "SELECT movies.movie_id, movie_title, year, production_role, character_name FROM movies, roles, characters, collections WHERE "+
                 "roles.movie_id = movies.movie_id AND roles.character_id = characters.character_id AND movies.movie_id = collections.movie_id AND " +
                 "person_id = ? AND owner_id = ? UNION SELECT movies.movie_id, movie_title, year, production_role, null as character_name FROM movies, " +
                 "roles, collections WHERE character_id IS NULL AND roles.movie_id = movies.movie_id AND collections.movie_id = movies.movie_id AND " +
                 "person_id = ? AND owner_id = ? ORDER BY year DESC;";
-        this.roles = DbService.queryForList(sql, new Object[]{ person_id, owner_id, person_id, owner_id }, RoleAndMovie.class);
+        this.roles = DbService.queryForList(sql, new Object[]{ personId, userId, personId, userId }, RoleAndMovie.class);
     }    
     
     private List<RoleAndMovie> getPersonRole(String name){
@@ -24,7 +24,7 @@ public class Roles {
             return roleList;
         }
         for (RoleAndMovie role : this.roles){
-            if (role.getProduction_role().equals(name)){
+            if (role.getProductionRole().equals(name)){
                 roleList.add(role);
             }
         }

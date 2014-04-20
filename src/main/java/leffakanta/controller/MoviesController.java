@@ -21,7 +21,7 @@ public class MoviesController {
             if (user == null) {
                 return "redirect:/nosession";
             }            
-            int userId = user.getUser_id();
+            int userId = user.getUserId();
             model.addAttribute("movieList", movies.getMovieList(userId));
             model.addAttribute("movieCount", movies.getMovieCount(userId));
             return "ShowCollection";
@@ -34,7 +34,7 @@ public class MoviesController {
             if (user == null) {
                 return "redirect:/nosession";
             }            
-            int userId = user.getUser_id();
+            int userId = user.getUserId();
             model.addAttribute("movieList", movies.getMovieList());
             model.addAttribute("movieCount", movies.getMovieCount());
             return "ShowAllMovies";

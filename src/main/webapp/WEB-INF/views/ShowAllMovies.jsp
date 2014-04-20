@@ -5,7 +5,7 @@
 
 <h2>Manage Movies</h2>
 <c:if test="${not empty movieList}">
-<table id="movies_table">
+<table id="movies-table">
     <tr>
         <th>Title</th>
         <th>Year</th>
@@ -16,12 +16,12 @@
     </tr>    
     <c:forEach items="${movieList}" var="movie">
     <tr>
-        <td><a href="movie?id=${movie.movie_id}">${movie.movie_title}</a></td>
+        <td><a href="movie?id=${movie.movieId}">${movie.movieTitle}</a></td>
         <td>${movie.year}</td>
         <td>${movie.rating}</td>
-        <td>${movie.owner_count}</td>
-        <td><a href="editmovie?id=${movie.movie_id}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>        
-        <td><a href="deletemovie?id=${movie.movie_id}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></td>        
+        <td>${movie.ownerCount}</td>
+        <td><a href="editmovie?id=${movie.movieId}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>        
+        <td><a href="deletemovie?id=${movie.movieId}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></td>        
     </tr>
     </c:forEach>
 </table>

@@ -11,22 +11,22 @@ import static org.springframework.web.util.HtmlUtils.htmlEscape;
 import static org.springframework.web.util.HtmlUtils.htmlUnescape;
 
 public class Movie {
-    private int id;   
-    @Size(min=1, max=50) @NotNull private String movie_title;
+    private int movieId;   
+    @Size(min=1, max=50) @NotNull private String movieTitle;
     //regexp number between 1900 and 2099
     @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull private String year;    
     //regexp null or 0>= and <1000
     @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$") private String runtime;    
     //regexp null or number between 0 and 10 with optional 1 digit
     @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)") private String rating;    
-    @Size(min=0, max=500) private String plot_text;
-    @URL private String poster_url;
-    @URL private String background_url;
-    @URL private String trailer_url;
-    private String format_type;
+    @Size(min=0, max=500) private String plotText;
+    @URL private String posterUrl;
+    @URL private String backgroundUrl;
+    @URL private String trailerUrl;
+    private String formatType;
     private String availability;
-    private int owner_count;
-    private boolean new_movie;
+    private int ownerCount;
+    private boolean newMovie;
     private List<Genre> genres;
     private List<Role> roles;
 
@@ -35,14 +35,14 @@ public class Movie {
     public int addMovie(Movie movie, int owner_id){
         int retVal = -1;
         String sql = "SELECT movie_id FROM movies WHERE movie_title = ? AND year = ?";
-        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear())}); 
+        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())}); 
         if (movie_id==-1){
             sql = "INSERT INTO movies VALUES (DEFAULT,?,?,null,null,null,null,null) RETURNING movie_id";           
-            movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear())});
+            movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())});
             retVal = movie_id;
         }
         if (movie_id!=-1){
-            sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'"+movie.getFormat_type()+"','Available')";
+            sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'"+movie.getFormatType()+"','Available')";
             DbService.update(sql, null);
             if (retVal == -1){
                 retVal = 0;
@@ -55,8 +55,8 @@ public class Movie {
     public void updateMovie(Movie movie, int owner_id){
         String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
                 " WHERE movie_id=?";
-        DbService.update(sql, new Object[]{ movie.getMovie_title(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
-            parseFloat(movie.getRatingForSql()), movie.getPlot_text(), movie.getPoster_url(), movie.getBackground_url(), movie.getMovie_id()}); 
+        DbService.update(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
+            parseFloat(movie.getRatingForSql()), movie.getPlotText(), movie.getPosterUrl(), movie.getBackgroundUrl(), movie.getMovieId()}); 
     }
     
     
@@ -141,7 +141,7 @@ public class Movie {
             return roleList;
         }
         for (Role role : this.roles){
-            if (role.getProduction_role().equals(name)){
+            if (role.getProductionRole().equals(name)){
                 roleList.add(role);
             }
         }
@@ -149,37 +149,37 @@ public class Movie {
     }
     
     //getters & setters
-    public int getMovie_id(){ return this.id; }
-    public String getMovie_title(){ return htmlEscape(this.movie_title); }
+    public int getMovieId(){ return this.movieId; }
+    public String getMovieTitle(){ return htmlEscape(this.movieTitle); }
     public String getYear(){ return this.year; }
     public String getRuntime(){ return changeMinusValue(this.runtime); }
     public String getRuntimeForSql(){ return changeEmptyValue(this.runtime); }
     public String getRating(){ return changeMinusValue(this.rating); }
     public String getRatingForSql(){ return changeEmptyValue(this.rating); }
-    public String getPlot_text(){ return htmlEscape(this.plot_text); }
-    public String getPoster_url(){ return htmlEscape(this.poster_url); }
-    public String getBackground_url(){ return htmlEscape(this.background_url); }
-    public String getTrailer_url(){ return htmlEscape(this.trailer_url); }
-    public String getFormat_type(){ return this.format_type; }
+    public String getPlotText(){ return htmlEscape(this.plotText); }
+    public String getPosterUrl(){ return htmlEscape(this.posterUrl); }
+    public String getBackgroundUrl(){ return htmlEscape(this.backgroundUrl); }
+    public String getTrailerUrl(){ return htmlEscape(this.trailerUrl); }
+    public String getFormatType(){ return this.formatType; }
     public String getAvailability(){ return this.availability; }
-    public int getOwner_count(){ return this.owner_count; }
-    public boolean getNew_movie(){ return this.new_movie; }
+    public int getOwnerCount(){ return this.ownerCount; }
+    public boolean getNewMovie(){ return this.newMovie; }
     public List<Genre> getGenres(){ return this.genres; }
     public List<Role> getCast(){ return this.getRole("Actor"); }
     public List<Role> getDirectors(){ return this.getRole("Director"); }
     public List<Role> getWriters(){ return this.getRole("Writer"); }
     
-    public void setMovie_id(int value){ this.id = value; }
-    public void setMovie_title(String value){ this.movie_title = htmlUnescape(value); }
+    public void setMovieId(int value){ this.movieId = value; }
+    public void setMovieTitle(String value){ this.movieTitle = htmlUnescape(value); }
     public void setYear(String value){ this.year = value; }
     public void setRuntime(String value){ this.runtime = value; }
     public void setRating(String value){ this.rating = value; }
-    public void setPlot_text(String value){ this.plot_text = htmlUnescape(value); }
-    public void setFormatType(String value){ this.format_type = value; }
+    public void setPlotText(String value){ this.plotText = htmlUnescape(value); }
+    public void setFormatType(String value){ this.formatType = value; }
     public void setAvailability(String value){ this.availability = value; }
-    public void setPoster_url(String value){ this.poster_url = value; }
-    public void setBackground_url(String value){ this.background_url = value; }
-    public void setTrailer_url(String value){ this.trailer_url = value; }
-    public void setOwner_count(int value){ this.owner_count = value; }
-    public void setNew_movie(boolean value){ this.new_movie = value; };
+    public void setPosterUrl(String value){ this.posterUrl = value; }
+    public void setBackgroundUrl(String value){ this.backgroundUrl = value; }
+    public void setTrailerUrl(String value){ this.trailerUrl = value; }
+    public void setOwnerCount(int value){ this.ownerCount = value; }
+    public void setNewMovie(boolean value){ this.newMovie = value; };
 }

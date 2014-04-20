@@ -25,7 +25,7 @@ public class LoginController {
             
             // if login correct, set session parameters and goto users movies
             if (loginUser != null){
-                if (loginUser.getIs_admin()){
+                if (loginUser.getIsAdmin()){
                     session.setAttribute("admin", true);
                 } 
                 session.setAttribute("logged", loginUser);

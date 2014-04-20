@@ -5,9 +5,9 @@
 
 <h2>Delete Movie</h2>
 
-Are you sure you want to delete movie: <b>${movie.movie_title} (${movie.year})</b>?<p />
+Are you sure you want to delete movie: <b>${movie.movieTitle} (${movie.year})</b>?<p />
 <form action="deletemovie" method="post">
-    <input type="hidden" name="movie_id" value="${movie.movie_id}"/>
+    <input type="hidden" name="movie_id" value="${movie.movieId}"/>
     <input type="submit" name="action" value="Yes" />
     <input type="submit" name="action" value="No" />
 </form>

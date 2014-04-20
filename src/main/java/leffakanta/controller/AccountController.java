@@ -70,7 +70,7 @@ public class AccountController {
                 return "redirect:/nosession";
             }
             //check if current password matches before continuing
-            if (user.checkLogin(loggedUser.getUsername(), user.getPassword_entered())==null){
+            if (user.checkLogin(loggedUser.getUsername(), user.getPasswordEntered())==null){
                 result.rejectValue("password_entered","error.user","Entered password is incorrect");
             }            
 	    if(result.hasErrors()) {                
@@ -82,17 +82,17 @@ public class AccountController {
         
         // show account edit screen (admin)
         @RequestMapping(value="editaccount", method=RequestMethod.GET)
-        public String ShowEditAccount(@RequestParam(value = "id") int user_id, HttpSession session, Model model) {
+        public String ShowEditAccount(@RequestParam(value = "id") int userId, HttpSession session, Model model) {
             User loggedUser = (User)session.getAttribute("logged");
             if (loggedUser == null) {
                 return "redirect:/nosession";
             }
             User user = new User();
-            model.addAttribute("user", user.getUser(user_id));
-            if (loggedUser.getUser_id() == user_id){
-                model.addAttribute("disable_admin", true);
+            model.addAttribute("user", user.getUser(userId));
+            if (loggedUser.getUserId() == userId){
+                model.addAttribute("disableAdmin", true);
             }
-            return "EditUserAccount";
+            return "EditAccount";
         }                       
         
         // handle generic account update
@@ -103,10 +103,10 @@ public class AccountController {
                 return "redirect:/nosession";
             }
     	    if(result.hasErrors()) {                
-                if (loggedUser.getUser_id() == user.getUser_id()){
-                    model.addAttribute("disable_admin", true);
+                if (loggedUser.getUserId() == user.getUserId()){
+                    model.addAttribute("disableAdmin", true);
                 }
-                return "EditUserAccount";
+                return "EditAccount";
 	    }
             updateAccount(user,session,model);
             return "ConfirmAccountUpdate";
@@ -119,25 +119,25 @@ public class AccountController {
             boolean newType = false;
             boolean isOwner = false;
 
-            User userBefore = user.getUser(user.getUser_id());            
+            User userBefore = user.getUser(user.getUserId());
             if (userBefore.getUsername().equals(user.getUsername())==false){
                 newUsername = true;
                 model.addAttribute("newUsername", user.getUsername());
             }
-            if (user.getPassword_new().isEmpty()==false){
+            if (user.getPasswordNew().isEmpty()==false){
                 newPassword = true;
                 model.addAttribute("newPassword", true);
             }
-            if (userBefore.getIs_admin() != user.getIs_admin()){
+            if (userBefore.getIsAdmin() != user.getIsAdmin()){
                 newType = true;
-                if (user.getIs_admin()){
+                if (user.getIsAdmin()){
                     model.addAttribute("newType", "Admin");
                 } else {
                     model.addAttribute("newType", "Normal");
                 }
             }
             User loggedUser = (User)session.getAttribute("logged");
-            if (loggedUser.getUser_id() == user.getUser_id()){
+            if (loggedUser.getUserId() == user.getUserId()){
                 isOwner = true;
             }
 
@@ -162,12 +162,12 @@ public class AccountController {
             if (user == null) {
                 return "redirect:/nosession";
             }                        
-            if (user.getIs_admin()==false) {
+            if (user.getIsAdmin()==false) {
                 return "redirect:/movies";
             }                        
             model.addAttribute("userList", users.getUserList());
             model.addAttribute("userCount", users.getUserCount());
-            model.addAttribute("ownId", user.getUser_id());
+            model.addAttribute("ownId", user.getUserId());
             return "ShowUserList";
         }           
         
@@ -183,12 +183,12 @@ public class AccountController {
 
         // handle delete after post
         @RequestMapping(value="deleteaccount", method=RequestMethod.POST)
-        public String submitConfirmDeleteUser(@RequestParam int user_id, @RequestParam String action, HttpSession session, Model model) {
+        public String submitConfirmDeleteUser(@RequestParam int userId, @RequestParam String action, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             if (action.equals("Yes")){                
-                new User().deleteUser(user_id);
+                new User().deleteUser(userId);
             }
             return "redirect:/accounts";
         }        

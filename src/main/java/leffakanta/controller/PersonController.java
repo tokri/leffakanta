@@ -23,10 +23,10 @@ public class PersonController {
             if (user == null) {
                 return "redirect:/nosession";
             }            
-            int userId = user.getUser_id();  
+            int userId = user.getUserId();  
             Person person = new Person().getPerson(person_id);
             Roles roles = new Roles();
-            roles.updatePersonRoles(person_id, user.getUser_id());
+            roles.updatePersonRoles(person_id, user.getUserId());
             model.addAttribute("person", person);
             model.addAttribute("roles", roles);
             return "ShowPerson";
@@ -54,7 +54,7 @@ public class PersonController {
                 return "EditPerson";
 	    }
             person.updatePerson(person);
-            return "redirect:/person?id="+person.getPerson_id();
+            return "redirect:/person?id="+person.getPersonId();
         }        
         
 }

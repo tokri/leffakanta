@@ -4,6 +4,6 @@ public class Genre {
     private String genre;
     
    //getters & setters
-    public String getGenre_name(){ return this.genre; }
-    public void setGenre_name(String value){ this.genre = value; }
+    public String getGenreName(){ return this.genre; }
+    public void setGenreName(String value){ this.genre = value; }
 }

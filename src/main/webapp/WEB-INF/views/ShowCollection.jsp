@@ -16,12 +16,12 @@
     </tr>    
     <c:forEach items="${movieList}" var="movie">
     <tr>
-        <td><a href="movie?id=${movie.movie_id}">${movie.movie_title}</a></td>
+        <td><a href="movie?id=${movie.movieId}">${movie.movieTitle}</a></td>
         <td>${movie.year}</td>
         <td>${movie.rating}</td>
-        <td>${movie.format_type}</td>
+        <td>${movie.formatType}</td>
         <td>${movie.availability}</td>        
-        <td><a href="deletemovie?id=${movie.movie_id}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></td>        
+        <td><a href="deletemovie?id=${movie.movieId}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></td>        
     </tr>
     </c:forEach>
 </table>

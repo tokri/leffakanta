@@ -14,10 +14,10 @@
     <c:forEach items="${userList}" var="user">
     <tr>
         <td>${user.username}</td>
-        <td><c:if test="${user.is_admin == true}">Admin</c:if><c:if test="${user.is_admin == false}">Normal</c:if></td>
-        <td><a href="editaccount?id=${user.user_id}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>
-        <td><c:if test="${ownId != user.user_id}"><a href="deleteaccount?id=${user.user_id}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></c:if>
-            <c:if test="${ownId == user.user_id}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"  style="opacity:0.3;filter:alpha(opacity=30);"></c:if></td>
+        <td><c:if test="${user.isAdmin == true}">Admin</c:if><c:if test="${user.isAdmin == false}">Normal</c:if></td>
+        <td><a href="editaccount?id=${user.userId}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>
+        <td><c:if test="${ownId != user.userId}"><a href="deleteaccount?id=${user.userId}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></c:if>
+            <c:if test="${ownId == user.userId}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"  style="opacity:0.3;filter:alpha(opacity=30);"></c:if></td>
     </tr>
     </c:forEach>
 </table>

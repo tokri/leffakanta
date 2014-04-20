@@ -6,15 +6,15 @@
 <%@include file="includeMenu.jsp" %>
 
 <h2>Add Movie</h2>
-<div id="add" class="MovieData">
+<div id="movie-data">
     <form:form action="addmovie" method="POST" commandName='movie'>
-        <table id="add_movie_table">
-            <tr><td>Title:</td><td><form:input path="movie_title" size="70" htmlEscape="false"/>&nbsp;&nbsp;
-            <form:errors path="movie_title" cssClass="error" /></td></tr>
+        <table id="add-movie-table">
+            <tr><td>Title:</td><td><form:input path="movieTitle" size="70" htmlEscape="false"/>&nbsp;&nbsp;
+            <form:errors path="movieTitle" cssClass="error" /></td></tr>
             <tr><td>Year:</td><td><form:input path="year" size="5"/>&nbsp;&nbsp;
             <form:errors path="year" cssClass="error" /></td></tr>
-            <tr><td>Format:</td><td><form:select path="format_type" items="${formatTypeList}" />
-            <form:errors path="format_type" cssClass="error" /></td></tr>
+            <tr><td>Format:</td><td><form:select path="formatType" items="${formatTypeList}" />
+            <form:errors path="formatType" cssClass="error" /></td></tr>
         </table><br />
         <input type="submit" value='Add Movie'>
     </form:form>  

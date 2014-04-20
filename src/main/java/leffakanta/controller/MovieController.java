@@ -43,7 +43,7 @@ public class MovieController {
 
         // handle movie adding after post
         @RequestMapping(value = "addmovie", method = RequestMethod.POST)
-        public String submitAddMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, @RequestParam String format_type, HttpSession session, Model model) {
+        public String submitAddMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, @RequestParam String formatType, HttpSession session, Model model) {
             User user = (User)session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
@@ -51,11 +51,11 @@ public class MovieController {
 	    if(result.hasErrors()) {
                 return "AddMovie";
 	    }
-            movie.setFormatType(format_type);
-            int id = movie.addMovie(movie, user.getUser_id());
+            movie.setFormatType(formatType);
+            int id = movie.addMovie(movie, user.getUserId());
             if (id>0){
                 movie = movie.getMovie(id);
-                movie.setNew_movie(true);
+                movie.setNewMovie(true);
                 model.addAttribute("head", "Additional Movie Details");
                 model.addAttribute("movie", movie);
                 return "EditMovie";
@@ -83,14 +83,14 @@ public class MovieController {
                 return "redirect:/nosession";
             }
 	    if(result.hasErrors()) {
-                if (movie.getNew_movie()){
+                if (movie.getNewMovie()){
                     model.addAttribute("head", "Additional Movie Details");
                 } else {
                     model.addAttribute("head", "Edit Movie");
                 }
                 return "EditMovie";
 	    }
-            movie.updateMovie(movie, user.getUser_id());
+            movie.updateMovie(movie, user.getUserId());
             return "redirect:/collection";
         }        
         
@@ -113,7 +113,7 @@ public class MovieController {
                 return "redirect:/nosession";
             }
             if (action.equals("Yes")){
-                new Movie().deleteMovie(movie_id, loggedUser.getUser_id());
+                new Movie().deleteMovie(movie_id, loggedUser.getUserId());
             }
             return "redirect:/collection";
         }        

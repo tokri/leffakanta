@@ -7,15 +7,15 @@
 </div><p />
 
 <h2>Register a new account</h2>
-<div id="add" class="AccountData">
+<div id="account-data">
     <form:form action="register" method="POST" commandName='user'>
-        <table id="register_table">
+        <table id="register-table">
             <tr><td>Username:</td><td><form:input path="username" size="20"/>&nbsp;&nbsp;
             <form:errors path="username" cssClass="error" /></td></tr>
-            <tr><td>Password:</td><td><form:input type="password" path="password_new" size="20"/>&nbsp;&nbsp;
-            <form:errors path="password_new" cssClass="error" /></td></tr>
-            <tr><td>Confirm password</td><td><form:input type="password" path="password_new_confirm" size="20"/>&nbsp;&nbsp;
-            <form:errors path="password_change_valid" cssClass="error" /></td></tr>
+            <tr><td>Password:</td><td><form:input type="password" path="passwordNew" size="20"/>&nbsp;&nbsp;
+            <form:errors path="passwordNew" cssClass="error" /></td></tr>
+            <tr><td>Confirm password</td><td><form:input type="password" path="passwordNewConfirm" size="20"/>&nbsp;&nbsp;
+            <form:errors path="passwordChangeValid" cssClass="error" /></td></tr>
         </table><br />        
         <input type="submit" value='Send'>
     </form:form>  
