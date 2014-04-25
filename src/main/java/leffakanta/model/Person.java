@@ -1,6 +1,6 @@
 package leffakanta.model;
 
-import leffakanta.service.DbService;
+import leffakanta.service.Database;
 
 public class Person {
     private int personId;
@@ -12,14 +12,14 @@ public class Person {
     public Person getPerson(int personId){        
         // get basic movie details
         String sql = "SELECT * FROM people WHERE person_id = ?";
-        Person person = DbService.queryForObject(sql, personId, Person.class);
+        Person person = Database.queryForObject(sql, personId, Person.class);
         return person;
     }
        
     // update person details
     public void updatePerson(Person person){
         String sql = "UPDATE people SET person_name=?, date_of_birth=?, image_url=? WHERE person_id=?";
-        DbService.update(sql, new Object[]{ person.getPersonName(), person.getDateOfBirth(), person.getImageUrl(), person.getPersonId()}); 
+        Database.update(sql, new Object[]{ person.getPersonName(), person.getDateOfBirth(), person.getImageUrl(), person.getPersonId()}); 
     }
     
     //getters & setters

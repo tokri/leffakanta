@@ -1,6 +1,6 @@
 package leffakanta.model;
 
-import leffakanta.service.DbService;
+import leffakanta.service.Database;
 import leffakanta.service.PasswordHash;
 import javax.validation.constraints.AssertTrue;
 import org.springframework.stereotype.Service;
@@ -14,25 +14,20 @@ public class User {
     private boolean isAdmin;
     private String passwordNew;
     private String passwordNewConfirm;
-    private boolean passwordChangeValid;
+    private boolean passwordsMatch;
 
 
-    @AssertTrue(message="entered passwords didn't match")
-    private boolean isPasswordChangeValid() {
-        return this.passwordNew.equals(this.passwordNewConfirm);
-    }    
-    
     // get user's details
     public User getUser(String username){
         String sql = "SELECT * FROM users WHERE username = ?";
-        User user = DbService.queryForObject(sql, username, User.class);
+        User user = Database.queryForObject(sql, username, User.class);
         return user;
     }
     
     // get user by id
     public User getUser(int user_id){
         String sql = "SELECT * FROM users WHERE user_id = ?";
-        User user = DbService.queryForObject(sql, user_id, User.class);
+        User user = Database.queryForObject(sql, user_id, User.class);
         return user;
     }
     
@@ -66,7 +61,7 @@ public class User {
             user.setIsAdmin(false);
             user.setPasswordHash(hash.createHash(user.passwordNew));
             String sql = "INSERT INTO users VALUES (DEFAULT,?,?,false)";
-            DbService.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash()});
+            Database.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash()});
             user.setPasswordNew("");
             user.setPasswordNewConfirm("");
         } catch (Exception e){
@@ -82,12 +77,12 @@ public class User {
         try{
             if (user.getPasswordNew().isEmpty()){
                 sql = "UPDATE users SET username=?, is_admin=? WHERE user_id=?";
-                DbService.update(sql, new Object[]{ user.getUsername(), user.getIsAdmin(), user.getUserId()}); 
+                Database.update(sql, new Object[]{ user.getUsername(), user.getIsAdmin(), user.getUserId()}); 
             } else {
                 PasswordHash hash = new PasswordHash();        
                 user.setPasswordHash(hash.createHash(user.passwordNew));
                 sql = "UPDATE users SET username=?, password_hash=?, is_admin=? WHERE user_id=?";
-                DbService.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash(), user.getIsAdmin(), user.getUserId()}); 
+                Database.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash(), user.getIsAdmin(), user.getUserId()}); 
                 user.setPasswordNew("");
                 user.setPasswordNewConfirm("");
             }
@@ -100,9 +95,14 @@ public class User {
     // delete user
     public void deleteUser(int user_id){
         String sql = "DELETE FROM users WHERE user_id = ?";
-        DbService.update(sql, user_id);        
+        Database.update(sql, user_id);        
     }
 
+    @AssertTrue
+    private boolean isPasswordsMatch() {
+        return this.passwordNew.equals(this.passwordNewConfirm);
+    }    
+    
     //getters & setters
     public int getUserId(){ return this.userId; }
     public String getUsername(){ return this.username; }
@@ -110,7 +110,7 @@ public class User {
     public boolean getIsAdmin(){ return this.isAdmin; }
     public String getPasswordNew(){ return this.passwordNew; }
     public String getPasswordNewConfirm(){ return this.passwordNewConfirm; }
-    public boolean getPasswordChangeValid(){ return this.passwordChangeValid; }
+    public boolean getPasswordsMatch(){ return this.passwordsMatch; }
     public String getPasswordEntered(){ return this.passwordEntered; }
     
     public void setUserId(int value){ this.userId = value; };
@@ -119,7 +119,7 @@ public class User {
     public void setIsAdmin(boolean value){ this.isAdmin = value; };
     public void setPasswordNew(String value){ this.passwordNew = value; };
     public void setPasswordNewConfirm(String value){ this.passwordNewConfirm = value; };
-    public void setPasswordChangeValid(boolean value){ this.passwordChangeValid = value; };
+    public void setPasswordsMatch(boolean value){ this.passwordsMatch = value; };
     public void setPasswordEntered(String value){ this.passwordEntered = value; };
     
 }

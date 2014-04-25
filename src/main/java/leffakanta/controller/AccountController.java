@@ -32,7 +32,7 @@ public class AccountController {
             String newUsername = user.getUsername();
             // give error message if user already exists with the same username
             if (user.getUser(newUsername)!=null){
-                result.rejectValue("username","error.user",newUsername+" already exists! Please choose another username");
+                result.rejectValue("username","error.user");
             }            
 	    if(result.hasErrors()) {                
                 return "RegisterAccount";
@@ -71,7 +71,7 @@ public class AccountController {
             }
             //check if current password matches before continuing
             if (user.checkLogin(loggedUser.getUsername(), user.getPasswordEntered())==null){
-                result.rejectValue("password_entered","error.user","Entered password is incorrect");
+                result.rejectValue("passwordEntered","error.password");
             }            
 	    if(result.hasErrors()) {                
                 return "EditMyAccount";

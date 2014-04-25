@@ -1,7 +1,5 @@
 package leffakanta.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,12 +7,11 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-// DbService handles all database requests for the rest of the models
+// Database handles all database requests for the rest of the models
 @Service
-public class DbService {
+public class Database {
     private static DataSource dataSource;
     
     // connect datasource for database automatically

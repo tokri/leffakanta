@@ -17,7 +17,7 @@
                 <tr><td>New password:</td><td><form:input type="password" path="passwordNew" size="20"/>&nbsp;&nbsp;
                 <form:errors path="passwordNew" cssClass="error" /></td></tr>
                 <tr><td>Confirm new password:</td><td><form:input type="password" path="passwordNewConfirm" size="20"/>&nbsp;&nbsp;
-                <form:errors path="passwordChangeValid" cssClass="error" /></td></tr>
+                <form:errors path="passwordsMatch" cssClass="error" /></td></tr>
             </table><br />
             <input type="submit" value='Send'>
     </form:form>  

@@ -1,6 +1,6 @@
 package leffakanta.model;
 
-import leffakanta.service.DbService;
+import leffakanta.service.Database;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class Roles {
                 "person_id = ? AND owner_id = ? UNION SELECT movies.movie_id, movie_title, year, production_role, null as character_name FROM movies, " +
                 "roles, collections WHERE character_id IS NULL AND roles.movie_id = movies.movie_id AND collections.movie_id = movies.movie_id AND " +
                 "person_id = ? AND owner_id = ? ORDER BY year DESC;";
-        this.roles = DbService.queryForList(sql, new Object[]{ personId, userId, personId, userId }, RoleAndMovie.class);
+        this.roles = Database.queryForList(sql, new Object[]{ personId, userId, personId, userId }, RoleAndMovie.class);
     }    
     
     private List<RoleAndMovie> getPersonRole(String name){

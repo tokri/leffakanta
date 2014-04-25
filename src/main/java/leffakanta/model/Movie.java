@@ -1,6 +1,6 @@
 package leffakanta.model;
 
-import leffakanta.service.DbService;
+import leffakanta.service.Database;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -12,17 +12,25 @@ import static org.springframework.web.util.HtmlUtils.htmlUnescape;
 
 public class Movie {
     private int movieId;   
-    @Size(min=1, max=50) @NotNull private String movieTitle;
+    @Size(min=1, max=50) @NotNull 
+    private String movieTitle;
     //regexp number between 1900 and 2099
-    @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull private String year;    
+    @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull
+    private String year;    
     //regexp null or 0>= and <1000
-    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$") private String runtime;    
+    @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$")
+    private String runtime;    
     //regexp null or number between 0 and 10 with optional 1 digit
-    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)") private String rating;    
-    @Size(min=0, max=500) private String plotText;
-    @URL private String posterUrl;
-    @URL private String backgroundUrl;
-    @URL private String trailerUrl;
+    @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)")
+    private String rating;    
+    @Size(min=0, max=500) 
+    private String plotText;
+    @URL 
+    private String posterUrl;
+    @URL
+    private String backgroundUrl;
+    @URL
+    private String trailerUrl;
     private String formatType;
     private String availability;
     private int ownerCount;
@@ -35,15 +43,15 @@ public class Movie {
     public int addMovie(Movie movie, int owner_id){
         int retVal = -1;
         String sql = "SELECT movie_id FROM movies WHERE movie_title = ? AND year = ?";
-        int movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())}); 
+        int movie_id = Database.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())}); 
         if (movie_id==-1){
             sql = "INSERT INTO movies VALUES (DEFAULT,?,?,null,null,null,null,null) RETURNING movie_id";           
-            movie_id = DbService.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())});
+            movie_id = Database.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())});
             retVal = movie_id;
         }
         if (movie_id!=-1){
             sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'"+movie.getFormatType()+"','Available')";
-            DbService.update(sql, null);
+            Database.update(sql, null);
             if (retVal == -1){
                 retVal = 0;
             }
@@ -55,7 +63,7 @@ public class Movie {
     public void updateMovie(Movie movie, int owner_id){
         String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
                 " WHERE movie_id=?";
-        DbService.update(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
+        Database.update(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
             parseFloat(movie.getRatingForSql()), movie.getPlotText(), movie.getPosterUrl(), movie.getBackgroundUrl(), movie.getMovieId()}); 
     }
     
@@ -63,14 +71,14 @@ public class Movie {
     // delete movie from selected users collection
     public void deleteMovie(int movie_id, int owner_id){
         String sql = "DELETE FROM collections WHERE movie_id = ? AND owner_id = ?";
-        DbService.update(sql, new Object[] {movie_id, owner_id});
+        Database.update(sql, new Object[] {movie_id, owner_id});
         
         // if last user with the same movie, delete movie records too
         sql = "SELECT COUNT(*) FROM collections WHERE movie_id = ?";
-        int count = DbService.queryForInt(sql, movie_id);
+        int count = Database.queryForInt(sql, movie_id);
         if (count == 0){
             sql = "DELETE FROM movies WHERE movie_id = ?";
-            DbService.update(sql, movie_id);
+            Database.update(sql, movie_id);
         }
     }
     
@@ -78,18 +86,18 @@ public class Movie {
     public Movie getMovie(int movie_id){        
         // get basic movie details
         String sql = "SELECT * FROM movies WHERE movie_id = ?";
-        Movie movie = DbService.queryForObject(sql, movie_id, Movie.class);
+        Movie movie = Database.queryForObject(sql, movie_id, Movie.class);
 
         // get movie's genres
         sql = "SELECT genre_name FROM movie_genres, genres WHERE movie_genres.genre_id=genres.genre_id AND movie_id = ?";
-        movie.genres = DbService.queryForList(sql, movie_id, Genre.class);
+        movie.genres = Database.queryForList(sql, movie_id, Genre.class);
 
         sql = "SELECT role_id, people.person_id, production_role, person_name, image_url, null as character_name FROM " +
                 "people, roles WHERE production_role != 'Actor' AND roles.person_id = people.person_id AND movie_id = ? " +
                 "UNION SELECT role_id, people.person_id, production_role, person_name, image_url, character_name FROM " +
                 "people, roles, characters WHERE production_role = 'Actor' AND roles.character_id = characters.character_id " +
                 "AND roles.person_id = people.person_id AND movie_id = ? ORDER BY role_id ASC;";
-        movie.roles = DbService.queryForList(sql, new Object[]{ movie_id, movie_id }, Role.class);        
+        movie.roles = Database.queryForList(sql, new Object[]{ movie_id, movie_id }, Role.class);        
         return movie;
     }
     
@@ -131,7 +139,7 @@ public class Movie {
     public List<String> getEnumValues(String enumName)
     {        
         String sql = "SELECT enum_range(null::" + enumName + ")";
-        List<String> enums = DbService.queryForCommaSeparatedList(sql);
+        List<String> enums = Database.queryForCommaSeparatedList(sql);
         return enums;
     }    
     
