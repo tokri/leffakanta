@@ -7,5 +7,5 @@
 <c:if test="${admin == true}"><a class="menu" href="movies">Manage Movies</a> | </c:if>
 <c:if test="${admin == null}"><a class="menu" href="account">My Account</a> | </c:if>    
 <c:if test="${admin == true}"><a class="menu" href="accounts">Manage Accounts</a> | </c:if>
-    <a class="menu" href="logout">Sign Out</a>
+    <a class="menu" href="logout">Sign Out: ${username}</a>
 </div><p />

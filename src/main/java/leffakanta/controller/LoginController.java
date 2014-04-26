@@ -29,6 +29,7 @@ public class LoginController {
                     session.setAttribute("admin", true);
                 } 
                 session.setAttribute("logged", loginUser);
+                session.setAttribute("username", username);
                 return "redirect:/getdevice";
             }
             // if login incorrect, show error message and display login again
@@ -46,7 +47,8 @@ public class LoginController {
         @RequestMapping(value="logout", method=RequestMethod.GET)
         public String showLogout(HttpSession session, Model model) {
             session.removeAttribute("logged");
-            session.removeAttribute("mobile");
+            session.removeAttribute("username");
+            session.removeAttribute("desktop");
             session.removeAttribute("admin");            
             model.addAttribute("logout", true);
             return "ShowLogin";

@@ -5,7 +5,10 @@
 
 <h2>Delete Movie</h2>
 
-Are you sure you want to delete movie: <b>${movie.movieTitle} (${movie.year})</b>?<p />
+Are you sure you want to delete movie: <b>${movie.movieTitle} (${movie.year})</b> ?<p />
+
+<div id="note">Please note that this will delete the movie from every users collection!</div><p />
+
 <form action="deletemovie" method="post">
     <input type="hidden" name="movie_id" value="${movie.movieId}"/>
     <input type="submit" name="action" value="Yes" />

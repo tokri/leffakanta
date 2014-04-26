@@ -41,6 +41,7 @@ public class AccountController {
                 return "RegisterAccount";
             }
             session.setAttribute("logged", user.getUser(newUsername));
+            session.setAttribute("username", user.getUsername());
             return "ConfirmNewAccount";
         }
         
@@ -130,6 +131,7 @@ public class AccountController {
             //if account changed for currently logged user, update session details for updated user account details
             if (accountUpdated && loggedUser.getUserId() == user.getUserId()){
                 session.setAttribute("logged", user);
+                session.setAttribute("username", user.getUsername());
             }
         }
         

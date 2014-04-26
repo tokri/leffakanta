@@ -1,4 +1,5 @@
 <% Boolean desktop = (Boolean)session.getAttribute("desktop"); %>
+<% String username = (String)session.getAttribute("username"); %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:if test="${desktop == true}"><!DOCTYPE html></c:if>
 <c:if test="${desktop != true}"><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd"></c:if>
