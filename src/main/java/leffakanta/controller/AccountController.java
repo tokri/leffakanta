@@ -223,6 +223,7 @@ public class AccountController {
             if (loggedUser.getIsAdmin()==false) {
                 return "redirect:/movies";
             }                        
+            model.addAttribute("searchValue", searchValue);
             model.addAttribute("userList", users.searchUserList(searchValue));
             model.addAttribute("userCount", users.searchUserCount(searchValue));
             model.addAttribute("ownId", loggedUser.getUserId());

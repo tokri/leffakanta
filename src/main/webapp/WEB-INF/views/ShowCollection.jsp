@@ -3,10 +3,13 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<h2>My Collection
-<form id="search" action="searchcollection" method="POST">
-<input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form></h2><p />
-
+<h2>My Collection</h2>
+<c:if test="${searchValue == null}"><form id="search" action="searchcollection" method="POST">
+    <input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form><p />
+</c:if><c:if test="${searchValue != null}">
+    <div id="note"><p/>Search results for '${searchValue}':<p /><a class="menu" href="collection">(Show All)</a></div><p />
+</c:if>
+    
 <c:if test="${not empty movieList}">
 <table id="movies-table">
     <tr>
@@ -32,7 +35,8 @@
 </c:if>
 
 <c:if test="${empty movieList}">
-    <p><b>No movies in the collection :(</b></p>
+    <p><c:if test="${searchValue == null}"><b>No movies in the collection :(</b></c:if>
+       <c:if test="${searchValue != null}">0 movies found.</c:if></p>
 </c:if>
     
 <jsp:include page="includeFooter.jsp" />

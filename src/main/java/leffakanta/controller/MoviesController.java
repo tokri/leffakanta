@@ -49,6 +49,7 @@ public class MoviesController {
                 return "redirect:/nosession";
             }            
             int userId = user.getUserId();  
+            model.addAttribute("searchValue", searchValue);
             model.addAttribute("movieList", movies.searchMovieList(userId, searchValue));
             model.addAttribute("movieCount", movies.searchMovieCount(userId, searchValue));
             return "ShowCollection";
@@ -62,6 +63,7 @@ public class MoviesController {
                 return "redirect:/nosession";
             }            
             int userId = user.getUserId();  
+            model.addAttribute("searchValue", searchValue);
             model.addAttribute("movieList", movies.searchMovieList(searchValue));
             model.addAttribute("movieCount", movies.searchMovieCount(searchValue));
             return "ShowAllMovies";
