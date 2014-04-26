@@ -8,29 +8,25 @@ import org.springframework.stereotype.Service;
 public class Movies {   
     
     // get all movies
-    public List<Movie> getMovieList(){
+    public List<Movie> getMovieList(int page, int pageSize){
         String sql = "SELECT m.movie_id, movie_title, year, rating, c.owner_count FROM movies m " +
                 "JOIN (SELECT movie_id, COUNT(movie_id) as owner_count FROM collections GROUP BY movie_id) c "+
-                "ON m.movie_id = c.movie_id ORDER BY movie_title, year ASC";
-        List<Movie> movies = Database.queryForList(sql, null, Movie.class);
+                "ON m.movie_id = c.movie_id ORDER BY movie_title, year ASC OFFSET ? LIMIT ?";
+        List<Movie> movies = Database.queryForList(sql, new Object[]{ (page-1)*pageSize, pageSize}, Movie.class);
         return movies;
     }
 
     // get users movie collection
-    public List<Movie> getMovieList(int userId){
+    public List<Movie> getMovieList(int userId, int page, int pageSize){
         String sql = "SELECT DISTINCT item_id as collection_id, movies.movie_id, movie_title, year, rating, user_id, format_type " +
                 "FROM movies, collections WHERE movies.movie_id = collections.movie_id AND user_id = ? " +
-                "ORDER BY movie_title, year ASC";
-        List<Movie> movies = Database.queryForList(sql, userId, Movie.class);
+                "ORDER BY movie_title, year ASC OFFSET ? LIMIT ?";
+        List<Movie> movies = Database.queryForList(sql, new Object[]{ userId, (page-1)*pageSize, pageSize}, Movie.class);
         return movies;
     }
 
     // get all movies for given search value
     public List<Movie> searchMovieList(String searchValue){
-        // if searchValue is empty, return all movies from user
-        if (searchValue.trim().length() == 0){
-            return getMovieList();
-        }
         String sql = "SELECT m.movie_id, movie_title, year, rating, c.owner_count FROM movies m " +
                 "JOIN (SELECT movie_id, COUNT(movie_id) as owner_count FROM collections GROUP BY movie_id) c "+
                 "ON m.movie_id = c.movie_id WHERE LOWER(movie_title) LIKE ? ORDER BY movie_title, year ASC";
@@ -40,10 +36,6 @@ public class Movies {
 
     // get users movie collection for given search value
     public List<Movie> searchMovieList(int userId, String searchValue){
-        // if searchValue is empty, return all movies from user
-        if (searchValue.trim().length() == 0){
-            return getMovieList(userId);
-        }
         String sql = "SELECT DISTINCT item_id as collection_id, movies.movie_id, movie_title, year, rating, user_id, format_type " +
                 "FROM movies, collections WHERE movies.movie_id = collections.movie_id AND user_id = ? AND LOWER(movie_title) LIKE ? " +
                 "ORDER BY movie_title, year ASC";

@@ -1,5 +1,6 @@
 package leffakanta.controller;
 
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import leffakanta.model.Movies;
 import leffakanta.model.User;
@@ -13,31 +14,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MoviesController {
         @Autowired
-        private Movies movies;
+        private Movies movies;        
+        private int pageSize = 10;
 
         // list movies from collection
         @RequestMapping(value="collection", method=RequestMethod.GET)
-        public String showCollection(HttpSession session, Model model) {            
+        public String showCollection(@RequestParam int page, HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
             }            
             int userId = user.getUserId();
-            model.addAttribute("movieList", movies.getMovieList(userId));
-            model.addAttribute("movieCount", movies.getMovieCount(userId));
+            List movieList = movies.getMovieList(userId, page, this.pageSize);
+            int movieCount = movies.getMovieCount(userId);
+            int pageCount = (int)Math.ceil((double)movieCount/this.pageSize);
+            model.addAttribute("movieList", movieList);
+            model.addAttribute("movieCount", movieCount);
+            model.addAttribute("page", page);
+            model.addAttribute("pageCount", pageCount);
             return "ShowCollection";
         }           
         
         // list all movies
         @RequestMapping(value="movies", method=RequestMethod.GET)
-        public String showAllMovies(HttpSession session, Model model) {            
+        public String showAllMovies(@RequestParam int page, HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
             }            
             int userId = user.getUserId();
-            model.addAttribute("movieList", movies.getMovieList());
-            model.addAttribute("movieCount", movies.getMovieCount());
+            List movieList = movies.getMovieList(page, this.pageSize);
+            int movieCount = movies.getMovieCount();
+            int pageCount = (int)Math.ceil((double)movieCount/this.pageSize);
+            model.addAttribute("movieList", movieList);
+            model.addAttribute("movieCount", movieCount);
+            model.addAttribute("page", page);
+            model.addAttribute("pageCount", pageCount);
             return "ShowAllMovies";
         }           
         

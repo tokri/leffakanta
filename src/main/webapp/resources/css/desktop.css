@@ -68,6 +68,15 @@ a:hover {
     padding-bottom: 0px;
 }
 
+.left {
+    float: left;
+    padding-right: 200px;
+}
+
+.right {
+    float: left;
+}
+
 #bullets li {
     list-style-type: disc;
 }
