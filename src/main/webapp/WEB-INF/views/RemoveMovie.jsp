@@ -6,7 +6,7 @@
 <h2>Remove Movie From Collection</h2>
 
 Are you sure you want to remove movie: <b>${movie.movieTitle} (${movie.year})</b>?<p />
-<form action="removemovie" method="post">
+<form action="removeitem" method="post">
     <input type="hidden" name="collection_id" value="${movie.collectionId}"/>
     <input type="submit" name="action" value="Yes" />
     <input type="submit" name="action" value="No" />

@@ -3,7 +3,10 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<h2>Manage All Movies</h2>
+<h2>Manage All Movies&nbsp;<form id="search" action="searchmovies" method="POST">
+<input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form></h2><p />
+
+
 <c:if test="${not empty movieList}">
 <table id="movies-table">
     <tr>

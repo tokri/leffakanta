@@ -20,4 +20,18 @@ public class Users {
         int count = Database.queryForInt(sql, null);
         return count;
     }    
+    
+    // get users movie collection for given search value
+    public List<Movie> searchUserList(String searchValue){
+        String sql = "SELECT user_id, username, is_admin FROM users WHERE LOWER(username) LIKE ? ORDER BY username ASC";
+        List<Movie> movies = Database.queryForList(sql, "%"+searchValue.toLowerCase()+"%", User.class);
+        return movies;
+    }
+
+    // get movie amount for given search value
+    public int searchUserCount(String searchValue){
+        String sql = "SELECT COUNT(*) FROM users WHERE LOWER(username) LIKE ?";
+        int count = Database.queryForInt(sql, "%"+searchValue.toLowerCase()+"%");
+        return count;
+    }    
 }

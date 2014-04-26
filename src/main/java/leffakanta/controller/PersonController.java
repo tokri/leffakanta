@@ -55,6 +55,6 @@ public class PersonController {
 	    }
             person.updatePerson(person);
             return "redirect:/person?id="+person.getPersonId();
-        }        
+        }
         
 }

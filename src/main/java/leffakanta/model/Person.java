@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.URL;
 public class Person {
     private int personId;
     private String personName;
-    private String dateOfBirth;
     @URL
     private String imageUrl;
     
@@ -20,18 +19,16 @@ public class Person {
        
     // update person details
     public void updatePerson(Person person){
-        String sql = "UPDATE people SET person_name=?, date_of_birth=?, image_url=? WHERE person_id=?";
-        Database.update(sql, new Object[]{ person.getPersonName(), person.getDateOfBirth(), person.getImageUrl(), person.getPersonId()}); 
+        String sql = "UPDATE people SET person_name=?, image_url=? WHERE person_id=?";
+        Database.update(sql, new Object[]{ person.getPersonName(), person.getImageUrl(), person.getPersonId()}); 
     }
     
     //getters & setters
     public int getPersonId(){ return this.personId; }
     public String getPersonName(){ return this.personName; }
-    public String getDateOfBirth(){ return null; }
     public String getImageUrl(){ return this.imageUrl; }
 
     public void setPersonId(int value){ this.personId = value; }
     public void setPersonName(String value){ this.personName = value; }
-    public void setDateOfBirth(String value){ this.dateOfBirth = value; }
     public void setImageUrl(String value){ this.imageUrl = value; }
 }

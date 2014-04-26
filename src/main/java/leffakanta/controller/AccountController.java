@@ -212,4 +212,21 @@ public class AccountController {
             model.addAttribute("ownId", loggedUser.getUserId());
             return "ShowAllUsers";
         }        
+        
+        // list all accounts for given search value
+        @RequestMapping(value="searchaccounts", method=RequestMethod.POST)
+        public String showSearchAccounts(@RequestParam String searchValue, HttpSession session, Model model) {              
+            User loggedUser = (User) session.getAttribute("logged");
+            if (loggedUser == null) {
+                return "redirect:/nosession";
+            }                        
+            if (loggedUser.getIsAdmin()==false) {
+                return "redirect:/movies";
+            }                        
+            model.addAttribute("userList", users.searchUserList(searchValue));
+            model.addAttribute("userCount", users.searchUserCount(searchValue));
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
+        }           
+        
 }

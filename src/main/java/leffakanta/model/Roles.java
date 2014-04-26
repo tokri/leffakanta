@@ -12,9 +12,9 @@ public class Roles {
         // get basic movie details
         String sql = "SELECT movies.movie_id, movie_title, year, production_role, character_name FROM movies, roles, characters, collections WHERE "+
                 "roles.movie_id = movies.movie_id AND roles.character_id = characters.character_id AND movies.movie_id = collections.movie_id AND " +
-                "person_id = ? AND owner_id = ? UNION SELECT movies.movie_id, movie_title, year, production_role, null as character_name FROM movies, " +
+                "person_id = ? AND user_id = ? UNION SELECT movies.movie_id, movie_title, year, production_role, null as character_name FROM movies, " +
                 "roles, collections WHERE character_id IS NULL AND roles.movie_id = movies.movie_id AND collections.movie_id = movies.movie_id AND " +
-                "person_id = ? AND owner_id = ? ORDER BY year DESC;";
+                "person_id = ? AND user_id = ? ORDER BY year DESC;";
         this.roles = Database.queryForList(sql, new Object[]{ personId, userId, personId, userId }, RoleAndMovie.class);
     }    
     

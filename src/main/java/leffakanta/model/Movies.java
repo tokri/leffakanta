@@ -11,7 +11,7 @@ public class Movies {
     public List<Movie> getMovieList(){
         String sql = "SELECT m.movie_id, movie_title, year, rating, c.owner_count FROM movies m " +
                 "JOIN (SELECT movie_id, COUNT(movie_id) as owner_count FROM collections GROUP BY movie_id) c "+
-                "ON m.movie_id = c.movie_id ORDER BY movie_title, year ASC;";
+                "ON m.movie_id = c.movie_id ORDER BY movie_title, year ASC";
         List<Movie> movies = Database.queryForList(sql, null, Movie.class);
         return movies;
     }
@@ -24,6 +24,46 @@ public class Movies {
         List<Movie> movies = Database.queryForList(sql, userId, Movie.class);
         return movies;
     }
+
+    // get all movies for given search value
+    public List<Movie> searchMovieList(String searchValue){
+        // if searchValue is empty, return all movies from user
+        if (searchValue.trim().length() == 0){
+            return getMovieList();
+        }
+        String sql = "SELECT m.movie_id, movie_title, year, rating, c.owner_count FROM movies m " +
+                "JOIN (SELECT movie_id, COUNT(movie_id) as owner_count FROM collections GROUP BY movie_id) c "+
+                "ON m.movie_id = c.movie_id WHERE LOWER(movie_title) LIKE ? ORDER BY movie_title, year ASC";
+        List<Movie> movies = Database.queryForList(sql, "%"+searchValue.toLowerCase()+"%", Movie.class);
+        return movies;
+    }
+
+    // get users movie collection for given search value
+    public List<Movie> searchMovieList(int userId, String searchValue){
+        // if searchValue is empty, return all movies from user
+        if (searchValue.trim().length() == 0){
+            return getMovieList(userId);
+        }
+        String sql = "SELECT DISTINCT item_id as collection_id, movies.movie_id, movie_title, year, rating, user_id, format_type " +
+                "FROM movies, collections WHERE movies.movie_id = collections.movie_id AND user_id = ? AND LOWER(movie_title) LIKE ? " +
+                "ORDER BY movie_title, year ASC";
+        List<Movie> movies = Database.queryForList(sql, new Object[] { userId, "%"+searchValue.toLowerCase()+"%" }, Movie.class);
+        return movies;
+    }
+
+    // get movie count for given search value
+    public int searchMovieCount(String searchValue){
+        String sql = "SELECT COUNT(*) FROM movies WHERE LOWER(movie_title) LIKE ?";
+        int count = Database.queryForInt(sql, "%"+searchValue.toLowerCase()+"%");
+        return count;        
+    }
+
+    // get movie count for given search value
+    public int searchMovieCount(int userId, String searchValue){
+        String sql = "SELECT COUNT(*) FROM movies, collections WHERE movies.movie_id = collections.movie_id AND user_id = ? AND LOWER(movie_title) LIKE ?";
+        int count = Database.queryForInt(sql, new Object[] { userId, "%"+searchValue.toLowerCase()+"%" });
+        return count;
+    }    
 
     // get movie amount for all users
     public int getMovieCount(){

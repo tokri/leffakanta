@@ -4,8 +4,10 @@
 <%@include file="includeMenu.jsp" %>
 <%@include file="includeAccountUpdates.jsp" %>
 
-<h2>Manage Accounts</h2>
-<table id="accounts_table">
+<h2>Manage Accounts&nbsp;<form id="search" action="searchaccounts" method="POST">
+<input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form></h2><p />
+
+<table id="accounts-table">
     <tr>
         <th>Name</th>
         <th>Type</th>
