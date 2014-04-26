@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
+<%@include file="includeAccountUpdates.jsp" %>
 
 <h2>Manage Accounts</h2>
 <table id="accounts_table">

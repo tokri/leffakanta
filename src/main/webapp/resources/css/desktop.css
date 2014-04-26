@@ -57,7 +57,7 @@ a:hover {
     width: 1000px;
 }
 
-#logout, #expired {
+#logout, #expired, #note {
     color: #503232;
     background-color: #d6c9b2;
     border-style: dotted;
@@ -67,6 +67,11 @@ a:hover {
     padding-top: 0px;
     padding-bottom: 0px;
 }
+
+#bullets li {
+    list-style-type: disc;
+}
+
 .error {
     color: #dd0000;
     background-color: #ffeaff;

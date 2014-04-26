@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
+<%@include file="includeAccountUpdates.jsp" %>
 
 <h2>My Account</h2>
 <div id="account-data">

@@ -1,11 +1,13 @@
 package leffakanta.model;
 
 import leffakanta.service.Database;
+import org.hibernate.validator.constraints.URL;
 
 public class Person {
     private int personId;
     private String personName;
     private String dateOfBirth;
+    @URL
     private String imageUrl;
     
     // get person's details

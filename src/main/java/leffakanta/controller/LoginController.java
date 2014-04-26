@@ -33,13 +33,13 @@ public class LoginController {
             }
             // if login incorrect, show error message and display login again
             model.addAttribute("loginFail", true);
-            return "Login";
+            return "ShowLogin";
         }
         
         // show login screen
         @RequestMapping(value={"/", "login"}, method = RequestMethod.GET)
         public String showLogin(Model model) {
-            return "Login";
+            return "ShowLogin";
         }
         
         // show login screen with message that user has been logged out
@@ -49,14 +49,14 @@ public class LoginController {
             session.removeAttribute("mobile");
             session.removeAttribute("admin");            
             model.addAttribute("logout", true);
-            return "Login";
+            return "ShowLogin";
         }
 
         // show login screen with message that session has been expired
         @RequestMapping(value="nosession", method=RequestMethod.GET)
         public String showNoSession(Model model) {
             model.addAttribute("sessionExpired", true);
-            return "Login";
+            return "ShowLogin";
         }    
         
 }

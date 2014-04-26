@@ -77,7 +77,7 @@ public class AccountController {
                 return "EditMyAccount";
 	    }            
             updateAccount(user,session,model);
-            return "ConfirmAccountUpdate";            
+            return "EditMyAccount";
         }
         
         // show account edit screen (admin)
@@ -108,67 +108,79 @@ public class AccountController {
                 }
                 return "EditAccount";
 	    }
-            updateAccount(user,session,model);
-            return "ConfirmAccountUpdate";
+            updateAccount(user, session, model);
+            model.addAttribute("userList", users.getUserList());
+            model.addAttribute("userCount", users.getUserCount());
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
         }
 
-        // handle account updating here for both personal my account and generic user's account
-        private void updateAccount(User user, HttpSession session, Model model){            
-            boolean newUsername = false;
-            boolean newPassword = false;
-            boolean newType = false;
-            boolean isOwner = false;
-
+        //check if entered username is same as before or changed
+        private void updateAccount(User user, HttpSession session, Model model){
             User userBefore = user.getUser(user.getUserId());
-            if (userBefore.getUsername().equals(user.getUsername())==false){
-                newUsername = true;
-                model.addAttribute("newUsername", user.getUsername());
-            }
-            if (user.getPasswordNew().isEmpty()==false){
-                newPassword = true;
-                model.addAttribute("newPassword", true);
-            }
-            if (userBefore.getIsAdmin() != user.getIsAdmin()){
-                newType = true;
-                if (user.getIsAdmin()){
-                    model.addAttribute("newType", "Admin");
-                } else {
-                    model.addAttribute("newType", "Normal");
-                }
-            }
             User loggedUser = (User)session.getAttribute("logged");
-            if (loggedUser.getUserId() == user.getUserId()){
-                isOwner = true;
+            boolean accountUpdated = updateUsername(user,userBefore,session,model);
+            accountUpdated |= updatePassword(user,session,model);
+            accountUpdated |= updateAdmin(user,userBefore,session,model);
+            model.addAttribute("accountUpdated", accountUpdated);            
+            //update database with new details
+            if (accountUpdated){
+                user.updateUser(user);
             }
-
-            //if updates available, update user's details
-            if ((newUsername || newPassword || newType) && (user.updateUser(user)==true)){
-                // if update successfull and update for current user, change session login too
-                if (isOwner){
-                    session.setAttribute("logged", user);
+            //if account changed for currently logged user, update session details for updated user account details
+            if (accountUpdated && loggedUser.getUserId() == user.getUserId()){
+                session.setAttribute("logged", user);
+            }
+        }
+        
+        //check if entered username is same as before or changed
+        private boolean updateUsername(User user, User userBefore, HttpSession session, Model model){            
+            if (userBefore.getUsername().equals(user.getUsername())==false){
+                model.addAttribute("newUsername", user.getUsername());
+                return true;
+            }
+            model.addAttribute("newUsername", null);
+            return false;
+        }
+        
+        //check if new password is entered
+        private boolean updatePassword(User user, HttpSession session, Model model){            
+            if (user.getPasswordNew().isEmpty()==false){
+                model.addAttribute("newPassword", true);
+                return true;
+            }
+            model.addAttribute("newPassword", false);
+            return false;
+        }
+        
+        //check if admin rights are changed
+        private boolean updateAdmin(User user, User userBefore, HttpSession session, Model model){            
+            if (userBefore.getIsAdmin() != user.getIsAdmin()){
+                if (user.getIsAdmin()){
+                    model.addAttribute("newRights", "Admin");
+                } else {
+                    model.addAttribute("newRights", "Normal");
                 }
-            } else {
-                model.addAttribute("newUsername", null);
-                model.addAttribute("newPassword", false);
-                model.addAttribute("newType", null);
-                model.addAttribute("noUpdates", true);
+                return true;
             }
+            model.addAttribute("newRights", null);
+            return false;
         }
                 
         // list all accounts
         @RequestMapping(value="accounts", method=RequestMethod.GET)
-        public String showMovieList(HttpSession session, Model model) {            
-            User user = (User) session.getAttribute("logged");
-            if (user == null) {
+        public String showAllUsers(HttpSession session, Model model) {              
+            User loggedUser = (User) session.getAttribute("logged");
+            if (loggedUser == null) {
                 return "redirect:/nosession";
             }                        
-            if (user.getIsAdmin()==false) {
+            if (loggedUser.getIsAdmin()==false) {
                 return "redirect:/movies";
             }                        
             model.addAttribute("userList", users.getUserList());
             model.addAttribute("userCount", users.getUserCount());
-            model.addAttribute("ownId", user.getUserId());
-            return "ShowUserList";
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
         }           
         
         // show delete movies screen
@@ -184,12 +196,18 @@ public class AccountController {
         // handle delete after post
         @RequestMapping(value="deleteaccount", method=RequestMethod.POST)
         public String submitConfirmDeleteUser(@RequestParam int userId, @RequestParam String action, HttpSession session, Model model) {
-            if (session.getAttribute("logged") == null) {
+            User loggedUser = (User) session.getAttribute("logged");
+            if (loggedUser == null) {
                 return "redirect:/nosession";
+            }            
+            if (action.equals("Yes")){               
+                User userToDelete = new User().getUser(userId);
+                model.addAttribute("deletedUser", userToDelete.getUsername());
+                userToDelete.deleteUser(userId);
             }
-            if (action.equals("Yes")){                
-                new User().deleteUser(userId);
-            }
-            return "redirect:/accounts";
+            model.addAttribute("userList", users.getUserList());
+            model.addAttribute("userCount", users.getUserCount());
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
         }        
 }
