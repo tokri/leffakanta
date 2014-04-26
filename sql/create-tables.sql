@@ -1,6 +1,5 @@
 CREATE TYPE PRODUCTION_ROLE AS ENUM ('Actor', 'Director', 'Writer');
 CREATE TYPE FORMAT_TYPE AS ENUM ('Blu-ray', 'DVD', 'TV', 'Download');
-CREATE TYPE AVAILIBILITY AS ENUM ('Available', 'Loaned', 'Missing');
 
 CREATE TABLE users (
 	user_id			SERIAL PRIMARY KEY,
@@ -54,8 +53,7 @@ CREATE TABLE roles (
 
 CREATE TABLE collections (
 	item_id			SERIAL PRIMARY KEY,
-	owner_id		INTEGER REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id			INTEGER REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	movie_id		INTEGER REFERENCES movies (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	format_type		FORMAT_TYPE NOT NULL,
-	availability	AVAILIBILITY NOT NULL
+	format_type		FORMAT_TYPE NOT NULL
 );

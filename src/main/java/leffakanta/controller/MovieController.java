@@ -90,10 +90,35 @@ public class MovieController {
                 }
                 return "EditMovie";
 	    }
-            movie.updateMovie(movie, user.getUserId());
+            movie.updateMovie(movie);
             return "redirect:/collection";
         }        
         
+        // show remove movie from collection screen
+        @RequestMapping(value="removemovie", method=RequestMethod.GET)
+        public String showRemoveMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
+            if (session.getAttribute("logged") == null) {
+                return "redirect:/nosession";
+            }
+            Movie movie = new Movie();
+            model.addAttribute("movie", movie.getMovieFromCollection(id));
+            return "RemoveMovie";
+        }
+
+        // handle removing from collection after post
+        @RequestMapping(value="removemovie", method=RequestMethod.POST)
+        public String submitConfirmRemoveMovie(@RequestParam int collection_id, @RequestParam String action, HttpSession session, Model model) {
+            User loggedUser = (User)session.getAttribute("logged");
+            if (loggedUser == null) {
+                return "redirect:/nosession";
+            }
+            if (action.equals("Yes")){
+                Movie movieToRemove = new Movie().getMovieFromCollection(collection_id);                
+                movieToRemove.removeMovie(movieToRemove.getMovieId(), collection_id, loggedUser.getUserId());
+            }
+            return "redirect:/collection";
+        }        
+
         // show delete movies screen
         @RequestMapping(value="deletemovie", method=RequestMethod.GET)
         public String showDeleteMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
@@ -108,13 +133,12 @@ public class MovieController {
         // handle delete after post
         @RequestMapping(value="deletemovie", method=RequestMethod.POST)
         public String submitConfirmDeleteMovie(@RequestParam int movie_id, @RequestParam String action, HttpSession session, Model model) {
-            User loggedUser = (User)session.getAttribute("logged");
-            if (loggedUser == null) {
+            if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             if (action.equals("Yes")){
-                new Movie().deleteMovie(movie_id, loggedUser.getUserId());
+                new Movie().deleteMovie(movie_id);
             }
-            return "redirect:/collection";
+            return "redirect:/movies";
         }        
 }

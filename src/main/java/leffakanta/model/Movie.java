@@ -32,7 +32,7 @@ public class Movie {
     @URL
     private String trailerUrl;
     private String formatType;
-    private String availability;
+    private int collectionID;
     private int ownerCount;
     private boolean newMovie;
     private List<Genre> genres;
@@ -40,7 +40,7 @@ public class Movie {
 
     // add movie into users collection
     // return -1 if unsuccessful, 0 if existing movie added into collection and return movie_id if new movie added
-    public int addMovie(Movie movie, int owner_id){
+    public int addMovie(Movie movie, int user_id){
         int retVal = -1;
         String sql = "SELECT movie_id FROM movies WHERE movie_title = ? AND year = ?";
         int movie_id = Database.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())}); 
@@ -50,7 +50,7 @@ public class Movie {
             retVal = movie_id;
         }
         if (movie_id!=-1){
-            sql = "INSERT INTO collections VALUES (DEFAULT, "+owner_id+","+movie_id+",'"+movie.getFormatType()+"','Available')";
+            sql = "INSERT INTO collections VALUES (DEFAULT, "+user_id+","+movie_id+",'"+movie.getFormatType()+"')";
             Database.update(sql, null);
             if (retVal == -1){
                 retVal = 0;
@@ -60,7 +60,7 @@ public class Movie {
     }
     
     // update movie details
-    public void updateMovie(Movie movie, int owner_id){
+    public void updateMovie(Movie movie){
         String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
                 " WHERE movie_id=?";
         Database.update(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
@@ -68,18 +68,23 @@ public class Movie {
     }
     
     
-    // delete movie from selected users collection
-    public void deleteMovie(int movie_id, int owner_id){
-        String sql = "DELETE FROM collections WHERE movie_id = ? AND owner_id = ?";
-        Database.update(sql, new Object[] {movie_id, owner_id});
+    // remove movie from selected users collection
+    public void removeMovie(int movie_id, int collection_id, int user_id){
+        String sql = "DELETE FROM collections WHERE item_id = ? AND user_id = ?";
+        Database.update(sql, new Object[] {collection_id, user_id});
         
         // if last user with the same movie, delete movie records too
         sql = "SELECT COUNT(*) FROM collections WHERE movie_id = ?";
         int count = Database.queryForInt(sql, movie_id);
-        if (count == 0){
-            sql = "DELETE FROM movies WHERE movie_id = ?";
-            Database.update(sql, movie_id);
+        if (count == 0){            
+            deleteMovie(movie_id);
         }
+    }
+    
+    // delete movie alltogether
+    public void deleteMovie(int movie_id){
+        String sql = "DELETE FROM movies WHERE movie_id = ?";
+        Database.update(sql, movie_id);
     }
     
     // get movie's details
@@ -98,6 +103,15 @@ public class Movie {
                 "people, roles, characters WHERE production_role = 'Actor' AND roles.character_id = characters.character_id " +
                 "AND roles.person_id = people.person_id AND movie_id = ? ORDER BY role_id ASC;";
         movie.roles = Database.queryForList(sql, new Object[]{ movie_id, movie_id }, Role.class);        
+        return movie;
+    }
+    
+    // get movie details by collection id
+    public Movie getMovieFromCollection(int collection_id){
+        // get basic movie details
+        String sql = "SELECT DISTINCT item_id as collection_id, movies.movie_id, movie_title, year, format_type " +
+                "FROM movies, collections WHERE movies.movie_id = collections.movie_id AND item_id = ?";
+        Movie movie = Database.queryForObject(sql, collection_id, Movie.class);
         return movie;
     }
     
@@ -169,7 +183,7 @@ public class Movie {
     public String getBackgroundUrl(){ return htmlEscape(this.backgroundUrl); }
     public String getTrailerUrl(){ return htmlEscape(this.trailerUrl); }
     public String getFormatType(){ return this.formatType; }
-    public String getAvailability(){ return this.availability; }
+    public int getCollectionId(){ return this.collectionID; }
     public int getOwnerCount(){ return this.ownerCount; }
     public boolean getNewMovie(){ return this.newMovie; }
     public List<Genre> getGenres(){ return this.genres; }
@@ -184,10 +198,10 @@ public class Movie {
     public void setRating(String value){ this.rating = value; }
     public void setPlotText(String value){ this.plotText = htmlUnescape(value); }
     public void setFormatType(String value){ this.formatType = value; }
-    public void setAvailability(String value){ this.availability = value; }
     public void setPosterUrl(String value){ this.posterUrl = value; }
     public void setBackgroundUrl(String value){ this.backgroundUrl = value; }
     public void setTrailerUrl(String value){ this.trailerUrl = value; }
+    public void setCollectionId(int value){ this.collectionID = value; }
     public void setOwnerCount(int value){ this.ownerCount = value; }
     public void setNewMovie(boolean value){ this.newMovie = value; };
 }

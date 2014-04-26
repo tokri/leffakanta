@@ -12,7 +12,7 @@
         <th>Rating</th>
         <th>Owners</th>
         <th>Edit</th>
-        <th>Remove</th>
+        <th>Delete</th>
     </tr>    
     <c:forEach items="${movieList}" var="movie">
     <tr>

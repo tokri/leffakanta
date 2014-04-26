@@ -18,8 +18,8 @@ public class Movies {
 
     // get users movie collection
     public List<Movie> getMovieList(int userId){
-        String sql = "SELECT DISTINCT movies.movie_id, movie_title, year, rating, owner_id, format_type, " +
-                "availability FROM movies, collections WHERE movies.movie_id = collections.movie_id AND owner_id = ? " +
+        String sql = "SELECT DISTINCT item_id as collection_id, movies.movie_id, movie_title, year, rating, user_id, format_type " +
+                "FROM movies, collections WHERE movies.movie_id = collections.movie_id AND user_id = ? " +
                 "ORDER BY movie_title, year ASC";
         List<Movie> movies = Database.queryForList(sql, userId, Movie.class);
         return movies;
@@ -34,7 +34,7 @@ public class Movies {
 
     // get movie amount for user
     public int getMovieCount(int userId){
-        String sql = "SELECT COUNT(*) FROM collections WHERE owner_id = ?";
+        String sql = "SELECT COUNT(*) FROM collections WHERE user_id = ?";
         int count = Database.queryForInt(sql, userId);
         return count;
     }    

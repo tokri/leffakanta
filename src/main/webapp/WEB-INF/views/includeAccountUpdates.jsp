@@ -3,7 +3,7 @@
 
 
 <c:if test="${deletedUser!=null}">
-    <div id="note"><b>Account ${deletedUser}</b> deleted!</div> 
+    <div id="note">Account <b>${deletedUser}</b> deleted!</div> 
 </c:if>     
 <c:if test="${accountUpdated==false}">
     <div id="note">Nothing updated!</div>

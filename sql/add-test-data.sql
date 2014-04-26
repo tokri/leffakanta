@@ -92,10 +92,10 @@ INSERT INTO roles VALUES
   (DEFAULT, 'Actor', 4, 17, 16);
   
 INSERT INTO collections VALUES 
-  (DEFAULT, 1, 1, 'Blu-ray', 'Available'),
-  (DEFAULT, 2, 1, 'DVD', 'Missing'),
-  (DEFAULT, 2, 2, 'Blu-ray', 'Available'),
-  (DEFAULT, 2, 3, 'Blu-ray', 'Available'),
-  (DEFAULT, 1, 4, 'Blu-ray', 'Available'),
-  (DEFAULT, 2, 4, 'Blu-ray', 'Loaned');
+  (DEFAULT, 1, 1, 'Blu-ray'),
+  (DEFAULT, 2, 1, 'DVD'),
+  (DEFAULT, 2, 2, 'Blu-ray'),
+  (DEFAULT, 2, 3, 'Blu-ray'),
+  (DEFAULT, 1, 4, 'Blu-ray'),
+  (DEFAULT, 2, 4, 'Blu-ray');
   
