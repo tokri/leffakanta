@@ -48,8 +48,8 @@
             <c:if test="${empty cast.imageUrl}">${pageContext.request.contextPath}/resources/img/default-person.jpg</c:if>"></a></td>
             <td><a href="person?id=${cast.personId}">${cast.personName}</a><br> as ${cast.characterName}</td></tr></table>
     </c:forEach>
-
-<img id="movie-bg" src="<c:if test="${not empty movie.backgroundUrl}">${movie.backgroundUrl}</c:if>
-<c:if test="${empty movie.backgroundUrl}">${pageContext.request.contextPath}/resources/img/default-bg.jpg</c:if>">
-
+<c:if test="${desktop == true}">
+    <img id="movie-bg" src="<c:if test="${not empty movie.backgroundUrl}">${movie.backgroundUrl}</c:if>
+    <c:if test="${empty movie.backgroundUrl}">${pageContext.request.contextPath}/resources/img/default-bg.jpg</c:if>">
+</c:if>
 <jsp:include page="includeFooter.jsp" />
