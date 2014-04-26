@@ -8,7 +8,7 @@
 <c:if test="${searchValue == null}"><form id="search" action="searchaccounts" method="POST">
     <input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form><p />
 </c:if><c:if test="${searchValue != null}">
-    <div id="note"><p/>Search results for '${searchValue}':<p /><a class="menu" href="accounts">(Show All)</a></div><p />
+    <div id="note"><p/>Search results for '${searchValue}':<p /><a class="menu" href="accounts?page=1">(Show All)</a></div><p />
 </c:if>
     
 <c:if test="${not empty userList}">
@@ -29,7 +29,17 @@
         </tr>
         </c:forEach>
     </table>
-    <br>Total of ${userCount} user<c:if test="${userCount > 1}">s</c:if>
+    <c:if test="${pageCount>1}">
+        <p class="left">Page ${page} of ${pageCount}</p>
+        <p class="right">
+            <c:if test="${page > 1}"><a class="menu" href="accounts?page=${page - 1}">← Previous</a></c:if>
+            <c:if test="${page <= 1}"><span class="inactive">← Previous</span></c:if>&nbsp;&nbsp;        
+            <c:if test="${page < pageCount}"><a class="menu" href="accounts?page=${page + 1}">Next →</a></c:if>
+            <c:if test="${page >= pageCount}"><span class="inactive">Next →</span></c:if>
+        </p>
+    </c:if><br/><br/>
+    <p class="info"><c:if test="${searchValue == null}">Total of <b>${userCount}</b> user<c:if test="${userCount > 1}">s.</c:if></c:if>
+    <c:if test="${searchValue != null}">Found <b>${userCount}</b> user<c:if test="${userCount > 1}">s.</c:if></c:if></p>
 </c:if>
  <c:if test="${empty userList}">
     0 users found.

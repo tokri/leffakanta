@@ -60,7 +60,7 @@ public class MovieController {
                 model.addAttribute("movie", movie);
                 return "EditMovie";
             }
-            return "redirect:/collection";                
+            return "redirect:/collection?page=1";
         }
 
         // edit movie
@@ -91,7 +91,7 @@ public class MovieController {
                 return "EditMovie";
 	    }
             movie.updateMovie(movie);
-            return "redirect:/collection";
+            return "redirect:/collection?page=1";
         }        
         
         // show remove movie from collection screen
@@ -116,7 +116,7 @@ public class MovieController {
                 Movie movieToRemove = new Movie().getMovieFromCollection(collection_id);                
                 movieToRemove.removeMovie(movieToRemove.getMovieId(), collection_id, loggedUser.getUserId());
             }
-            return "redirect:/collection";
+            return "redirect:/collection?page=1";
         }        
 
         // show delete movies screen
@@ -139,6 +139,6 @@ public class MovieController {
             if (action.equals("Yes")){
                 new Movie().deleteMovie(movie_id);
             }
-            return "redirect:/movies";
+            return "redirect:/movies?page=1";
         }        
 }

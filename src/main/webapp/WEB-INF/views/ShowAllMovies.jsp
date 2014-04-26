@@ -4,13 +4,13 @@
 <%@include file="includeMenu.jsp" %>
 
 <h2>Manage All Movies</h2>
-<c:if test="${searchValue == null}"><form id="search" action="searchmovies" method="POST">
-    <input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form><p />
-</c:if><c:if test="${searchValue != null}">
-    <div id="note"><p/>Search results for '${searchValue}':<p /><a class="menu" href="movies">(Show All)</a></div><p />
-</c:if>
-    
+
 <c:if test="${not empty movieList}">
+    <c:if test="${searchValue == null}"><form id="search" action="searchmovies" method="POST">
+        <input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form><p />
+    </c:if><c:if test="${searchValue != null}">
+        <div id="note"><p/>Search results for '${searchValue}':<p /><a class="menu" href="movies?page=1">(Show All)</a></div><p />
+    </c:if>   
     <table id="movies-table">
         <tr>
             <th>Title</th>

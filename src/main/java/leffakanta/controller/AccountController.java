@@ -1,5 +1,6 @@
 package leffakanta.controller;
 
+import java.util.List;
 import leffakanta.model.User;
 import leffakanta.model.Users;
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,7 @@ public class AccountController {
 
         @Autowired
         private Users users;
+        private int pageSize = 10;
 
         // show account registration
         @RequestMapping(value="register", method=RequestMethod.GET)
@@ -110,8 +112,13 @@ public class AccountController {
                 return "EditAccount";
 	    }
             updateAccount(user, session, model);
-            model.addAttribute("userList", users.getUserList());
-            model.addAttribute("userCount", users.getUserCount());
+            List userList = users.getUserList(1, this.pageSize);
+            int userCount = users.getUserCount();
+            int pageCount = (int)Math.ceil((double)userCount/this.pageSize);
+            model.addAttribute("userList", userList);
+            model.addAttribute("userCount", userCount);
+            model.addAttribute("page", 1);
+            model.addAttribute("pageCount", pageCount);
             model.addAttribute("ownId", loggedUser.getUserId());
             return "ShowAllUsers";
         }
@@ -171,7 +178,7 @@ public class AccountController {
                 
         // list all accounts
         @RequestMapping(value="accounts", method=RequestMethod.GET)
-        public String showAllUsers(HttpSession session, Model model) {              
+        public String showAllUsers(@RequestParam int page, HttpSession session, Model model) {              
             User loggedUser = (User) session.getAttribute("logged");
             if (loggedUser == null) {
                 return "redirect:/nosession";
@@ -179,11 +186,20 @@ public class AccountController {
             if (loggedUser.getIsAdmin()==false) {
                 return "redirect:/movies";
             }                        
-            model.addAttribute("userList", users.getUserList());
-            model.addAttribute("userCount", users.getUserCount());
+
+            List userList = users.getUserList(page, this.pageSize);
+            int userCount = users.getUserCount();
+            int pageCount = (int)Math.ceil((double)userCount/this.pageSize);
+            model.addAttribute("userList", userList);
+            model.addAttribute("userCount", userCount);
+            model.addAttribute("page", page);
+            model.addAttribute("pageCount", pageCount);
             model.addAttribute("ownId", loggedUser.getUserId());
+            
             return "ShowAllUsers";
         }           
+        
+        
         
         // show delete movies screen
         @RequestMapping(value="deleteaccount", method=RequestMethod.GET)
@@ -207,8 +223,13 @@ public class AccountController {
                 model.addAttribute("deletedUser", userToDelete.getUsername());
                 userToDelete.deleteUser(userId);
             }
-            model.addAttribute("userList", users.getUserList());
-            model.addAttribute("userCount", users.getUserCount());
+            List userList = users.getUserList(1, this.pageSize);
+            int userCount = users.getUserCount();
+            int pageCount = (int)Math.ceil((double)userCount/this.pageSize);
+            model.addAttribute("userList", userList);
+            model.addAttribute("userCount", userCount);
+            model.addAttribute("page", 1);
+            model.addAttribute("pageCount", pageCount);
             model.addAttribute("ownId", loggedUser.getUserId());
             return "ShowAllUsers";
         }        
