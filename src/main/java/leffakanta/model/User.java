@@ -32,29 +32,6 @@ public class User {
         return user;
     }
     
-    // verify user's login details and return user object if login ok
-    public User checkLogin(String username, String password){
-        PasswordHash hash = new PasswordHash();
-        User dbUser = getUser(username);
-        
-        // if no user found, return null
-        if (dbUser==null){
-            return null;
-        }               
-        String dbUsername = dbUser.getUsername();
-        String dbPasswordHash = dbUser.getPasswordHash();
-        
-        try{
-            // if username and password matches, return user-object
-            if (dbUsername.equals(username) && hash.validatePassword(password, dbPasswordHash)){        
-                return dbUser;
-            }
-        } catch (Exception e){};
-        
-        // return null if username and password not ok or exception is thrown
-        return null;        
-    }
-    
     // add a new user
     public boolean newUser(User user){
         try{
@@ -99,6 +76,29 @@ public class User {
         Database.update(sql, user_id);        
     }
 
+    // verify user's login details and return user object if login ok
+    public User checkLogin(String username, String password){
+        PasswordHash hash = new PasswordHash();
+        User dbUser = getUser(username);
+        
+        // if no user found, return null
+        if (dbUser==null){
+            return null;
+        }               
+        String dbUsername = dbUser.getUsername();
+        String dbPasswordHash = dbUser.getPasswordHash();
+        
+        try{
+            // if username and password matches, return user-object
+            if (dbUsername.equals(username) && hash.validatePassword(password, dbPasswordHash)){        
+                return dbUser;
+            }
+        } catch (Exception e){};
+        
+        // return null if username and password not ok or exception is thrown
+        return null;        
+    }
+    
     @AssertTrue
     private boolean isPasswordsMatch() {
         return this.passwordNew.equals(this.passwordNewConfirm);

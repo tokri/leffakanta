@@ -9,7 +9,7 @@ public class Pagination {
         // only 10 items on desktop and 5 items on mobile shows for easier demonstration purposes
         // better values would be 50 items for desktop and 20 items for mobile
         int size = 5;
-        if ((boolean)session.getAttribute("desktop")==true){
+        if ((Boolean)session.getAttribute("desktop")==true){
             size = 10;
         }
         return size;

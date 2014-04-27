@@ -23,6 +23,6 @@ public class PlatformController {
             } else {          
                 session.setAttribute("desktop", false);
             }            
-            return "redirect:/collection?page=1";
+            return "redirect:/collection";
         }    
 }

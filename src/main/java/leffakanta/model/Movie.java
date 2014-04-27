@@ -123,6 +123,14 @@ public class Movie {
         return movie;
     }
     
+    // retrieve a list of names for enumeration
+    public List<String> getEnumValues(String enumName)
+    {        
+        String sql = "SELECT enum_range(null::" + enumName + ")";
+        List<String> enums = Database.queryForCommaSeparatedList(sql);
+        return enums;
+    }    
+    
     // method to parse & fix forms float values
     private float parseFloat(String value){
         float retVal = 0;
@@ -156,14 +164,6 @@ public class Movie {
         }
         return value;
     }
-    
-    // retrieve a list of names for enumeration
-    public List<String> getEnumValues(String enumName)
-    {        
-        String sql = "SELECT enum_range(null::" + enumName + ")";
-        List<String> enums = Database.queryForCommaSeparatedList(sql);
-        return enums;
-    }    
     
     // get role list by rolename
     private List<Role> getRoles(String roleName){

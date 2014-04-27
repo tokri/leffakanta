@@ -59,8 +59,9 @@ public class Movies {
 
     // get movie amount for all users
     public int getMovieCount(){
-        String sql = "SELECT COUNT(*) FROM collectable";
-        int count = Database.queryForInt(sql, null);
+        String sql = "SELECT DISTINCT movie_id FROM collectable";
+        List<Movie> movies = Database.queryForList(sql, null, Movie.class);
+        int count = movies.size();
         return count;
     }    
 

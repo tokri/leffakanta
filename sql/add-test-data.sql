@@ -126,6 +126,7 @@ INSERT INTO collectable VALUES
   (DEFAULT, 13, 6, 'Blu-ray'),
   (DEFAULT, 13, 7, 'Blu-ray'),
   (DEFAULT, 13, 8, 'Blu-ray'),
+  (DEFAULT, 13, 9, 'TV'),
   (DEFAULT, 13, 10, 'Blu-ray'),
   (DEFAULT, 13, 11, 'Blu-ray'),
   (DEFAULT, 13, 12, 'DVD'),

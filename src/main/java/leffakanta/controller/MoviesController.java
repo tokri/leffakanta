@@ -26,19 +26,11 @@ public class MoviesController {
             if (user == null) {
                 return "redirect:/nosession";
             }            
-            int userId = user.getUserId();
-            int movieCount = movies.getMovieCount(userId);
-            int pageSize = Pagination.getPageSize(session);
-            int pageCount = Pagination.getPageCount(pageSize, movieCount);
-            List movieList = movies.getMovieList(userId, page, pageSize);
             if (updated != -1){
                 Movie updatedMovie = new Movie().getMovie(updated);
                 model.addAttribute("updatedMovie", updatedMovie);
             }
-            model.addAttribute("movieList", movieList);
-            model.addAttribute("movieCount", movieCount);
-            model.addAttribute("page", page);
-            model.addAttribute("pageCount", pageCount);
+            updatePagination(page, user.getUserId(), session, model);
             return "ShowCollection";
         }           
         
@@ -51,19 +43,11 @@ public class MoviesController {
             if (user == null) {
                 return "redirect:/nosession";
             }            
-            int userId = user.getUserId();
-            int movieCount = movies.getMovieCount();
-            int pageSize = Pagination.getPageSize(session);
-            int pageCount = Pagination.getPageCount(pageSize, movieCount);
-            List movieList = movies.getMovieList(page, pageSize);
             if (updated != -1){
                 Movie updatedMovie = new Movie().getMovie(updated);
                 model.addAttribute("updatedMovie", updatedMovie);
             }
-            model.addAttribute("movieList", movieList);
-            model.addAttribute("movieCount", movieCount);
-            model.addAttribute("page", page);
-            model.addAttribute("pageCount", pageCount);
+            updatePagination(page, -1, session, model);
             return "ShowAllMovies";
         }           
         
@@ -95,4 +79,25 @@ public class MoviesController {
             return "ShowAllMovies";
         }        
         
+        //update pagination information for page
+        private void updatePagination(int page, int userId, HttpSession session, Model model){
+            int movieCount;        
+            if (userId == -1){
+                movieCount = movies.getMovieCount();
+            } else {
+                movieCount = movies.getMovieCount(userId);
+            }
+            int pageSize = Pagination.getPageSize(session);
+            int pageCount = Pagination.getPageCount(pageSize, movieCount);
+            List movieList;
+            if (userId == -1){
+                movieList = movies.getMovieList(page, pageSize);
+            } else {
+                movieList = movies.getMovieList(userId, page, pageSize);
+            }
+            model.addAttribute("movieList", movieList);
+            model.addAttribute("movieCount", movieCount);
+            model.addAttribute("page", page);
+            model.addAttribute("pageCount", pageCount);
+        }
 }

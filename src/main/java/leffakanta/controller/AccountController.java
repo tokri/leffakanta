@@ -111,6 +111,57 @@ public class AccountController {
                 return "EditAccount";
 	    }
             updateAccount(user, session, model);
+            updatePagination(1, session, model);
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
+        }
+
+        // show delete movies screen
+        @RequestMapping(value="deleteaccount", method=RequestMethod.GET)
+        public String showDeleteUser(@RequestParam(value = "id") int id, HttpSession session, Model model) {
+            if (session.getAttribute("logged") == null) {
+                return "redirect:/nosession";
+            }
+            model.addAttribute("user", new User().getUser(id));
+            return "DeleteAccount";
+        }
+
+        // handle delete after post
+        @RequestMapping(value="deleteaccount", method=RequestMethod.POST)
+        public String submitConfirmDeleteUser(@RequestParam int userId, @RequestParam String action, HttpSession session, Model model) {
+            User loggedUser = (User) session.getAttribute("logged");
+            if (loggedUser == null) {
+                return "redirect:/nosession";
+            }            
+            if (action.equals("Yes")){               
+                User userToDelete = new User().getUser(userId);
+                model.addAttribute("deletedUser", userToDelete.getUsername());
+                userToDelete.deleteUser(userId);
+            }
+            updatePagination(1, session, model);
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
+        }        
+        
+        // list all accounts for given search value
+        @RequestMapping(value="searchaccounts", method=RequestMethod.POST)
+        public String showSearchAccounts(@RequestParam String searchValue, HttpSession session, Model model) {              
+            User loggedUser = (User) session.getAttribute("logged");
+            if (loggedUser == null) {
+                return "redirect:/nosession";
+            }                        
+            if (loggedUser.getIsAdmin()==false) {
+                return "redirect:/movies";
+            }                        
+            model.addAttribute("searchValue", searchValue);
+            model.addAttribute("userList", users.searchUserList(searchValue));
+            model.addAttribute("userCount", users.searchUserCount(searchValue));
+            model.addAttribute("ownId", loggedUser.getUserId());
+            return "ShowAllUsers";
+        }           
+        
+        //update pagination information for page
+        private void updatePagination(int page, HttpSession session, Model model){
             int userCount = users.getUserCount();
             int pageSize = Pagination.getPageSize(session);
             int pageCount = Pagination.getPageCount(pageSize, userCount);
@@ -118,12 +169,10 @@ public class AccountController {
             model.addAttribute("userList", userList);
             model.addAttribute("userCount", userCount);
             model.addAttribute("page", 1);
-            model.addAttribute("pageCount", pageCount);
-            model.addAttribute("ownId", loggedUser.getUserId());
-            return "ShowAllUsers";
+            model.addAttribute("pageCount", pageCount);            
         }
-
-        //check if entered username is same as before or changed
+        
+        //check if account details are the same as before or changed
         private void updateAccount(User user, HttpSession session, Model model){
             User userBefore = user.getUser(user.getUserId());
             User loggedUser = (User)session.getAttribute("logged");
@@ -176,55 +225,4 @@ public class AccountController {
             return false;
         }
                 
-        // show delete movies screen
-        @RequestMapping(value="deleteaccount", method=RequestMethod.GET)
-        public String showDeleteUser(@RequestParam(value = "id") int id, HttpSession session, Model model) {
-            if (session.getAttribute("logged") == null) {
-                return "redirect:/nosession";
-            }
-            model.addAttribute("user", new User().getUser(id));
-            return "DeleteAccount";
-        }
-
-        // handle delete after post
-        @RequestMapping(value="deleteaccount", method=RequestMethod.POST)
-        public String submitConfirmDeleteUser(@RequestParam int userId, @RequestParam String action, HttpSession session, Model model) {
-            User loggedUser = (User) session.getAttribute("logged");
-            if (loggedUser == null) {
-                return "redirect:/nosession";
-            }            
-            if (action.equals("Yes")){               
-                User userToDelete = new User().getUser(userId);
-                model.addAttribute("deletedUser", userToDelete.getUsername());
-                userToDelete.deleteUser(userId);
-            }
-            int userCount = users.getUserCount();
-            int pageSize = Pagination.getPageSize(session);
-            int pageCount = Pagination.getPageCount(pageSize, userCount);
-            List userList = users.getUserList(1, pageSize);
-            model.addAttribute("userList", userList);
-            model.addAttribute("userCount", userCount);
-            model.addAttribute("page", 1);
-            model.addAttribute("pageCount", pageCount);
-            model.addAttribute("ownId", loggedUser.getUserId());
-            return "ShowAllUsers";
-        }        
-        
-        // list all accounts for given search value
-        @RequestMapping(value="searchaccounts", method=RequestMethod.POST)
-        public String showSearchAccounts(@RequestParam String searchValue, HttpSession session, Model model) {              
-            User loggedUser = (User) session.getAttribute("logged");
-            if (loggedUser == null) {
-                return "redirect:/nosession";
-            }                        
-            if (loggedUser.getIsAdmin()==false) {
-                return "redirect:/movies";
-            }                        
-            model.addAttribute("searchValue", searchValue);
-            model.addAttribute("userList", users.searchUserList(searchValue));
-            model.addAttribute("userCount", users.searchUserCount(searchValue));
-            model.addAttribute("ownId", loggedUser.getUserId());
-            return "ShowAllUsers";
-        }           
-        
 }
