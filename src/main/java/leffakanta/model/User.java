@@ -3,12 +3,16 @@ package leffakanta.model;
 import leffakanta.service.Database;
 import leffakanta.service.PasswordHash;
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import org.springframework.stereotype.Service;
 
 @Service
 public class User {
     private int userId;
-    private String username;
+    
+    @Size(min=5, max=20)
+    private String username;    
     private String passwordEntered;
     private String passwordHash;
     private boolean isAdmin;
