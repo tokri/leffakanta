@@ -3,7 +3,6 @@ package leffakanta.model;
 import leffakanta.service.Database;
 import leffakanta.service.PasswordHash;
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import org.springframework.stereotype.Service;
 
