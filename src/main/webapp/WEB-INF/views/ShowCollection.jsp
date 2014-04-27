@@ -31,7 +31,7 @@
             <td>${movie.year}</td>
             <td>${movie.rating}</td>
             <td>${movie.formatType}</td>
-            <td><a href="editmovie?id=${movie.movieId}"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>
+            <td><a href="editmovie?id=${movie.movieId}&mode=1"><img src="${pageContext.request.contextPath}/resources/img/edit-icon.png" alt="edit" width="20" height="20"></a></td>
             <td><a href="removeitem?id=${movie.collectionId}"><img src="${pageContext.request.contextPath}/resources/img/delete-icon.png" alt="delete" width="20" height="20"></a></td>
         </tr>
         </c:forEach>

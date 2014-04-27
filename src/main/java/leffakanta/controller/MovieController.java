@@ -66,27 +66,37 @@ public class MovieController {
 
         // edit movie
         @RequestMapping(value="editmovie", method=RequestMethod.GET)
-        public String showEditMovie(@RequestParam(value = "id") int id, HttpSession session, Model model) {
+        public String showEditMovie(@RequestParam(value = "mode", required = false, defaultValue = "0") int mode,
+                                    @RequestParam(value = "id") int id, HttpSession session, Model model) {
             if (session.getAttribute("logged") == null) {
                 return "redirect:/nosession";
             }
             Movie movie = new Movie();
             model.addAttribute("movie", movie.getMovie(id));
+            model.addAttribute("mode", mode);
             return "EditMovie";
         }
         
         // handle movie editing after post
         @RequestMapping(value="editmovie", method=RequestMethod.POST)
-        public String submitEditMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, HttpSession session, Model model) {
+        public String submitEditMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult result, 
+                                @RequestParam(value = "mode", required = false, defaultValue = "0") int mode,
+                                HttpSession session, Model model) {
             User user = (User)session.getAttribute("logged");            
             if (user == null) {
                 return "redirect:/nosession";
             }
 	    if(result.hasErrors()) {
+                model.addAttribute("mode", mode);
                 return "EditMovie";
 	    }
             movie.updateMovie(movie);
-            return "redirect:/collection?updated="+movie.getMovieId();
+            if (mode == 1){
+                return "redirect:/collection?updated="+movie.getMovieId();
+            } else if (mode == 2){
+                return "redirect:/movies?updated="+movie.getMovieId();                
+            }                 
+            return "redirect:/movie?id="+movie.getMovieId();            
         }        
         
         // show remove movie from collection screen
