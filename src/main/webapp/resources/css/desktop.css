@@ -34,11 +34,19 @@ a:hover {
     z-index: -2;
 }
 
-#text-bg, #person-bg {
+#text-bg {
     position: fixed;
     display: block;
     left: 250px;
     width: 925px;
+    padding-bottom: 20px;
+}
+
+#person-bg {
+    position: inherit;   
+    display: block;
+    width: 925px;
+    padding-left: 250px;
     padding-bottom: 20px;
 }
 
