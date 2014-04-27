@@ -34,8 +34,23 @@
             <tr><td>Trailer URL:</td><td><form:input path="trailerUrl" size="70"/>&nbsp;&nbsp;
             <form:errors path="trailerUrl" cssClass="error" /></td></tr>
             <tr><td></td><td><input type="submit" value='Update'></form:form></td></tr>
-        </table>                
+        </table>
         </td><td>
+        <h3>Genres</h3>
+        <table id="edit-movie-table">
+            <c:forEach items="${movie.genres}" var="genre" varStatus="loop">
+                <tr><td>${genre.genreName}</a></td>
+                <td><form action="removegenre" method="post">
+                        <input type="hidden" name="genreId" value="${genre.genreId}"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/>
+                        <input type="submit" name="action" value="Remove" />
+                    </form></td></tr>                
+            </c:forEach>            
+            <tr><td><form action="addgenre" method="post">
+                        <input name="genreName" size="20" htmlEscape="false"/></br>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/></td>
+            <td><input type="submit" name="action" value="Add" /></form></td></tr>
+        </table><br />
         <h3>Directing</h3>
         <table id="edit-movie-table">
             <c:forEach items="${movie.directors}" var="director" varStatus="loop">

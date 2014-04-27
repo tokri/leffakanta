@@ -102,7 +102,7 @@ public class Movie {
         Movie movie = Database.queryForObject(sql, movie_id, Movie.class);
 
         // get movie's genres
-        sql = "SELECT genre_name FROM movie_genre, genre WHERE movie_genre.genre_id=genre.genre_id AND movie_id = ?";
+        sql = "SELECT genre.genre_id, genre_name FROM movie_genre, genre WHERE movie_genre.genre_id=genre.genre_id AND movie_id = ?";
         movie.genres = Database.queryForList(sql, movie_id, Genre.class);
 
         sql = "SELECT role_id, person.person_id, production_role, person_name, image_url, null as character_name FROM " +
