@@ -31,7 +31,7 @@ CREATE TABLE movie_genre (
 	PRIMARY KEY(movie_id, genre_id)
 );
 
-CREATE TABLE  "character" (
+CREATE TABLE "character" (
 	character_id	SERIAL PRIMARY KEY,
 	character_name	VARCHAR(48)
 );
@@ -47,7 +47,7 @@ CREATE TABLE role (
 	production_role	PRODUCTION_ROLE NOT NULL,
 	movie_id		INTEGER REFERENCES movie (movie_id) ON DELETE CASCADE ON UPDATE CASCADE,
 	person_id		INTEGER REFERENCES person (person_id) ON DELETE CASCADE ON UPDATE CASCADE,
-	character_id	INTEGER REFERENCES character (character_id) ON DELETE CASCADE ON UPDATE CASCADE
+	character_id	INTEGER REFERENCES "character" (character_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE collectable (

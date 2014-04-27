@@ -81,7 +81,7 @@ public class User {
             } else {
                 PasswordHash hash = new PasswordHash();        
                 user.setPasswordHash(hash.createHash(user.passwordNew));
-                sql = "UPDATE 'user' SET username=?, password_hash=?, is_admin=? WHERE user_id=?";
+                sql = "UPDATE \"user\" SET username=?, password_hash=?, is_admin=? WHERE user_id=?";
                 Database.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash(), user.getIsAdmin(), user.getUserId()}); 
                 user.setPasswordNew("");
                 user.setPasswordNewConfirm("");
