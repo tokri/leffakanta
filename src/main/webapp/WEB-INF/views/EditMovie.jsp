@@ -11,6 +11,7 @@
 <h2><c:if test="${movie.newMovie == true}">Additional Details</c:if><c:if test="${movie.newMovie != true}">Edit Movie</c:if></h2>
 
 <div id="movie-data">
+    <table id="edit-movie-separator"><tr><td>
     <form:form action="editmovie" method="POST" commandName='movie'>
         <form:input type="hidden" path="movieId"/>
         <form:input type="hidden" path="newMovie"/>
@@ -31,20 +32,64 @@
             <form:errors path="backgroundUrl" cssClass="error" /></td></tr>
             <tr><td>Trailer URL:</td><td><form:input path="trailerUrl" size="70"/>&nbsp;&nbsp;
             <form:errors path="trailerUrl" cssClass="error" /></td></tr>
-        </table>
+            <tr><td></td><td><input type="submit" value='Update'></form:form></td></tr>
+        </table>                
+        </td><td>
         <h3>Directing</h3>
         <table id="edit-movie-table">
-            <tr><td><input id="director" size="20" htmlEscape="false"/></td><td><button type="button">Add Director</button></td></tr>
-        </table>
+            <c:forEach items="${movie.directors}" var="director" varStatus="loop">
+                <tr><td><a href="person?id=${director.personId}">${director.personName}</a></td>
+                <td><form action="removeperson" method="post">
+                        <input type="hidden" name="personId" value="${director.personId}"/>
+                        <input type="hidden" name="productionRole" value="${director.productionRole}"/>
+                        <input type="hidden" name="roleId" value="${director.roleId}"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/>
+                        <input type="submit" name="action" value="Remove" />
+                    </form></td></tr>                
+            </c:forEach>            
+            <tr><td><form action="addperson" method="post">
+                        <input name="personName" size="20" htmlEscape="false"/></br>
+                        <input type="hidden" name="productionRole" value="Director"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/></td>
+            <td><input type="submit" name="action" value="Add" /></form></td></tr>
+        </table><br />
         <h3>Writing</h3>
         <table id="edit-movie-table">
-            <tr><td><input id="writer" size="20" htmlEscape="false"/></td><td><button type="button">Add Writer</button></td></tr>
-        </table>
-        <h3>Cast</h3>
-        <table id="edit-movie-table">
-            <tr><td><input id="actor" size="20" htmlEscape="false"/></td><td><button type="button">Add Actor</button></td></tr>
+            <c:forEach items="${movie.writers}" var="writer" varStatus="loop">
+                <tr><td><a href="person?id=${writer.personId}">${writer.personName}</a></td>
+                <td><form action="removeperson" method="post">
+                        <input type="hidden" name="personId" value="${writer.personId}"/>
+                        <input type="hidden" name="productionRole" value="${writer.productionRole}"/>
+                        <input type="hidden" name="roleId" value="${writer.roleId}"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/>
+                        <input type="submit" name="action" value="Remove" />
+                    </form></td></tr>                
+            </c:forEach>
+            <tr><td><form action="addperson" method="post">
+                        <input name="personName" size="20" htmlEscape="false"/></br>
+                        <input type="hidden" name="productionRole" value="Writer"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/></td>
+            <td><input type="submit" name="action" value="Add" /></form></td></tr>
         </table><br />
-        <input type="submit" value='Update'>
-    </form:form>  
-</div>        
+        <h3>Acting</h3>
+        <table id="edit-movie-table">
+            <c:forEach items="${movie.cast}" var="cast">
+                <tr><td><a href="person?id=${cast.personId}">${cast.personName}</a> as ${cast.characterName}</td>
+                <td><form action="removeperson" method="post">
+                        <input type="hidden" name="personId" value="${cast.personId}"/>
+                        <input type="hidden" name="productionRole" value="${cast.productionRole}"/>
+                        <input type="hidden" name="roleId" value="${cast.roleId}"/>
+                        <input type="hidden" name="characterName" value="${cast.characterName}"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/>
+                        <input type="submit" name="action" value="Remove" />
+                    </form></td></tr>                
+            </c:forEach>            
+            <tr><td><form action="addperson" method="post">
+                        Actor: <input name="personName" size="20" htmlEscape="false"/></br>
+                        Character: <input name="characterName" size="20" htmlEscape="false"/>
+                        <input type="hidden" name="productionRole" value="Actor"/>
+                        <input type="hidden" name="movieId" value="${movie.movieId}"/></td>
+            <td><input type="submit" name="action" value="Add" /></form></td></tr>
+        </table><br />
+</td></tr></table></div>        
 <jsp:include page="includeFooter.jsp" />

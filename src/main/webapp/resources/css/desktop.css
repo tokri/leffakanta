@@ -20,6 +20,9 @@ a:hover {
     color: white;
 }
 
+#edit-movie-separator td {
+    vertical-align: text-top;
+}
 #movie-bg, #person-bg  {
     position: absolute; 
     left: 0px;

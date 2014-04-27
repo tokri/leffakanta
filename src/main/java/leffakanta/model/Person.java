@@ -8,11 +8,27 @@ public class Person {
     @URL
     private String imageUrl;
     
-    // get person's details
+
+    // add person
+    public int addPerson(String personName){
+        String sql = "INSERT INTO person VALUES (DEFAULT,?,null) RETURNING person_id";
+        int retVal = Database.queryForInt(sql, personName);
+        return retVal;
+    }
+    
+    // get person's details by id
     public Person getPerson(int personId){        
         // get basic movie details
         String sql = "SELECT * FROM person WHERE person_id = ?";
         Person person = Database.queryForObject(sql, personId, Person.class);
+        return person;
+    }
+    
+    // get person's details by name
+    public Person getPerson(String personName){        
+        // get basic movie details
+        String sql = "SELECT * FROM person WHERE personName = ?";
+        Person person = Database.queryForObject(sql, personName, Person.class);
         return person;
     }
        
@@ -20,6 +36,12 @@ public class Person {
     public void updatePerson(Person person){
         String sql = "UPDATE person SET person_name=?, image_url=? WHERE person_id=?";
         Database.update(sql, new Object[]{ person.getPersonName(), person.getImageUrl(), person.getPersonId()}); 
+    }
+
+    // delete person
+    public void deletePerson(int person_id){
+        String sql = "DELETE FROM person WHERE person_id = ?";
+        Database.update(sql, person_id);
     }
     
     //getters & setters

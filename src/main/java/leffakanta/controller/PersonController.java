@@ -2,7 +2,10 @@ package leffakanta.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import leffakanta.model.CharacterRole;
+import leffakanta.model.Movie;
 import leffakanta.model.Person;
+import leffakanta.model.Role;
 import leffakanta.model.Roles;
 import leffakanta.model.User;
 import org.springframework.stereotype.Controller;
@@ -60,4 +63,57 @@ public class PersonController {
             return "redirect:/person?id="+person.getPersonId()+"&updated=1";
         }
         
+        // handle removing from collection after post
+        @RequestMapping(value="addperson", method=RequestMethod.POST)
+        public String submitAddPerson(@Valid @ModelAttribute("role") Role role, BindingResult result,
+                                        @ModelAttribute("movie") Movie movie, 
+                                        HttpSession session, Model model) {
+            User loggedUser = (User)session.getAttribute("logged");
+            if (loggedUser == null) {
+                return "redirect:/nosession";
+            }
+	    if(result.hasErrors()) {
+                return "EditMovie";
+	    }
+            // first add person to database
+            String personName = role.getPersonName();
+            Person person = role.getPerson(personName);
+            int personId;
+            if (person == null){
+                personId = new Person().addPerson(personName);
+            } else {
+                personId = person.getPersonId();
+            }
+            // then add roles
+            if (role.getProductionRole().equals("Actor")){
+                CharacterRole newCharacter = new CharacterRole();
+                int character_id = newCharacter.addCharacter(role.getCharacterName());
+                role.addRole(role.getProductionRole(), movie.getMovieId(), personId, character_id);
+            } else {
+                role.addRole(role.getProductionRole(), movie.getMovieId(), personId, -1);
+            }
+            model.addAttribute("movie", new Movie().getMovie(movie.getMovieId()));
+            return "EditMovie";
+        }        
+
+        // handle removing from collection after post
+        @RequestMapping(value="removeperson", method=RequestMethod.POST)
+        public String submitRemovePerson(@ModelAttribute("role") Role role,
+                                         @ModelAttribute("movie") Movie movie, 
+                                         HttpSession session, Model model) {
+            User loggedUser = (User)session.getAttribute("logged");
+            if (loggedUser == null) {
+                return "redirect:/nosession";            
+            }
+            int personId = role.getPersonId();
+            int roleId = role.getRoleId();
+            role.removeRole(roleId);
+            int roleCount = role.getRoleCount(personId);
+            //if no roles left, delete obsolete person
+            if (roleCount == 0){
+                role.deletePerson(personId);
+            }
+            model.addAttribute("movie", new Movie().getMovie(movie.getMovieId()));
+            return "EditMovie";
+        }
 }
