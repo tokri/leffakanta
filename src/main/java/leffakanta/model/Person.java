@@ -1,6 +1,5 @@
 package leffakanta.model;
 
-import leffakanta.service.Database;
 import org.hibernate.validator.constraints.URL;
 
 public class Person {

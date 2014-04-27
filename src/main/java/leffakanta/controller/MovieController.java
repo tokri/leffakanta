@@ -49,6 +49,8 @@ public class MovieController {
                 return "redirect:/nosession";
             }
 	    if(result.hasErrors()) {
+                model.addAttribute("formatTypeList", movie.getEnumValues("FORMAT_TYPE"));
+                model.addAttribute("movie", movie);
                 return "AddMovie";
 	    }
             movie.setFormatType(formatType);
@@ -56,11 +58,10 @@ public class MovieController {
             if (id>0){
                 movie = movie.getMovie(id);
                 movie.setNewMovie(true);
-                model.addAttribute("head", "Additional Movie Details");
                 model.addAttribute("movie", movie);
                 return "EditMovie";
             }
-            return "redirect:/collection?page=1";
+            return "redirect:/collection?updated="+movie.getMovieId();
         }
 
         // edit movie
@@ -70,7 +71,6 @@ public class MovieController {
                 return "redirect:/nosession";
             }
             Movie movie = new Movie();
-            model.addAttribute("head", "Edit Movie");
             model.addAttribute("movie", movie.getMovie(id));
             return "EditMovie";
         }
@@ -83,15 +83,10 @@ public class MovieController {
                 return "redirect:/nosession";
             }
 	    if(result.hasErrors()) {
-                if (movie.getNewMovie()){
-                    model.addAttribute("head", "Additional Movie Details");
-                } else {
-                    model.addAttribute("head", "Edit Movie");
-                }
                 return "EditMovie";
 	    }
             movie.updateMovie(movie);
-            return "redirect:/collection?page=1";
+            return "redirect:/collection?updated="+movie.getMovieId();
         }        
         
         // show remove movie from collection screen
@@ -116,7 +111,7 @@ public class MovieController {
                 Movie movieToRemove = new Movie().getMovieFromCollection(collection_id);                
                 movieToRemove.removeMovie(movieToRemove.getMovieId(), collection_id, loggedUser.getUserId());
             }
-            return "redirect:/collection?page=1";
+            return "redirect:/collection";
         }        
 
         // show delete movies screen
@@ -139,6 +134,6 @@ public class MovieController {
             if (action.equals("Yes")){
                 new Movie().deleteMovie(movie_id);
             }
-            return "redirect:/movies?page=1";
+            return "redirect:/movies";
         }        
 }

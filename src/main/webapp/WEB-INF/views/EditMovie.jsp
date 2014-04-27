@@ -5,7 +5,11 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
-<h2>${head}</h2>
+<c:if test="${movie.newMovie == true}">
+    <div id="note"><p/>Movie added to collection!<p/></div><p />
+</c:if>        
+<h2><c:if test="${movie.newMovie == true}">Additional Details</c:if><c:if test="${movie.newMovie != true}">Edit Movie</c:if></h2>
+
 <div id="movie-data">
     <form:form action="editmovie" method="POST" commandName='movie'>
         <form:input type="hidden" path="movieId"/>

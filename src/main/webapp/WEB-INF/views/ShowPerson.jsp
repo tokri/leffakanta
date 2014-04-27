@@ -5,6 +5,9 @@
 <%@include file="includeHeader.jsp" %>
 <%@include file="includeMenu.jsp" %>
 
+<c:if test="${updated == 1}">
+    <div id="note"><p/>Person's details updated!<p/></div><p />
+</c:if>
 <img id="person-img" src="<c:if test="${not empty person.imageUrl}">${person.imageUrl}</c:if>
 <c:if test="${empty person.imageUrl}">${pageContext.request.contextPath}/resources/img/default-person.jpg</c:if>">
 

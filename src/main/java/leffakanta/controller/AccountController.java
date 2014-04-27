@@ -19,7 +19,6 @@ public class AccountController {
 
         @Autowired
         private Users users;
-        private int pageSize = 10;
 
         // show account registration
         @RequestMapping(value="register", method=RequestMethod.GET)
@@ -112,9 +111,10 @@ public class AccountController {
                 return "EditAccount";
 	    }
             updateAccount(user, session, model);
-            List userList = users.getUserList(1, this.pageSize);
             int userCount = users.getUserCount();
-            int pageCount = (int)Math.ceil((double)userCount/this.pageSize);
+            int pageSize = Pagination.getPageSize(session);
+            int pageCount = Pagination.getPageCount(pageSize, userCount);
+            List userList = users.getUserList(1, pageSize);
             model.addAttribute("userList", userList);
             model.addAttribute("userCount", userCount);
             model.addAttribute("page", 1);
@@ -176,31 +176,6 @@ public class AccountController {
             return false;
         }
                 
-        // list all accounts
-        @RequestMapping(value="accounts", method=RequestMethod.GET)
-        public String showAllUsers(@RequestParam int page, HttpSession session, Model model) {              
-            User loggedUser = (User) session.getAttribute("logged");
-            if (loggedUser == null) {
-                return "redirect:/nosession";
-            }                        
-            if (loggedUser.getIsAdmin()==false) {
-                return "redirect:/movies";
-            }                        
-
-            List userList = users.getUserList(page, this.pageSize);
-            int userCount = users.getUserCount();
-            int pageCount = (int)Math.ceil((double)userCount/this.pageSize);
-            model.addAttribute("userList", userList);
-            model.addAttribute("userCount", userCount);
-            model.addAttribute("page", page);
-            model.addAttribute("pageCount", pageCount);
-            model.addAttribute("ownId", loggedUser.getUserId());
-            
-            return "ShowAllUsers";
-        }           
-        
-        
-        
         // show delete movies screen
         @RequestMapping(value="deleteaccount", method=RequestMethod.GET)
         public String showDeleteUser(@RequestParam(value = "id") int id, HttpSession session, Model model) {
@@ -223,9 +198,10 @@ public class AccountController {
                 model.addAttribute("deletedUser", userToDelete.getUsername());
                 userToDelete.deleteUser(userId);
             }
-            List userList = users.getUserList(1, this.pageSize);
             int userCount = users.getUserCount();
-            int pageCount = (int)Math.ceil((double)userCount/this.pageSize);
+            int pageSize = Pagination.getPageSize(session);
+            int pageCount = Pagination.getPageCount(pageSize, userCount);
+            List userList = users.getUserList(1, pageSize);
             model.addAttribute("userList", userList);
             model.addAttribute("userCount", userCount);
             model.addAttribute("page", 1);

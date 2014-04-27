@@ -18,7 +18,9 @@ public class PersonController {
     
         // show person details
         @RequestMapping(value="person", method=RequestMethod.GET)
-        public String showPerson(@RequestParam(value = "id") int person_id, HttpSession session, Model model) {
+        public String showPerson(@RequestParam(value = "id") int person_id,
+                                @RequestParam(value = "updated", required = false, defaultValue = "-11") int updated,
+                                HttpSession session, Model model) {
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
@@ -27,6 +29,7 @@ public class PersonController {
             Person person = new Person().getPerson(person_id);
             Roles roles = new Roles();
             roles.updatePersonRoles(person_id, user.getUserId());
+            model.addAttribute("updated", updated);
             model.addAttribute("person", person);
             model.addAttribute("roles", roles);
             return "ShowPerson";
@@ -54,7 +57,7 @@ public class PersonController {
                 return "EditPerson";
 	    }
             person.updatePerson(person);
-            return "redirect:/person?id="+person.getPersonId();
+            return "redirect:/person?id="+person.getPersonId()+"&updated=1";
         }
         
 }

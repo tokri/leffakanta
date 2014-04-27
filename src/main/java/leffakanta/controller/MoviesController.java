@@ -2,6 +2,7 @@ package leffakanta.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import leffakanta.model.Movie;
 import leffakanta.model.Movies;
 import leffakanta.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MoviesController {
         @Autowired
         private Movies movies;        
-        private int pageSize = 10;
 
         // list movies from collection
         @RequestMapping(value="collection", method=RequestMethod.GET)
-        public String showCollection(@RequestParam int page, HttpSession session, Model model) {            
+        public String showCollection(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                    @RequestParam(value = "updated", required = false, defaultValue = "-1") int updated,
+                                    HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
             }            
             int userId = user.getUserId();
-            List movieList = movies.getMovieList(userId, page, this.pageSize);
             int movieCount = movies.getMovieCount(userId);
-            int pageCount = (int)Math.ceil((double)movieCount/this.pageSize);
+            int pageSize = Pagination.getPageSize(session);
+            int pageCount = Pagination.getPageCount(pageSize, movieCount);
+            List movieList = movies.getMovieList(userId, page, pageSize);
+            if (updated != -1){
+                Movie updatedMovie = new Movie().getMovie(updated);
+                model.addAttribute("updatedMovie", updatedMovie);
+            }
             model.addAttribute("movieList", movieList);
             model.addAttribute("movieCount", movieCount);
             model.addAttribute("page", page);
@@ -37,15 +44,22 @@ public class MoviesController {
         
         // list all movies
         @RequestMapping(value="movies", method=RequestMethod.GET)
-        public String showAllMovies(@RequestParam int page, HttpSession session, Model model) {            
+        public String showAllMovies(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                    @RequestParam(value = "updated", required = false, defaultValue = "-1") int updated,
+                                    HttpSession session, Model model) {            
             User user = (User) session.getAttribute("logged");
             if (user == null) {
                 return "redirect:/nosession";
             }            
             int userId = user.getUserId();
-            List movieList = movies.getMovieList(page, this.pageSize);
             int movieCount = movies.getMovieCount();
-            int pageCount = (int)Math.ceil((double)movieCount/this.pageSize);
+            int pageSize = Pagination.getPageSize(session);
+            int pageCount = Pagination.getPageCount(pageSize, movieCount);
+            List movieList = movies.getMovieList(page, pageSize);
+            if (updated != -1){
+                Movie updatedMovie = new Movie().getMovie(updated);
+                model.addAttribute("updatedMovie", updatedMovie);
+            }
             model.addAttribute("movieList", movieList);
             model.addAttribute("movieCount", movieCount);
             model.addAttribute("page", page);

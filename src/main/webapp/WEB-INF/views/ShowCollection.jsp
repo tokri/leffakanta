@@ -4,7 +4,9 @@
 <%@include file="includeMenu.jsp" %>
 
 <h2>My Collection</h2>
-
+<c:if test="${updatedMovie != null}">
+    <div id="note"><p/>Movie <b>'${updatedMovie.movieTitle} (${updatedMovie.year})'</b> updated!<p/></div><p />
+</c:if>
 <c:if test="${not empty movieList}">
     <c:if test="${searchValue == null}"><form id="search" action="searchcollection" method="POST">
         <input id="searchValue" name="searchValue" type="text" value="" placeholder="Search..." size="35"/></form><p />
