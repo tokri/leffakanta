@@ -27,7 +27,7 @@ public class Person {
     // get person's details by name
     public Person getPerson(String personName){        
         // get basic movie details
-        String sql = "SELECT * FROM person WHERE personName = ?";
+        String sql = "SELECT * FROM person WHERE person_name = ?";
         Person person = Database.queryForObject(sql, personName, Person.class);
         return person;
     }
