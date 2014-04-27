@@ -13,7 +13,7 @@
 <div id="movie-data">
     <table id="edit-movie-separator"><tr><td>
     <form:form action="editmovie" method="POST" commandName='movie'>
-        <input type="hidden" name="mode" value="${mode}"/>
+        <input type="hidden" name="mode" value="${mode}<c:if test="${mode == null}">1</c:if>"/>
         <form:input type="hidden" path="movieId"/>
         <form:input type="hidden" path="newMovie"/>
         <table id="edit-movie-table">
