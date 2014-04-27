@@ -11,26 +11,35 @@ import static org.springframework.web.util.HtmlUtils.htmlEscape;
 import static org.springframework.web.util.HtmlUtils.htmlUnescape;
 
 public class Movie {
-    private int movieId;   
+    private int movieId;
+    
     @Size(min=1, max=50) @NotNull 
     private String movieTitle;
+    
     //regexp number between 1900 and 2099
     @Pattern(regexp = "^(19|20)\\d{2}$") @NotNull
     private String year;    
+    
     //regexp null or 0>= and <1000
     @Pattern(regexp = "^$|\\d{1,3}(?:\\.\\d{1,5})?$")
     private String runtime;    
+    
     //regexp null or number between 0 and 10 with optional 1 digit
     @Pattern(regexp = "^$|10([.,]0)?|(\\d([.,]\\d{1})?)")
     private String rating;    
+    
     @Size(min=0, max=500) 
     private String plotText;
+    
     @URL 
     private String posterUrl;
+    
     @URL
     private String backgroundUrl;
+    
     @URL
     private String trailerUrl;
+    
     private String formatType;
     private int collectionID;
     private int ownerCount;
@@ -42,15 +51,15 @@ public class Movie {
     // return -1 if unsuccessful, 0 if existing movie added into collection and return movie_id if new movie added
     public int addMovie(Movie movie, int user_id){
         int retVal = -1;
-        String sql = "SELECT movie_id FROM movies WHERE movie_title = ? AND year = ?";
+        String sql = "SELECT movie_id FROM movie WHERE movie_title = ? AND year = ?";
         int movie_id = Database.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())}); 
         if (movie_id==-1){
-            sql = "INSERT INTO movies VALUES (DEFAULT,?,?,null,null,null,null,null) RETURNING movie_id";           
+            sql = "INSERT INTO movie VALUES (DEFAULT,?,?,null,null,null,null,null) RETURNING movie_id";           
             movie_id = Database.queryForInt(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear())});
             retVal = movie_id;
         }
         if (movie_id!=-1){
-            sql = "INSERT INTO collections VALUES (DEFAULT, "+user_id+","+movie_id+",'"+movie.getFormatType()+"')";
+            sql = "INSERT INTO collectable VALUES (DEFAULT, "+user_id+","+movie_id+",'"+movie.getFormatType()+"')";
             Database.update(sql, null);
             if (retVal == -1){
                 retVal = 0;
@@ -61,7 +70,7 @@ public class Movie {
     
     // update movie details
     public void updateMovie(Movie movie){
-        String sql = "UPDATE movies SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
+        String sql = "UPDATE movie SET movie_title=?, year=?, runtime=?, rating=?, plot_text=?, poster_url=?, background_url=? " +
                 " WHERE movie_id=?";
         Database.update(sql, new Object[]{ movie.getMovieTitle(), parseInt(movie.getYear()), parseInt(movie.getRuntimeForSql()), 
             parseFloat(movie.getRatingForSql()), movie.getPlotText(), movie.getPosterUrl(), movie.getBackgroundUrl(), movie.getMovieId()}); 
@@ -70,11 +79,11 @@ public class Movie {
     
     // remove movie from selected users collection
     public void removeMovie(int movie_id, int collection_id, int user_id){
-        String sql = "DELETE FROM collections WHERE item_id = ? AND user_id = ?";
+        String sql = "DELETE FROM collectable WHERE item_id = ? AND user_id = ?";
         Database.update(sql, new Object[] {collection_id, user_id});
         
         // if last user with the same movie, delete movie records too
-        sql = "SELECT COUNT(*) FROM collections WHERE movie_id = ?";
+        sql = "SELECT COUNT(*) FROM collectable WHERE movie_id = ?";
         int count = Database.queryForInt(sql, movie_id);
         if (count == 0){            
             deleteMovie(movie_id);
@@ -83,25 +92,25 @@ public class Movie {
     
     // delete movie alltogether
     public void deleteMovie(int movie_id){
-        String sql = "DELETE FROM movies WHERE movie_id = ?";
+        String sql = "DELETE FROM movie WHERE movie_id = ?";
         Database.update(sql, movie_id);
     }
     
     // get movie's details
     public Movie getMovie(int movie_id){        
         // get basic movie details
-        String sql = "SELECT * FROM movies WHERE movie_id = ?";
+        String sql = "SELECT * FROM movie WHERE movie_id = ?";
         Movie movie = Database.queryForObject(sql, movie_id, Movie.class);
 
         // get movie's genres
-        sql = "SELECT genre_name FROM movie_genres, genres WHERE movie_genres.genre_id=genres.genre_id AND movie_id = ?";
+        sql = "SELECT genre_name FROM movie_genre, genre WHERE movie_genre.genre_id=genre.genre_id AND movie_id = ?";
         movie.genres = Database.queryForList(sql, movie_id, Genre.class);
 
-        sql = "SELECT role_id, people.person_id, production_role, person_name, image_url, null as character_name FROM " +
-                "people, roles WHERE production_role != 'Actor' AND roles.person_id = people.person_id AND movie_id = ? " +
-                "UNION SELECT role_id, people.person_id, production_role, person_name, image_url, character_name FROM " +
-                "people, roles, characters WHERE production_role = 'Actor' AND roles.character_id = characters.character_id " +
-                "AND roles.person_id = people.person_id AND movie_id = ? ORDER BY role_id ASC;";
+        sql = "SELECT role_id, person.person_id, production_role, person_name, image_url, null as character_name FROM " +
+                "person, role WHERE production_role != 'Actor' AND role.person_id = person.person_id AND movie_id = ? " +
+                "UNION SELECT role_id, person.person_id, production_role, person_name, image_url, character_name FROM " +
+                "person, role, \"character\" WHERE production_role = 'Actor' AND role.character_id = \"character\".character_id " +
+                "AND role.person_id = person.person_id AND movie_id = ? ORDER BY role_id ASC;";
         movie.roles = Database.queryForList(sql, new Object[]{ movie_id, movie_id }, Role.class);        
         return movie;
     }
@@ -109,8 +118,8 @@ public class Movie {
     // get movie details by collection id
     public Movie getMovieFromCollection(int collection_id){
         // get basic movie details
-        String sql = "SELECT DISTINCT item_id as collection_id, movies.movie_id, movie_title, year, format_type " +
-                "FROM movies, collections WHERE movies.movie_id = collections.movie_id AND item_id = ?";
+        String sql = "SELECT DISTINCT item_id as collection_id, movie.movie_id, movie_title, year, format_type " +
+                "FROM movie, collectable WHERE movie.movie_id = collectable.movie_id AND item_id = ?";
         Movie movie = Database.queryForObject(sql, collection_id, Movie.class);
         return movie;
     }
@@ -157,13 +166,14 @@ public class Movie {
         return enums;
     }    
     
-    private List<Role> getRole(String name){
+    // get role list by rolename
+    private List<Role> getRoles(String roleName){
         List<Role> roleList = new ArrayList<Role>();
         if (this.roles == null){
             return roleList;
         }
         for (Role role : this.roles){
-            if (role.getProductionRole().equals(name)){
+            if (role.getProductionRole().equals(roleName)){
                 roleList.add(role);
             }
         }
@@ -187,9 +197,9 @@ public class Movie {
     public int getOwnerCount(){ return this.ownerCount; }
     public boolean getNewMovie(){ return this.newMovie; }
     public List<Genre> getGenres(){ return this.genres; }
-    public List<Role> getCast(){ return this.getRole("Actor"); }
-    public List<Role> getDirectors(){ return this.getRole("Director"); }
-    public List<Role> getWriters(){ return this.getRole("Writer"); }
+    public List<Role> getCast(){ return this.getRoles("Actor"); }
+    public List<Role> getDirectors(){ return this.getRoles("Director"); }
+    public List<Role> getWriters(){ return this.getRoles("Writer"); }
     
     public void setMovieId(int value){ this.movieId = value; }
     public void setMovieTitle(String value){ this.movieTitle = htmlUnescape(value); }

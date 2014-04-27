@@ -10,10 +10,10 @@ public class Roles {
     // get person's details
     public void updatePersonRoles(int personId, int userId){        
         // get basic movie details
-        String sql = "SELECT movies.movie_id, movie_title, year, production_role, character_name FROM movies, roles, characters, collections WHERE "+
-                "roles.movie_id = movies.movie_id AND roles.character_id = characters.character_id AND movies.movie_id = collections.movie_id AND " +
-                "person_id = ? AND user_id = ? UNION SELECT movies.movie_id, movie_title, year, production_role, null as character_name FROM movies, " +
-                "roles, collections WHERE character_id IS NULL AND roles.movie_id = movies.movie_id AND collections.movie_id = movies.movie_id AND " +
+        String sql = "SELECT movie.movie_id, movie_title, year, production_role, character_name FROM movie, role, \"character\", collectable WHERE "+
+                "role.movie_id = movie.movie_id AND role.character_id = \"character\".character_id AND movie.movie_id = collectable.movie_id AND " +
+                "person_id = ? AND user_id = ? UNION SELECT movie.movie_id, movie_title, year, production_role, null as character_name FROM movie, " +
+                "role, collectable WHERE character_id IS NULL AND role.movie_id = movie.movie_id AND collectable.movie_id = movie.movie_id AND " +
                 "person_id = ? AND user_id = ? ORDER BY year DESC;";
         this.roles = Database.queryForList(sql, new Object[]{ personId, userId, personId, userId }, RoleAndMovie.class);
     }    

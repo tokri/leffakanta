@@ -1,8 +1,19 @@
-INSERT INTO users VALUES 
+INSERT INTO "user" VALUES 
   (DEFAULT, 'mikkelinmies', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', true),
+  (DEFAULT, 'kantele', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'kirahvikahvi86', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'teuvo', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'teppo', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'manteli_82', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'hamsteri', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'lattialuuttu', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'korianteri', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'superhyperadmin', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', true),
+  (DEFAULT, 'kaistele', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false),
+  (DEFAULT, 'matti', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', true),
   (DEFAULT, 'ohdake', '1000:242a8f56d17db30741f0e08e3830b403c6f16bd1173fc3aa:77f9d70bcd8ced5d3954915a728a82c57dc97abf325975da', false);
 
-INSERT INTO movies VALUES 
+INSERT INTO movie VALUES 
   (DEFAULT, 'The Matrix', 1999, 136, 7.4, 'Thomas A. Anderson is a man living two lives. By day he is an average computer programmer and by night a malevolent hacker known as Neo, who finds himself targeted by the police when he is contacted by Morpheus, a legendary computer hacker, who reveals the shocking truth about our reality',
 	'http://image.tmdb.org/t/p/w185/gynBNzwyaHKtXqlEKKLioNkjKgN.jpg', 'http://image.tmdb.org/t/p/w780/gM3KKiN80qbJgKHjPnmAfwxSicG.jpg', 'http://www.youtube.com/watch?v=m8e-FF8MsqU&hd=1'),
   (DEFAULT, 'Beauty and the Beast', 1991, 84, 6.7, 'Follow the adventures of Belle, a bright young woman who finds herself in the castle of a prince who''s been turned into a mysterious beast. With the help of the castle''s enchanted staff, Belle soon learns the most important lesson of all -- that true beauty comes from within.',
@@ -10,45 +21,58 @@ INSERT INTO movies VALUES
   (DEFAULT, 'The Day the Earth Stood Still', 2008, 103, 5.3, 'A representative of an alien race that went through drastic evolution to survive its own climate change, Klaatu comes to Earth to assess whether humanity can prevent the environmental damage they have inflicted on their own planet. When barred from speaking to the United Nations, he decides humankind shall be exterminated so the planet can survive.',
 	'http://image.tmdb.org/t/p/w185/7fNFk4EAGbuRFqrSJprgXEIX5Za.jpg', 'http://image.tmdb.org/t/p/w780/bfRgom0djZB8z7qbtjM542j3xrT.jpg', 'http://www.youtube.com/watch?v=lgeuvDiS1_M&hd=1'),
   (DEFAULT, 'Django Unchained', 2012, NULL, 7.2, 'A representative of an alien race that went through drastic evolution to survive its own climate change, Klaatu comes to Earth to assess whether humanity can prevent the environmental damage they have inflicted on their own planet. When barred from speaking to the United Nations, he decides humankind shall be exterminated so the planet can survive.',
-	'http://image.tmdb.org/t/p/w185/5WJnxuw41sddupf8cwOxYftuvJG.jpg', 'http://image.tmdb.org/t/p/w780/qUcmEqnzIwlwZxSyTf3WliSfAjJ.jpg', NULL);
+	'http://image.tmdb.org/t/p/w185/5WJnxuw41sddupf8cwOxYftuvJG.jpg', 'http://image.tmdb.org/t/p/w780/qUcmEqnzIwlwZxSyTf3WliSfAjJ.jpg', NULL),
+  (DEFAULT, 'test01', 2012, NULL, 1, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test02', 2012, NULL, 2, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test03', 2012, NULL, 3, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test04', 2012, NULL, 4, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test05', 2012, NULL, 5, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test06', 2012, NULL, 6, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test07', 2012, NULL, 7, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test08', 2012, NULL, 8, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test09', 2012, NULL, 9, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test10', 2012, NULL, 10, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test11', 2012, NULL, 8, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test12', 2012, NULL, 6, 'nothing', NULL, NULL, NULL),
+  (DEFAULT, 'test13', 2012, NULL, 4, 'nothing', NULL, NULL, NULL);
 
-INSERT INTO genres VALUES 
+INSERT INTO genre VALUES 
   (DEFAULT, 'Action'),
   (DEFAULT, 'Animation'),
   (DEFAULT, 'Sci-fi'),
   (DEFAULT, 'Drama'),
   (DEFAULT, 'Western');
 
-INSERT INTO movie_genres VALUES 
+INSERT INTO movie_genre VALUES 
   (1, 1),
   (1, 3),
   (2, 2),
   (4, 4),
   (4, 5);
 	
-INSERT INTO people VALUES 
-  (DEFAULT, 'Keanu Reeves', NULL, 'http://image.tmdb.org/t/p/w185/cEIZlUQvnlXfoxF0mPJsvDPh2Po.jpg'),
-  (DEFAULT, 'Laurence Fishburne', NULL, 'http://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg'),
-  (DEFAULT, 'Carrie-Anne Moss', NULL, 'http://image.tmdb.org/t/p/w185/8iATAc5z5XOKFFARLsvaawa8MTY.jpg'),
-  (DEFAULT, 'Hugo Weaving', NULL, 'http://image.tmdb.org/t/p/w185/ysED1kp94bpnweNVaDoVQQ6iy8X.jpg'),
-  (DEFAULT, 'Gary Trousdale', NULL, 'http://image.tmdb.org/t/p/w185/naRhdLVuw6a8KtDPM2aJWPhPjsp.jpg'),
-  (DEFAULT, 'Kirk Wise', NULL, 'http://image.tmdb.org/t/p/w185/aoh7wnHk3F1HdOUBLI5Yfwd8rnN.jpg'),
-  (DEFAULT, 'Linda Woolverton', NULL, NULL),
-  (DEFAULT, 'Roger Allers', NULL, 'http://image.tmdb.org/t/p/w185/eUMjdBRyv5gF1m5sGHm15TUVuFP.jpg'),
-  (DEFAULT, 'Kelly Asbury', NULL, 'http://image.tmdb.org/t/p/w185/jJAHjXFbjEUJrYjxyuj0AWMPAqW.jpg'),
-  (DEFAULT, 'Paige O''Hara', NULL, 'http://image.tmdb.org/t/p/w185/udSmgh3YGPPWpyW31MXj7bG6fuj.jpg'),
-  (DEFAULT, 'Robby Benson', NULL, 'http://image.tmdb.org/t/p/w185/wUqGufwQwXn3Y6rFdtZ80HqLDPm.jpg'),
-  (DEFAULT, 'Richard White', NULL, 'http://image.tmdb.org/t/p/w185/iiX9ytEkszJGOwcZ0qFVClfjzeJ.jpg'),
-  (DEFAULT, 'Jerry Orbach', NULL, 'http://image.tmdb.org/t/p/w185/fL9xNdyyPpJrqzSVyJpefRVWcx1.jpg'),
-  (DEFAULT, 'Jennifer Connelly', NULL, 'http://image.tmdb.org/t/p/w185/6ZwYn5C08Nd2p9RCtUWfOB3dMiS.jpg'),
-  (DEFAULT, 'Mousa Kraish', NULL, NULL),
-  (DEFAULT, 'Shaine Jones', NULL, NULL),
-  (DEFAULT, 'Quentin Tarantino', NULL, 'http://image.tmdb.org/t/p/w185/6grjDWpEIPL5QdRbUZFxVEp5TCd.jpg'),
-  (DEFAULT, 'Jamie Foxx', NULL, 'http://image.tmdb.org/t/p/w185/1yr8Pv1tSWnQkCwDLrzUIzZVurM.jpg'),
-  (DEFAULT, 'Christoph Walz', NULL, 'http://image.tmdb.org/t/p/w185/bPtNS4p3CEDt3Uo9khMCLyQUa0W.jpg'),
-  (DEFAULT, 'Leonardo DiCaprio', NULL, 'http://image.tmdb.org/t/p/w185/mNRMgj7K5ztvkSqrcdwEYNZIS1M.jpg');
+INSERT INTO person VALUES 
+  (DEFAULT, 'Keanu Reeves', 'http://image.tmdb.org/t/p/w185/cEIZlUQvnlXfoxF0mPJsvDPh2Po.jpg'),
+  (DEFAULT, 'Laurence Fishburne', 'http://image.tmdb.org/t/p/w185/mh0lZ1XsT84FayMNiT6Erh91mVu.jpg'),
+  (DEFAULT, 'Carrie-Anne Moss', 'http://image.tmdb.org/t/p/w185/8iATAc5z5XOKFFARLsvaawa8MTY.jpg'),
+  (DEFAULT, 'Hugo Weaving', 'http://image.tmdb.org/t/p/w185/ysED1kp94bpnweNVaDoVQQ6iy8X.jpg'),
+  (DEFAULT, 'Gary Trousdale', 'http://image.tmdb.org/t/p/w185/naRhdLVuw6a8KtDPM2aJWPhPjsp.jpg'),
+  (DEFAULT, 'Kirk Wise', 'http://image.tmdb.org/t/p/w185/aoh7wnHk3F1HdOUBLI5Yfwd8rnN.jpg'),
+  (DEFAULT, 'Linda Woolverton', NULL),
+  (DEFAULT, 'Roger Allers', 'http://image.tmdb.org/t/p/w185/eUMjdBRyv5gF1m5sGHm15TUVuFP.jpg'),
+  (DEFAULT, 'Kelly Asbury', 'http://image.tmdb.org/t/p/w185/jJAHjXFbjEUJrYjxyuj0AWMPAqW.jpg'),
+  (DEFAULT, 'Paige O''Hara', 'http://image.tmdb.org/t/p/w185/udSmgh3YGPPWpyW31MXj7bG6fuj.jpg'),
+  (DEFAULT, 'Robby Benson', 'http://image.tmdb.org/t/p/w185/wUqGufwQwXn3Y6rFdtZ80HqLDPm.jpg'),
+  (DEFAULT, 'Richard White', 'http://image.tmdb.org/t/p/w185/iiX9ytEkszJGOwcZ0qFVClfjzeJ.jpg'),
+  (DEFAULT, 'Jerry Orbach', 'http://image.tmdb.org/t/p/w185/fL9xNdyyPpJrqzSVyJpefRVWcx1.jpg'),
+  (DEFAULT, 'Jennifer Connelly', 'http://image.tmdb.org/t/p/w185/6ZwYn5C08Nd2p9RCtUWfOB3dMiS.jpg'),
+  (DEFAULT, 'Mousa Kraish', NULL),
+  (DEFAULT, 'Shaine Jones', NULL),
+  (DEFAULT, 'Quentin Tarantino', 'http://image.tmdb.org/t/p/w185/6grjDWpEIPL5QdRbUZFxVEp5TCd.jpg'),
+  (DEFAULT, 'Jamie Foxx', 'http://image.tmdb.org/t/p/w185/1yr8Pv1tSWnQkCwDLrzUIzZVurM.jpg'),
+  (DEFAULT, 'Christoph Walz', 'http://image.tmdb.org/t/p/w185/bPtNS4p3CEDt3Uo9khMCLyQUa0W.jpg'),
+  (DEFAULT, 'Leonardo DiCaprio', 'http://image.tmdb.org/t/p/w185/mNRMgj7K5ztvkSqrcdwEYNZIS1M.jpg');
 
-INSERT INTO characters VALUES 
+INSERT INTO "character" VALUES 
   (DEFAULT, 'Neo'),
   (DEFAULT, 'Morpheus'),
   (DEFAULT, 'Trinity'),
@@ -66,7 +90,7 @@ INSERT INTO characters VALUES
   (DEFAULT, 'Calvin Candie'),
   (DEFAULT, 'The LeQuint Dickey Mining Co. Employee');
   
-INSERT INTO roles VALUES 
+INSERT INTO role VALUES 
   (DEFAULT, 'Actor', 1, 1, 1),
   (DEFAULT, 'Actor', 1, 2, 2),
   (DEFAULT, 'Actor', 1, 3, 3),
@@ -91,11 +115,23 @@ INSERT INTO roles VALUES
   (DEFAULT, 'Actor', 4, 20, 15),
   (DEFAULT, 'Actor', 4, 17, 16);
   
-INSERT INTO collections VALUES 
+INSERT INTO collectable VALUES 
   (DEFAULT, 1, 1, 'Blu-ray'),
-  (DEFAULT, 2, 1, 'DVD'),
-  (DEFAULT, 2, 2, 'Blu-ray'),
-  (DEFAULT, 2, 3, 'Blu-ray'),
-  (DEFAULT, 1, 4, 'Blu-ray'),
-  (DEFAULT, 2, 4, 'Blu-ray');
+  (DEFAULT, 1, 4, 'DVD'),
+  (DEFAULT, 13, 1, 'DVD'),
+  (DEFAULT, 13, 2, 'Blu-ray'),
+  (DEFAULT, 13, 3, 'Blu-ray'),
+  (DEFAULT, 13, 4, 'Blu-ray'),
+  (DEFAULT, 13, 5, 'Download'),
+  (DEFAULT, 13, 6, 'Blu-ray'),
+  (DEFAULT, 13, 7, 'Blu-ray'),
+  (DEFAULT, 13, 8, 'Blu-ray'),
+  (DEFAULT, 13, 10, 'Blu-ray'),
+  (DEFAULT, 13, 11, 'Blu-ray'),
+  (DEFAULT, 13, 12, 'DVD'),
+  (DEFAULT, 13, 13, 'Blu-ray'),
+  (DEFAULT, 13, 14, 'Blu-ray'),
+  (DEFAULT, 13, 15, 'Blu-ray'),
+  (DEFAULT, 13, 16, 'Blu-ray'),
+  (DEFAULT, 13, 17, 'DVD');
   

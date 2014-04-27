@@ -19,14 +19,14 @@ public class User {
 
     // get user's details
     public User getUser(String username){
-        String sql = "SELECT * FROM users WHERE username = ?";
+        String sql = "SELECT * FROM \"user\" WHERE username = ?";
         User user = Database.queryForObject(sql, username, User.class);
         return user;
     }
     
     // get user by id
     public User getUser(int user_id){
-        String sql = "SELECT * FROM users WHERE user_id = ?";
+        String sql = "SELECT * FROM \"user\" WHERE user_id = ?";
         User user = Database.queryForObject(sql, user_id, User.class);
         return user;
     }
@@ -60,7 +60,7 @@ public class User {
             PasswordHash hash = new PasswordHash();
             user.setIsAdmin(false);
             user.setPasswordHash(hash.createHash(user.passwordNew));
-            String sql = "INSERT INTO users VALUES (DEFAULT,?,?,false)";
+            String sql = "INSERT INTO \"user\" VALUES (DEFAULT,?,?,false)";
             Database.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash()});
             user.setPasswordNew("");
             user.setPasswordNewConfirm("");
@@ -76,12 +76,12 @@ public class User {
         String sql;
         try{
             if (user.getPasswordNew().isEmpty()){
-                sql = "UPDATE users SET username=?, is_admin=? WHERE user_id=?";
+                sql = "UPDATE \"user\" SET username=?, is_admin=? WHERE user_id=?";
                 Database.update(sql, new Object[]{ user.getUsername(), user.getIsAdmin(), user.getUserId()}); 
             } else {
                 PasswordHash hash = new PasswordHash();        
                 user.setPasswordHash(hash.createHash(user.passwordNew));
-                sql = "UPDATE users SET username=?, password_hash=?, is_admin=? WHERE user_id=?";
+                sql = "UPDATE 'user' SET username=?, password_hash=?, is_admin=? WHERE user_id=?";
                 Database.update(sql, new Object[]{ user.getUsername(), user.getPasswordHash(), user.getIsAdmin(), user.getUserId()}); 
                 user.setPasswordNew("");
                 user.setPasswordNewConfirm("");
@@ -94,7 +94,7 @@ public class User {
     
     // delete user
     public void deleteUser(int user_id){
-        String sql = "DELETE FROM users WHERE user_id = ?";
+        String sql = "DELETE FROM \"user\" WHERE user_id = ?";
         Database.update(sql, user_id);        
     }
 
