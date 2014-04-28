@@ -61,7 +61,7 @@ public class MovieController {
                 model.addAttribute("movie", movie);
                 return "EditMovie";
             }
-            return "redirect:/collection?updated="+movie.getMovieId();
+            return "redirect:/collection";
         }
 
         // edit movie
